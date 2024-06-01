@@ -1,0 +1,40 @@
+{
+    "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/main/docs/settings.md",
+    "SettingsVersion": 1.2,
+    "ClockType": "",
+    "ClockSpeed": 1,
+    "LocalHostIp": "127.0.0.1",
+    "ApiServerPort": 41451,
+    "SimMode": "Multirotor",
+    "ViewMode": "FlyWithMe",
+    "Vehicles": {
+        "Drone1": {
+            "VehicleType": "SimpleFlight",
+            "X": 0,
+            "Y": 0,
+            "Z": -1,
+            "Sensors": {
+                "LidarSensor1": {
+                    "SensorType": 6,
+                    "Enabled": true,
+                    "NumberOfChannels": 1,
+                    "RotationsPerSecond": 10,
+                    "Range": 12,
+                    "PointsPerSecond": 8000,
+                    "X": 0,
+                    "Y": 0,
+                    "Z": -1,
+                    "Roll": 0,
+                    "Pitch": 90,
+                    "Yaw": 0,
+                    "VerticalFOVUpper": 0,
+                    "VerticalFOVLower": 0,
+                    "HorizontalFOVStart": 0,
+                    "HorizontalFOVEnd": 0,
+                    "DrawDebugPoints": true,
+                    "ExternalController": false
+                }
+            }
+        }
+    }
+}

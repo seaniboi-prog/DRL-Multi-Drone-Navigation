@@ -1,0 +1,1 @@
+{"learner_class": "ray.rllib.algorithms.ppo.torch.ppo_torch_learner.PPOTorchLearner", "ray_version": "2.6.3", "ray_commit": "8a434b4ee7cd48e60fa1531315d39901fac5d79e", "module_state_dir": "module_state", "optimizer_state_dir": "optimizer_state"}

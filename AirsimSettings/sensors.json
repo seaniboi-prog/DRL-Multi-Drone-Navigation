@@ -1,0 +1,106 @@
+{
+    "DefaultSensors": {
+
+    "Barometer": {
+        "SensorType": 1,
+        "Enabled" : true,
+        "PressureFactorSigma": 0.001825,
+        "PressureFactorTau": 3600,
+        "UncorrelatedNoiseSigma": 2.7,
+        "UpdateLatency": 0,
+        "UpdateFrequency": 50,
+        "StartupDelay": 0
+
+    },
+    "Imu": {
+        "SensorType": 2,
+        "Enabled" : true,
+        "AngularRandomWalk": 0.3,
+        "GyroBiasStabilityTau": 500,
+        "GyroBiasStability": 4.6,
+        "VelocityRandomWalk": 0.24,
+        "AccelBiasStabilityTau": 800,
+        "AccelBiasStability": 36
+    },
+    "Gps": {
+        "SensorType": 3,
+        "Enabled" : true,
+        "EphTimeConstant": 0.9,
+        "EpvTimeConstant": 0.9,
+        "EphInitial": 25,
+        "EpvInitial": 25,
+        "EphFinal": 0.1,
+        "EpvFinal": 0.1,
+        "EphMin3d": 3,
+        "EphMin2d": 4,
+        "UpdateLatency": 0.2,
+        "UpdateFrequency": 50,
+        "StartupDelay": 1
+    },
+    "Magnetometer": {
+        "SensorType": 4,
+        "Enabled" : true,
+        "NoiseSigma": 0.005,
+        "ScaleFactor": 1,
+        "NoiseBias": 0,
+        "UpdateLatency": 0,
+        "UpdateFrequency": 50,
+        "StartupDelay": 0
+    },
+    "Distance": {
+        "SensorType": 5,
+        "Enabled" : true,
+        "MinDistance": 0.2,
+        "MaxDistance": 40,
+        "X": 0, "Y": 0, "Z": -1,
+        "Yaw": 0, "Pitch": 0, "Roll": 0,
+        "DrawDebugPoints": false
+    },
+    "Lidar2": {
+        "SensorType": 6,
+        "Enabled" : true,
+        "NumberOfChannels": 16,
+        "RotationsPerSecond": 10,
+        "PointsPerSecond": 100000,
+        "X": 0, "Y": 0, "Z": -1,
+        "Roll": 0, "Pitch": 0, "Yaw" : 0,
+        "VerticalFOVUpper": -15,
+        "VerticalFOVLower": -25,
+        "HorizontalFOVStart": -20,
+        "HorizontalFOVEnd": 20,
+        "DrawDebugPoints": true,
+        "DataFrame": "SensorLocalFrame"
+    }
+ }, 
+
+ "Vehicles": {
+
+    "Drone1": {
+        "VehicleType": "SimpleFlight",
+        "AutoCreate": true,
+        "Sensors": {
+            "Barometer":{
+                "SensorType": 1,
+                "Enabled": true,
+                "PressureFactorSigma": 0.0001825
+            },
+            "MyLidar1": {
+                "SensorType": 6,
+                "Enabled" : true,
+                "NumberOfChannels": 16,
+                "PointsPerSecond": 10000,
+                "X": 0, "Y": 0, "Z": -1,
+                "DrawDebugPoints": true
+            },
+            "MyLidar2": {
+                "SensorType": 6,
+                "Enabled" : true,
+                "NumberOfChannels": 4,
+                "PointsPerSecond": 10000,
+                "X": 0, "Y": 0, "Z": -1,
+                "DrawDebugPoints": true
+            }
+        }
+    }
+}
+}

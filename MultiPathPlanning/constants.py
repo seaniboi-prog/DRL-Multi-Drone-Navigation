@@ -1,0 +1,25 @@
+# General
+
+# Multi TSP
+
+# HillClimb Constants
+EPOCHS = 10000
+
+# GA Constants
+POPULATION_SIZE = 100
+TOURNAMENT_SIZE = 10
+GENERATIONS = 20
+MUTATION_RATE = 0.05
+CROSSOVER_RATE = 0.9
+ELITISM = True
+
+# ACO Constants
+RHO = 0.03
+Q = 1
+ALPHA = 1
+BETA = 3
+GEN_SIZE = None
+LIMIT = 200
+OPT2 = 30
+
+# DRL

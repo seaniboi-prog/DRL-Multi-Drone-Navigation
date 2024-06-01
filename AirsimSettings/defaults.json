@@ -1,0 +1,164 @@
+{
+    "SimMode": "",
+    "ClockType": "",
+    "ClockSpeed": 1,
+    "LocalHostIp": "127.0.0.1",
+    "ApiServerPort": 41451,
+    "RecordUIVisible": true,
+    "LogMessagesVisible": true,
+    "ShowLosDebugLines": false,
+    "ViewMode": "",
+    "RpcEnabled": true,
+    "EngineSound": true,
+    "PhysicsEngineName": "",
+    "SpeedUnitFactor": 1.0,
+    "SpeedUnitLabel": "m/s",
+    "Wind": { "X": 0, "Y": 0, "Z": 0 },
+    "CameraDirector": {
+      "FollowDistance": -3,
+      "X": null, "Y": null, "Z": null,
+      "Pitch": null, "Roll": null, "Yaw": null
+    },
+    "Recording": {
+      "RecordOnMove": false,
+      "RecordInterval": 0.05,
+      "Folder": "",
+      "Enabled": false,
+      "Cameras": [
+          { "CameraName": "0", "ImageType": 0, "PixelsAsFloat": false,  "VehicleName": "", "Compress": true }
+      ]
+    },
+    "CameraDefaults": {
+      "CaptureSettings": [
+        {
+          "ImageType": 0,
+          "Width": 256,
+          "Height": 144,
+          "FOV_Degrees": 90,
+          "AutoExposureSpeed": 100,
+          "AutoExposureBias": 0,
+          "AutoExposureMaxBrightness": 0.64,
+          "AutoExposureMinBrightness": 0.03,
+          "MotionBlurAmount": 0,
+          "TargetGamma": 1.0,
+          "ProjectionMode": "",
+          "OrthoWidth": 5.12
+        }
+      ],
+      "NoiseSettings": [
+        {
+          "Enabled": false,
+          "ImageType": 0,
+  
+          "RandContrib": 0.2,
+          "RandSpeed": 100000.0,
+          "RandSize": 500.0,
+          "RandDensity": 2,
+  
+          "HorzWaveContrib":0.03,
+          "HorzWaveStrength": 0.08,
+          "HorzWaveVertSize": 1.0,
+          "HorzWaveScreenSize": 1.0,
+  
+          "HorzNoiseLinesContrib": 1.0,
+          "HorzNoiseLinesDensityY": 0.01,
+          "HorzNoiseLinesDensityXY": 0.5,
+  
+          "HorzDistortionContrib": 1.0,
+          "HorzDistortionStrength": 0.002
+        }
+      ],
+      "Gimbal": {
+        "Stabilization": 0,
+        "Pitch": null, "Roll": null, "Yaw": null
+      },
+      "X": null, "Y": null, "Z": null,
+      "Pitch": null, "Roll": null, "Yaw": null,
+      "UnrealEngine": {
+        "PixelFormatOverride": [
+          {
+            "ImageType": 0,
+            "PixelFormat": 0
+          }
+        ]
+      }
+    },
+    "OriginGeopoint": {
+      "Latitude": 47.641468,
+      "Longitude": -122.140165,
+      "Altitude": 122
+    },
+    "TimeOfDay": {
+      "Enabled": false,
+      "StartDateTime": "",
+      "CelestialClockSpeed": 1,
+      "StartDateTimeDst": false,
+      "UpdateIntervalSecs": 60
+    },
+    "SubWindows": [
+      {"WindowID": 0, "CameraName": "0", "ImageType": 3, "VehicleName": "", "Visible": false, "External": false},
+      {"WindowID": 1, "CameraName": "0", "ImageType": 5, "VehicleName": "", "Visible": false, "External": false},
+      {"WindowID": 2, "CameraName": "0", "ImageType": 0, "VehicleName": "", "Visible": false, "External": false}
+    ],
+    "SegmentationSettings": {
+      "InitMethod": "",
+      "MeshNamingMethod": "",
+      "OverrideExisting": true
+    },
+    "PawnPaths": {
+      "BareboneCar": {"PawnBP": "Class'/AirSim/VehicleAdv/Vehicle/VehicleAdvPawn.VehicleAdvPawn_C'"},
+      "DefaultCar": {"PawnBP": "Class'/AirSim/VehicleAdv/SUV/SuvCarPawn.SuvCarPawn_C'"},
+      "DefaultQuadrotor": {"PawnBP": "Class'/AirSim/Blueprints/BP_FlyingPawn.BP_FlyingPawn_C'"},
+      "DefaultComputerVision": {"PawnBP": "Class'/AirSim/Blueprints/BP_ComputerVisionPawn.BP_ComputerVisionPawn_C'"}
+    },
+    "Vehicles": {
+      "SimpleFlight": {
+        "VehicleType": "SimpleFlight",
+        "DefaultVehicleState": "Armed",
+        "AutoCreate": true,
+        "PawnPath": "",
+        "EnableCollisionPassthrogh": false,
+        "EnableCollisions": true,
+        "AllowAPIAlways": true,
+        "EnableTrace": false,
+        "RC": {
+          "RemoteControlID": 0,
+          "AllowAPIWhenDisconnected": false
+        },
+        "Cameras": {
+
+        },
+        "X": null, "Y": null, "Z": null,
+        "Pitch": null, "Roll": null, "Yaw": null
+      },
+      "PhysXCar": {
+        "VehicleType": "PhysXCar",
+        "DefaultVehicleState": "",
+        "AutoCreate": true,
+        "PawnPath": "",
+        "EnableCollisionPassthrogh": false,
+        "EnableCollisions": true,
+        "RC": {
+          "RemoteControlID": -1
+        },
+        "Cameras": {
+          "MyCamera1": {
+
+          },
+          "MyCamera2": {
+            
+          }
+        },
+        "X": null, "Y": null, "Z": null,
+        "Pitch": null, "Roll": null, "Yaw": null
+      }
+    },
+    "ExternalCameras": {
+      "FixedCamera1": {
+        
+      },
+      "FixedCamera2": {
+        
+      }
+    }
+}

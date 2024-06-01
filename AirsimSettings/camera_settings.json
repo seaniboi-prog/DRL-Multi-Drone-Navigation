@@ -1,0 +1,120 @@
+{
+    "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/main/docs/settings.md",
+    "SettingsVersion": 1.2,
+    "ClockType": "",
+    "ClockSpeed": 1,
+    "LocalHostIp": "127.0.0.1",
+    "ApiServerPort": 41451,
+    "SimMode": "Multirotor",
+    "ViewMode": "FlyWithMe",
+    "CameraDefaults": {
+        "CaptureSettings": [
+            {
+                "ImageType": 0,
+                "Width": 640,
+                "Height": 480,
+                "FOV_Degrees": 90
+            }
+        ],
+        "X": 0.5,
+        "Y": 0,
+        "Z": 0.1,
+        "Pitch": 0,
+        "Roll": 0,
+        "Yaw": 0
+    },
+    "Vehicles": {
+        "Drone1": {
+            "VehicleType": "SimpleFlight",
+            "X": 0,
+            "Y": -4,
+            "Z": -1,
+            "Cameras": {
+                "front": {},
+                "left": {
+                    "X": 0,
+                    "Y": -0.5,
+                    "Yaw": -90
+                },
+                "right": {
+                    "X": 0,
+                    "Y": 0.5,
+                    "Yaw": 90
+                },
+                "back": {
+                    "X": -0.5,
+                    "Yaw": 180
+                }
+            }
+        },
+        "Drone2": {
+            "VehicleType": "SimpleFlight",
+            "X": 0,
+            "Y": 0,
+            "Z": -1,
+            "Cameras": {
+                "front": {},
+                "left": {
+                    "X": 0,
+                    "Y": -0.5,
+                    "Yaw": -90
+                },
+                "right": {
+                    "X": 0,
+                    "Y": 0.5,
+                    "Yaw": 90
+                },
+                "back": {
+                    "X": -0.5,
+                    "Yaw": 180
+                }
+            }
+        },
+        "Drone3": {
+            "VehicleType": "SimpleFlight",
+            "X": 0,
+            "Y": 4,
+            "Z": -1,
+            "Cameras": {
+                "front": {},
+                "left": {
+                    "X": 0,
+                    "Y": -0.5,
+                    "Yaw": -90
+                },
+                "right": {
+                    "X": 0,
+                    "Y": 0.5,
+                    "Yaw": 90
+                },
+                "back": {
+                    "X": -0.5,
+                    "Yaw": 180
+                }
+            }
+        }
+    },
+    "SubWindows": [
+        {
+            "WindowID": 0,
+            "ImageType": 0,
+            "CameraName": "left",
+            "VehicleName": "Drone1",
+            "Visible": false
+        },
+        {
+            "WindowID": 1,
+            "ImageType": 0,
+            "CameraName": "front",
+            "VehicleName": "Drone1",
+            "Visible": false
+        },
+        {
+            "WindowID": 2,
+            "ImageType": 0,
+            "CameraName": "right",
+            "VehicleName": "Drone1",
+            "Visible": false
+        }
+    ]
+  }
