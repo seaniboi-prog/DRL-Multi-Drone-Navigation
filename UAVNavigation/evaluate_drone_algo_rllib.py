@@ -15,8 +15,8 @@ from ray.rllib.algorithms.algorithm import Algorithm
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-t", "--type", help="type of environment to train on", default="disc", choices=["cont", "disc", "cust"])
-parser.add_argument("-e", "--env", type=str, help="the environment version to train on (e.g. v1)", default="v2")
+parser.add_argument("-t", "--type", help="type of environment to train on", default="disc", choices=["cont", "disc"])
+parser.add_argument("-c", "--custom", help="use the custom variant of the environment", action="store_true")
 parser.add_argument("-a", "--algo", type=str, help="the algorithm to use for training", default="ppo",
                     choices=["ppo", "a2c", "a3c", "dqn", "td3", "ddpg"])
 parser.add_argument("-i", "--iter", type=int, help="the number of iterations to evaluate for", default=10)
@@ -28,9 +28,9 @@ parser.add_argument("-w", "--waypoints", type=str, help="the waypoint type to us
 
 args = parser.parse_args()
 
-env_no: str = f"en{args.env}"
 env_type: str = args.type
 env_type_long: str = get_long_env_type(env_type)
+env_var: str = "cust" if args.custom else "airsim"
 total_iters: int = args.iter
 algorithm: str = args.algo
 render_mode: Union[str, None] = args.render
@@ -47,7 +47,7 @@ else:
 
 env_config, env_ids = gym_drone.get_env_config(verbose=verbose, random_waypts=rand_waypoints, waypoint_type=waypoint_list[1])
 
-env_id = f"drone-env-{env_type}-{args.env}"
+env_id = f"drone-env-{env_type}-{env_var}"
 # env = gym.make(env_id, env_config=env_config)
 
 if env_id not in env_ids:
@@ -55,11 +55,11 @@ if env_id not in env_ids:
 
 print("Using environment: {}".format(env_id))
 
-chkpt_path = f"training/{algorithm}/{env_type}/{env_no}/{waypoint_str}/{chkpt_root}"
+chkpt_path = f"training/{algorithm}/{env_type}/{env_var}/{waypoint_str}/{chkpt_root}"
 model = Algorithm.from_checkpoint(chkpt_path)
 eval_rewards, eval_lengths, success_rate = evaluate_algorithm(model, env_id, epochs=total_iters, env_config=env_config, render_mode=render_mode)
 
-# model_root = f"models/{algorithm}/{env_type}/{env_no}/{waypoint_str}/model/model.pt"
+# model_root = f"models/{algorithm}/{env_type}/{env_var}/{waypoint_str}/model/model.pt"
 # model = torch.load(model_root)
 # eval_rewards, eval_lengths, success_rate = evaluate_algorithm_pytorch(model_root, env_id, epochs=total_iters, env_config=env_config, render_mode=render_mode)
 

@@ -17,7 +17,7 @@ from typing import Union
 # from utils import *
 from gym_drone.envs.env_utils import *
 
-class CustActionV1(Enum):
+class CustActionDisc(Enum):
     LEFT = 0
     FRONT_LEFT = 1
     FRONT = 2
@@ -29,7 +29,7 @@ class CustActionV1(Enum):
     DOWN = 8
     UP = 9
 
-class DroneEnvCust_v1(gym.Env):
+class DroneEnvCust_Disc(gym.Env):
     
     # Constants
     SCALE_FACTOR = 1.0
@@ -46,7 +46,7 @@ class DroneEnvCust_v1(gym.Env):
     REWARD_GOAL = 300
 
     def __init__(self, env_config: dict):
-        print("Drone Env Cust V1:")
+        print("Drone Env Cust Discrete:")
         print(pprint.pformat(env_config))
         
         # Custom Variables
@@ -82,7 +82,7 @@ class DroneEnvCust_v1(gym.Env):
         self.obstacles.append(np.array([10, -75, 0, 35, -48, 15])) # Obs 11
         self.obstacles.append(np.array([40, -125, 0, 65, -100, 15])) # Obs 12
         
-        waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\Python Scripts\\Reinforcement Learning\\Custom\\Gym_RLlib\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
+        waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\DRL-Multi-Drone-Navigation\\UAVNavigation\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
         self.rand_waypt_choices = pickle.load(open(waypoint_root, "rb"))
                 
         # Gym Variables
@@ -309,25 +309,25 @@ class DroneEnvCust_v1(gym.Env):
     
     def _interprate_action(self, action):
         # (x_vel, y_vel, z_vel, yaw)
-        if action == CustActionV1.LEFT.value:
+        if action == CustActionDisc.LEFT.value:
             quad_offset = (0.0, -self.SCALE_FACTOR, 0.0, -90.0)
-        elif action == CustActionV1.FRONT_LEFT.value:
+        elif action == CustActionDisc.FRONT_LEFT.value:
             quad_offset = (self.SCALE_FACTOR, -self.SCALE_FACTOR, 0.0, -45.0)
-        elif action == CustActionV1.FRONT.value:
+        elif action == CustActionDisc.FRONT.value:
             quad_offset = (self.SCALE_FACTOR, 0.0, 0.0, 0.0)
-        elif action == CustActionV1.FRONT_RIGHT.value:
+        elif action == CustActionDisc.FRONT_RIGHT.value:
             quad_offset = (self.SCALE_FACTOR, self.SCALE_FACTOR, 0.0, 45.0)
-        elif action == CustActionV1.RIGHT.value:
+        elif action == CustActionDisc.RIGHT.value:
             quad_offset = (0.0, 0.0, self.SCALE_FACTOR, 90.0)
-        elif action == CustActionV1.BACK_RIGHT.value:
+        elif action == CustActionDisc.BACK_RIGHT.value:
             quad_offset = (-self.SCALE_FACTOR, self.SCALE_FACTOR, 0.0, 135.0)
-        elif action == CustActionV1.BACK.value:
+        elif action == CustActionDisc.BACK.value:
             quad_offset = (-self.SCALE_FACTOR, 0.0, 0.0, 180.0)
-        elif action == CustActionV1.BACK_LEFT.value:
+        elif action == CustActionDisc.BACK_LEFT.value:
             quad_offset = (-self.SCALE_FACTOR, -self.SCALE_FACTOR, 0.0, -135.0)
-        elif action == CustActionV1.DOWN.value:
+        elif action == CustActionDisc.DOWN.value:
             quad_offset = (0.0, 0.0, self.SCALE_FACTOR, self.curr_orient)
-        elif action == CustActionV1.UP.value:
+        elif action == CustActionDisc.UP.value:
             quad_offset = (0.0, 0.0, -self.SCALE_FACTOR, self.curr_orient)
         else:
             raise ValueError(f"Invalid action: {action}")
@@ -503,9 +503,9 @@ class DroneEnvCust_v1(gym.Env):
         if self.render_mode == "plot":
             plt.close()
 
-class DroneEnvCust_v2(DroneEnvCust_v1):
+class DroneEnvCust_Cont(DroneEnvCust_Disc):
     def __init__(self, env_config: dict):
-        print("Drone Env Cust V2:")
+        print("Drone Env Cust Continuous:")
         print(pprint.pformat(env_config))
         
         # Custom Variables
@@ -542,7 +542,7 @@ class DroneEnvCust_v2(DroneEnvCust_v1):
         self.obstacles.append(np.array([10, -75, 0, 35, -48, 15])) # Obs 11
         self.obstacles.append(np.array([40, -125, 0, 65, -100, 15])) # Obs 12
         
-        waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\Python Scripts\\Reinforcement Learning\\Custom\\Gym_RLlib\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
+        waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\DRL-Multi-Drone-Navigation\\UAVNavigation\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
         self.rand_waypt_choices = pickle.load(open(waypoint_root, "rb"))
 
         # Gym Variables

@@ -58,79 +58,39 @@ def get_env_config(*args, **kwargs):
     # Register Custom Environments
 
     register(
-        id="drone-env-cust-v1",
-        entry_point="gym_drone.envs:DroneEnvCust_v1",
+        id="drone-env-disc-cust",
+        entry_point="gym_drone.envs:DroneEnvCust_Disc",
         kwargs={"env_config": env_config},
-        max_episode_steps=max_steps
     )
-    register_env("drone-env-cust-v1", lambda config: TimeLimit(DroneEnvCust_v1(env_config=config), max_episode_steps=max_steps))
-    env_ids.append("drone-env-cust-v1")
+    register_env("drone-env-disc-cust", lambda config: TimeLimit(DroneEnvCust_Disc(env_config=config), max_episode_steps=max_steps))
+    env_ids.append("drone-env-disc-cust")
 
     register(
-        id="drone-env-cust-v2",
-        entry_point="gym_drone.envs:DroneEnvCust_v2",
+        id="drone-env-cont-cust",
+        entry_point="gym_drone.envs:DroneEnvCust_Cont",
         kwargs={"env_config": env_config},
-        max_episode_steps=max_steps
     )
-    register_env("drone-env-cust-v2", lambda config: TimeLimit(DroneEnvCust_v2(env_config=config), max_episode_steps=max_steps))
-    env_ids.append("drone-env-cust-v2")
+    register_env("drone-env-cont-cust", lambda config: TimeLimit(DroneEnvCust_Cont(env_config=config), max_episode_steps=max_steps))
+    env_ids.append("drone-env-cont-cust")
 
     # Register Discrete Environments
 
     register(
-        id="drone-env-disc-v1",
-        entry_point="gym_drone.envs:DroneEnvDisc_v1",
+        id="drone-env-disc-airsim",
+        entry_point="gym_drone.envs:DroneEnvDisc",
         kwargs={"env_config": env_config},
-        max_episode_steps=max_steps
     )
-    register_env("drone-env-disc-v1", lambda config: TimeLimit(DroneEnvDisc_v1(env_config=config), max_episode_steps=max_steps))
-    env_ids.append("drone-env-disc-v1")
-
-    register(
-        id="drone-env-disc-v2",
-        entry_point="gym_drone.envs:DroneEnvDisc_v2",
-        kwargs={"env_config": env_config},
-        max_episode_steps=max_steps
-    )
-    register_env("drone-env-disc-v2", lambda config: TimeLimit(DroneEnvDisc_v2(env_config=config), max_episode_steps=max_steps))
-    env_ids.append("drone-env-disc-v2")
-
-    register(
-        id="drone-env-disc-v3",
-        entry_point="gym_drone.envs:DroneEnvDisc_v3",
-        kwargs={"env_config": env_config},
-        max_episode_steps=max_steps
-    )
-    register_env("drone-env-disc-v3", lambda config: TimeLimit(DroneEnvDisc_v3(env_config=config), max_episode_steps=max_steps))
-    env_ids.append("drone-env-disc-v3")
-
-    register(
-        id="drone-env-disc-v4",
-        entry_point="gym_drone.envs:DroneEnvDisc_v4",
-        kwargs={"env_config": env_config},
-        max_episode_steps=max_steps
-    )
-    register_env("drone-env-disc-v4", lambda config: TimeLimit(DroneEnvDisc_v4(env_config=config), max_episode_steps=max_steps))
-    env_ids.append("drone-env-disc-v4")
+    register_env("drone-env-disc-airsim", lambda config: DroneEnvDisc(env_config=config))
+    env_ids.append("drone-env-disc-airsim")
 
     # Register Continuous Environments
 
     register(
-        id="drone-env-cont-v1",
-        entry_point="gym_drone.envs:DroneEnvCont_v1",
+        id="drone-env-cont-airsim",
+        entry_point="gym_drone.envs:DroneEnvCont",
         kwargs={"env_config": env_config},
-        max_episode_steps=max_steps
     )
-    register_env("drone-env-cont-v1", lambda config: TimeLimit(DroneEnvCont_v1(env_config=config), max_episode_steps=max_steps))
-    env_ids.append("drone-env-cont-v1")
-
-    register(
-        id="drone-env-cont-v2",
-        entry_point="gym_drone.envs:DroneEnvCont_v2",
-        kwargs={"env_config": env_config},
-        max_episode_steps=max_steps
-    )
-    register_env("drone-env-cont-v2", lambda config: TimeLimit(DroneEnvCont_v2(env_config=config), max_episode_steps=max_steps))
-    env_ids.append("drone-env-cont-v2")
+    register_env("drone-env-cont-airsim", lambda config: TimeLimit(DroneEnvCont(env_config=config), max_episode_steps=max_steps))
+    env_ids.append("drone-env-cont-airsim")
 
     return env_config, env_ids

@@ -3,8 +3,8 @@ from gymnasium import Env
 from ray.rllib.algorithms.algorithm import Algorithm
 from ray.rllib.policy import Policy
 
-def compute_single_episode(env: Env, model: Union[Algorithm, Policy]):
-    # obs, info = env.reset()
+def compute_single_episode(env: Env, model: Union[Algorithm, Policy], initial_obs):
+    obs = initial_obs
     done = False
     success: bool = False
     total_reward: float = 0.0

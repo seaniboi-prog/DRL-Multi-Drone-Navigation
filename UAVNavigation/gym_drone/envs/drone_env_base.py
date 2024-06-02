@@ -60,7 +60,7 @@ class DroneEnv_Base(gym.Env):
         self.observation_list = []
         self.route = []
         
-        waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\Python Scripts\\Reinforcement Learning\\Custom\\Gym_RLlib\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
+        waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\DRL-Multi-Drone-Navigation\\UAVNavigation\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
         self.rand_waypt_choices = pickle.load(open(waypoint_root, "rb"))
         
         # Starting Simulation API

@@ -175,12 +175,11 @@ def get_hyperparam_mutations(algo_name: str, batch_size: int) -> dict:
         raise ValueError("Invalid algorithm name: {}".format(algo_name))
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-t", "--type", help="type of environment to train on", default="disc", choices=["cont", "disc", "cust"])
-parser.add_argument("-e", "--env", type=str, help="the environment version to train on (e.g. v1)")
+parser.add_argument("-t", "--type", help="type of environment to train on", default="disc", choices=["cont", "disc"])
+parser.add_argument("-c", "--custom", help="use the custom variant of the environment", action="store_true")
 parser.add_argument("-a", "--algo", type=str, help="the algorithm to use for training", default="ppo",
                     choices=["ppo", "a2c", "a3c", "dqn", "td3", "ddpg", "sac", "impala", "marwil"])
 parser.add_argument("-i", "--iter", type=int, help="the number of iterations to train for", default=20)
-parser.add_argument("-l", "--transfer", help="transfer learning mode", action="store_true")
 parser.add_argument("-m", "--momentum", help="use momentum in the environment", action="store_true")
 parser.add_argument("-b", "--batch", type=int, help="the batch size to use for training", default=2048)
 parser.add_argument("-p", "--parallel", type=int, help="the number of parallel trials to tune at a time", default=4, choices=[1, 2, 4, 8])
@@ -195,12 +194,11 @@ parser.add_argument("--max-steps", type=int, help="the maximum number of steps t
 
 args = parser.parse_args()
 
-env_no: str = f"en{args.env}"
 env_type: str = args.type
 env_type_long: str = get_long_env_type(env_type)
+env_var: str = "cust" if args.custom else "airsim"
 algo_name: str = args.algo
 iters: int = args.iter
-transfer_learning: bool = args.transfer
 momentum: bool = args.momentum
 batch_size: int = args.batch
 parallel_trials: int = args.parallel
@@ -225,14 +223,14 @@ ray.shutdown()
 ray.init()
 
 # init directory in which to save checkpoints
-tune_root = f"tune/{algo_name}/{env_type}/{env_no}/{waypoint_str}"
+tune_root = f"tune/{algo_name}/{env_type}/{env_var}/{waypoint_str}"
 tune_result_root = os.path.join(tune_root, "tune_results")
 cwd = os.getcwd()
 tune_log_dir = os.path.join(cwd, tune_result_root)
 
 # register the custom environment
 print("Registering custom environment...")
-select_env = f"drone-env-{env_type}-{args.env}"
+select_env = f"drone-env-{env_type}-{env_var}"
 
 if select_env not in env_ids:
     raise ValueError("Invalid environment name: {}".format(select_env))
@@ -240,21 +238,11 @@ if select_env not in env_ids:
 print("Using environment: {}".format(select_env))
 
 def train_env_algo(config):
-        global algo_name, iters, select_env, env_config, transfer_learning, waypoint_str, allow_notif, cwd
+        global algo_name, iters, select_env, env_config, waypoint_str, allow_notif, cwd
         
         config = get_tune_config(algo_name, config, select_env, env_config)
 
         algo = config.build()
-        
-        if transfer_learning:
-            print("Transfer Learning Mode: Loading Pretrained Model...")
-            trained_env = get_cust_counterpart(select_env)
-            pretrained_chkpt_root = f"training/{algo_name}/cust/{trained_env}/{waypoint_str}/best_root"
-            pretrained_algo = Algorithm.from_checkpoint(os.path.join(cwd, pretrained_chkpt_root))
-            
-            pretrained_weights = pretrained_algo.get_weights()
-            
-            algo.set_weights(pretrained_weights)
             
         for _ in tqdm(range(iters), desc="Training ..."):
             result = algo.train()
@@ -313,7 +301,7 @@ else:
         ),
         param_space=hyperparam_mutations,
         run_config=air.RunConfig(
-            name=f"tune_{algo_name}_{env_type}_{env_no}_{waypoint_str}",
+            name=f"tune_{algo_name}_{env_type}_{env_var}_{waypoint_str}",
             # stop=stopping_criteria,
             storage_path=tune_log_dir,
             verbose=2,
@@ -325,7 +313,7 @@ else:
     )
 
 if allow_notif:
-    send_notification("Tuning has Started.", f"Tuning {cap_first(env_type)} {env_no} {waypoint_str} with {algo_name}")
+    send_notification("Tuning has Started.", f"Tuning {cap_first(env_type)} {env_var} {waypoint_str} with {algo_name}")
 
 analysis = tuner.fit()
 
@@ -371,7 +359,7 @@ if update_best_config:
 save_dict_to_json(results_config, best_config_path)
 
 if allow_notif:
-    msg_1 = f"Tuning {cap_first(env_type)} {env_no} {waypoint_str} with {algo_name} has Finished"
+    msg_1 = f"Tuning {cap_first(env_type)} {env_var} {waypoint_str} with {algo_name} has Finished"
     msg_2 = f"Best average reward: {best_result.metrics['episode_reward_mean']}"
     msg_3 = "Best hyperparameters:"
     msg_4 = ', '.join([f"{key}: {value}" for key, value in best_result.config.items()])

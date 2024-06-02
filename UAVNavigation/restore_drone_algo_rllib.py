@@ -29,8 +29,8 @@ import argparse
 import traceback
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-t", "--type", help="type of environment to train on", default="disc", choices=["cont", "disc", "cust"])
-parser.add_argument("-e", "--env", type=str, help="the environment version to train on (e.g. v1)", default="v2")
+parser.add_argument("-t", "--type", help="type of environment to train on", default="disc", choices=["cont", "disc"])
+parser.add_argument("-c", "--custom", help="use the custom variant of the environment", action="store_true")
 parser.add_argument("-a", "--algo", type=str, help="the algorithm to use for training", default="ppo",
                     choices=["ppo", "a2c", "a3c", "dqn", "td3", "ddpg", "sac", "impala", "marwil"])
 parser.add_argument("-i", "--iter", type=int, help="the number of iterations to train for", default=10)
@@ -42,16 +42,12 @@ parser.add_argument("--best", help="restore best recorded checkpoint so far", ac
 parser.add_argument("--no-notif", help="disable sending notifications", action="store_true")
 args = parser.parse_args()
 
-# Check for missing required arguments
-if args.env is None:
-    raise ValueError("Missing required argument: --env (or -e)")
-
 # Use the Algorithm's `from_checkpoint` utility to get a new algo instance
 # that has the exact same state as the old one, from which the checkpoint was
 # created in the first place:
-env_no: str = f"en{args.env}"
 env_type: str = args.type
 env_type_long: str = get_long_env_type(env_type)
+env_var: str = "cust" if args.custom else "airsim"
 algorithm: str = args.algo
 best_restore: bool = args.best
 allow_notif: bool = not args.no_notif
@@ -69,11 +65,11 @@ waypoint_cap = " ".join([cap_first(word) for word in waypoint_list])
     
 env_config, env_ids = gym_drone.get_env_config(verbose=verbose, random_waypts=rand_waypoints, waypoint_type=waypoint_list[1])
 
-chkpt_root = f"training/{algorithm}/{env_type}/{env_no}/{waypoint_str}/save_root"
-best_root = f"training/{algorithm}/{env_type}/{env_no}/{waypoint_str}/best_root"
-best_avg_pkl = f"training/{algorithm}/{env_type}/{env_no}/{waypoint_str}/best_avg_reward.pkl"
-model_root = f"models/{algorithm}/{env_type}/{env_no}/{waypoint_str}"
-print("Restoring Training on {} environment {} with {} waypoints using {} algorithm for {} iterations".format(env_type_long, env_no, waypoint_cap, algorithm.upper(), args.iter))
+chkpt_root = f"training/{algorithm}/{env_type}/{env_var}/{waypoint_str}/save_root"
+best_root = f"training/{algorithm}/{env_type}/{env_var}/{waypoint_str}/best_root"
+best_avg_pkl = f"training/{algorithm}/{env_type}/{env_var}/{waypoint_str}/best_avg_reward.pkl"
+model_root = f"models/{algorithm}/{env_type}/{env_var}/{waypoint_str}"
+print("Restoring Training on {} environment {} with {} waypoints using {} algorithm for {} iterations".format(env_type_long, env_var, waypoint_cap, algorithm.upper(), args.iter))
 
 print("Initialising ray...")
 ray.init(local_mode=True)
@@ -83,7 +79,7 @@ torch, nn = try_import_torch()
 
 # register the custom environment
 print("Registering custom environment...")
-select_env = f"drone-env-{env_type}-{args.env}"
+select_env = f"drone-env-{env_type}-{env_var}"
 
 if select_env not in env_ids:
     raise ValueError("Invalid environment name: {}".format(select_env))
@@ -95,7 +91,7 @@ if best_restore:
 else:
     restored_algo = Algorithm.from_checkpoint(chkpt_root)
 
-reward_root = f"rewards/{algorithm}/{env_type}/{env_no}/{waypoint_str}/rewards.pkl"
+reward_root = f"rewards/{algorithm}/{env_type}/{env_var}/{waypoint_str}/rewards.pkl"
 all_episode_rewards = Rewards()
 all_episode_rewards.restore_rewards(reward_root)
 train_episode_count = all_episode_rewards.get_train_rewards()[2][-1]
@@ -107,8 +103,8 @@ training_durations = []
 print("Starting training...")
 if allow_notif:
     send_notification("Training Started", "Started Training using {} in {} {} with {} waypoints"
-                    .format(algorithm.upper(), cap_first(env_type), env_no, waypoint_cap))
-    # send_message("Started Training using {} in {} {}".format(algorithm.upper(), cap_first(env_type), env_no))
+                    .format(algorithm.upper(), cap_first(env_type), cap_first(env_var), waypoint_cap))
+    # send_message("Started Training using {} in {} {}".format(algorithm.upper(), cap_first(env_type), env_var))
 
 total_iters: int = args.iter
 i = 0
@@ -169,12 +165,12 @@ while i < total_iters:
             print("New Best Reward: {:.2f}".format(reward_info["avg_reward"]))
         
         # Plot Training Rewards
-        train_plot = plot_episode_reward(all_episode_rewards, algorithm, env_no, env_type, "train", waypoint_str, display=False)
+        train_plot = plot_episode_reward(all_episode_rewards, algorithm, env_var, env_type, "train", waypoint_str, display=False)
         
         if allow_notif:
             # Send Training Notification
             notif_title = "Training Iteration {} Finished".format(result["training_iteration"])
-            notif_msg1 = "Finished Training using {} in {} {} with {} waypoints at {} hr/s {} min/s {:.2f} sec/s".format(algorithm.upper(), cap_first(env_type), cap_first(env_no), waypoint_cap, hrs, mins, secs)
+            notif_msg1 = "Finished Training using {} in {} {} with {} waypoints at {} hr/s {} min/s {:.2f} sec/s".format(algorithm.upper(), cap_first(env_type), cap_first(env_var), waypoint_cap, hrs, mins, secs)
             notif_msg2 = "Average reward of {:.2f} with a range between {:.2f} and {:.2f}".format(reward_info["avg_reward"], reward_info["min_reward"], reward_info["max_reward"])
             notif_msg3 = "Average episode length of {:.2f} with a range between {} and {}".format(length_info["avg_length"], length_info["min_length"], length_info["max_length"])
 
@@ -191,7 +187,7 @@ while i < total_iters:
         all_episode_rewards.extend_eval_reward(eval_rewards, average_list(eval_rewards), eval_episode_count)
         
         # Plot Evaluation Rewards
-        eval_plot = plot_episode_reward(all_episode_rewards, algorithm, env_no, env_type, "eval", waypoint_str, display=False)
+        eval_plot = plot_episode_reward(all_episode_rewards, algorithm, env_var, env_type, "eval", waypoint_str, display=False)
         
         # Send Evaluation Notification
         if allow_notif:
@@ -208,7 +204,7 @@ while i < total_iters:
         if allow_notif:
             # Push the results to the git repository
             git_push("Training Iteration {} Finished using {} in {} {} with {} waypoints"
-                    .format(result["training_iteration"], algorithm.upper(), cap_first(env_type), cap_first(env_no), waypoint_cap),
+                    .format(result["training_iteration"], algorithm.upper(), cap_first(env_type), cap_first(env_var), waypoint_cap),
                     pull=True)
         
         # Print the result
@@ -255,7 +251,7 @@ restored_algo.stop()
 print("shutting down ray...")
 ray.shutdown()
 
-print("Finished Restoring Training on {} environment {} using {} algorithm".format(env_type_long, env_no, algorithm.upper()))
+print("Finished Restoring Training on {} environment {} using {} algorithm".format(env_type_long, env_var, algorithm.upper()))
 
 hrs, mins, secs = get_elapsed_time(average_list(training_durations))
 print("Average Training Duration: {} hr/s {} min/s {:.2f} sec/s".format(hrs, mins, secs))
