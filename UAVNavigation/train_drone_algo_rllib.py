@@ -107,7 +107,7 @@ print("Using environment: {}".format(select_env))
 
 if tuned_params:
     print("Using tuned hyperparameters...")
-    tune_root = f"tune/{algo_name}/{env_type}/{env_var}/{waypoint_str}/best_result_config.json"
+    tune_root = f"tune/{algo_name}/{env_type}/cust/{waypoint_str}/best_result_config.json"
     try:
         tune_config = load_dict_from_json(tune_root)
         tune_params = tune_config["best_params"]
