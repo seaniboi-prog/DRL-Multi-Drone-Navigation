@@ -123,6 +123,7 @@ class Network:
     def get_paths(self) -> 'list[Path]':
         return self.paths
     
+    # FIXME: Fix this to not include the start node
     def get_paths_list(self) -> 'list[list[np.ndarray]]':
         paths_list = []
         for path in self.paths:

@@ -10,6 +10,7 @@ import pprint
 import copy
 import pickle
 import random
+import time
 import os
 
 from typing import Union
@@ -62,10 +63,14 @@ class DroneEnvCust_Disc(gym.Env):
         self.timestep = 0
         self.curr_pos = np.array([0.0, 0.0, 3.0])
         self.curr_orient = 0
+        self.start_time = time.time()
         self.route = []
         self.x_range = [-200, 200]
         self.y_range = [-200, 200]
         self.z_range = [0, 20]
+
+        if env_config.get("end_at_start", False):
+            self.waypoints.append(self._get_position())
         
         # Obstacles [x_min, y_min, z_min, x_max, y_max, z_max]
         self.obstacles = []
@@ -113,12 +118,19 @@ class DroneEnvCust_Disc(gym.Env):
         self.route = [copy.deepcopy(self.curr_pos)]
         self.curr_orient = 0
         self.state = dict()
+        self.start_time = time.time()
                 
         self.state["position"] = self.curr_pos
         self.last_dist = self._get_distance(self.curr_pos, self.waypoints[self.waypt_idx])
         self._update_state()
 
         return self._get_obs(), self.state
+    
+    def _get_route(self):
+        return np.array(self.route)
+    
+    def _get_path_dist(self) -> float:
+        return float(np.sum([abs(np.linalg.norm(self.route[i] - self.route[i+1])) for i in range(len(self.route) - 1)]))
     
     def _normalize_angle(self, angle, deg=True, reverse=False):
         if reverse:
@@ -151,6 +163,9 @@ class DroneEnvCust_Disc(gym.Env):
         self.state["position"] = self.curr_pos
         self.state["orientation"] = self.curr_orient
         self.state["progress"] = self.waypt_idx / len(self.waypoints)
+        self.state["route"] = self.route
+        self.state["distance_travelled"] = self._get_path_dist()
+        self.state["time_elapsed"] = time.time() - self.start_time
         self.state['solved'] = False
 
     def _get_yaw(self, deg) -> float:
@@ -298,7 +313,10 @@ class DroneEnvCust_Disc(gym.Env):
         
         self.route.append(copy.deepcopy(self.curr_pos))
         
-        truncated = self.timestep >= self.max_steps
+        if self.max_steps is not None:
+            truncated = self.timestep >= self.max_steps
+        else:
+            truncated = False
         self.timestep += 1
         
         reward, terminated = self._determine_reward()
@@ -522,6 +540,10 @@ class DroneEnvCust_Cont(DroneEnvCust_Disc):
         self.curr_pos = np.array([0.0, 0.0, 3.0])
         self.curr_orient = 0
         self.route = []
+        self.start_time = time.time()
+
+        if env_config.get("end_at_start", False):
+            self.waypoints.append(self._get_position())
 
         self.x_range = [-200, 200]
         self.y_range = [-200, 200]

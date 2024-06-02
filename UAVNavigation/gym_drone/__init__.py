@@ -62,7 +62,7 @@ def get_env_config(*args, **kwargs):
         entry_point="gym_drone.envs:DroneEnvCust_Disc",
         kwargs={"env_config": env_config},
     )
-    register_env("drone-env-disc-cust", lambda config: TimeLimit(DroneEnvCust_Disc(env_config=config), max_episode_steps=max_steps))
+    register_env("drone-env-disc-cust", lambda config: DroneEnvCust_Disc(env_config=config))
     env_ids.append("drone-env-disc-cust")
 
     register(
@@ -70,7 +70,7 @@ def get_env_config(*args, **kwargs):
         entry_point="gym_drone.envs:DroneEnvCust_Cont",
         kwargs={"env_config": env_config},
     )
-    register_env("drone-env-cont-cust", lambda config: TimeLimit(DroneEnvCust_Cont(env_config=config), max_episode_steps=max_steps))
+    register_env("drone-env-cont-cust", lambda config: DroneEnvCust_Cont(env_config=config))
     env_ids.append("drone-env-cont-cust")
 
     # Register Discrete Environments
@@ -90,7 +90,7 @@ def get_env_config(*args, **kwargs):
         entry_point="gym_drone.envs:DroneEnvCont",
         kwargs={"env_config": env_config},
     )
-    register_env("drone-env-cont-airsim", lambda config: TimeLimit(DroneEnvCont(env_config=config), max_episode_steps=max_steps))
+    register_env("drone-env-cont-airsim", lambda config: DroneEnvCont(env_config=config))
     env_ids.append("drone-env-cont-airsim")
 
     return env_config, env_ids

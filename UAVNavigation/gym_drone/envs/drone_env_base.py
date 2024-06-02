@@ -51,11 +51,15 @@ class DroneEnv_Base(gym.Env):
         self.render_mode = env_config.get("render_mode", None)
         self.drone_name = env_config.get("drone_name", "Drone1")
         
+        if env_config.get("end_at_start", False):
+            self.waypoints.append(self._get_position())
+        
         self.reward_range = (self.REWARD_CRASH, self.REWARD_GOAL)
         self.episode_count = 0
         self.timestep = 0
         self.totalsteps = 0
         self.waypt_idx = 0
+        self.start_time = time.time()
         self.camera = self.DEFAULT_CAM
         self.observation_list = []
         self.route = []
@@ -80,9 +84,13 @@ class DroneEnv_Base(gym.Env):
         self.waypt_idx = 0
         self.timestep = 0
         self.away_count = 0
+        self.start_time = time.time()
         self.state = dict()
         
-        self._prepare_takeoff()
+        if "_reset" in options:
+            self._prepare_takeoff(reset=options["_reset"])
+        else:
+            self._prepare_takeoff()
         
         time.sleep(self.SLEEP_TIME)
         curr_pos = self._get_position()
@@ -94,8 +102,9 @@ class DroneEnv_Base(gym.Env):
 
         return self._get_obs(), self.state
     
-    def _prepare_takeoff(self):
-        self.drone.reset()
+    def _prepare_takeoff(self, reset=True):
+        if reset:
+            self.drone.reset()
         self.drone.enableApiControl(True, vehicle_name=self.drone_name)
         self.drone.armDisarm(True, vehicle_name=self.drone_name)
         self.drone.takeoffAsync(vehicle_name=self.drone_name).join()
@@ -133,6 +142,9 @@ class DroneEnv_Base(gym.Env):
         self.state["orientation"] = self._get_attitude(deg=True)
         self.state["collision"] = self._drone_collision(False)
         self.state["progress"] = self.waypt_idx / len(self.waypoints)
+        self.state["route"] = self.route
+        self.state["distance_travelled"] = self._get_path_dist()
+        self.state["time_elapsed"] = time.time() - self.start_time
         self.state["solved"] = False
         
     def _normalize_obs(self, obs: np.ndarray, d_min: int, d_max: int, cust_min: int, cust_max: int) -> np.ndarray:
@@ -260,7 +272,10 @@ class DroneEnv_Base(gym.Env):
         self.state["action"] = action
         obs = self._get_obs()
         
-        truncated = self.timestep >= self.max_steps
+        if self.max_steps is not None:
+            truncated = self.timestep >= self.max_steps
+        else:
+            truncated = False
         self.timestep += 1
         self.totalsteps += 1
         
