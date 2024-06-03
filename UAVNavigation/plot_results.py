@@ -10,7 +10,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 def plot_episode_reward(rewards: Rewards, algo_name: str, env_name: str, env_type: str, reward_type: str, waypoint_type: str, display: bool, x_range: Union[list,None] = None, save_dir: str = 'plots'):
     
     save_file = f'{save_dir}/{reward_type}/reward_{reward_type}_plot_{env_type}_{env_name}_{algo_name}_{waypoint_type}.png'
-    # os.makedirs(os.path.dirname(save_file), exist_ok=True)
+    os.makedirs(os.path.dirname(save_file), exist_ok=True)
 
     if reward_type == 'train':
         all_rewards, avg_rewards, avg_idxs = rewards.get_train_rewards()

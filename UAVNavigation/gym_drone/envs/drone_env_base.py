@@ -44,8 +44,11 @@ class DroneEnv_Base(gym.Env):
         self.image_shape = env_config.get("image_shape", (84, 84, 1))
         self.image_type = env_config.get("image_type", ImageType.DepthPerspective)
         self.random_waypts = env_config.get("random_waypts", 0)
+        self.end_at_start = env_config.get("end_at_start", False)
         if self.random_waypts == 0:
-            self.waypoints = env_config["waypoints"]
+            self.waypoints: list = env_config["waypoints"]
+            if self.end_at_start:
+                self.waypoints.append(self._get_position())
             self.goal_idx = len(self.waypoints) - 1
         self.away_limit = env_config.get("away_limit", 50)
         self.verbose = env_config.get("verbose", False)
@@ -53,11 +56,6 @@ class DroneEnv_Base(gym.Env):
         self.momentum = env_config.get("momentum", True)
         self.render_mode = env_config.get("render_mode", None)
         self.drone_name = env_config.get("drone_name", "Drone1")
-        self.end_at_start = env_config.get("end_at_start", False)
-        
-        if self.end_at_start:
-            self.waypoints.append(self._get_position())
-            self.goal_idx = len(self.waypoints) - 1
         
         self.reward_range = (self.REWARD_CRASH, self.REWARD_GOAL)
         self.episode_count = 0
@@ -97,7 +95,7 @@ class DroneEnv_Base(gym.Env):
         self.start_time = time.time()
         self.state = dict()
         
-        if "_reset" in options:
+        if options is not None and "_reset" in options:
             self._prepare_takeoff(reset=options["_reset"])
         else:
             self._prepare_takeoff()

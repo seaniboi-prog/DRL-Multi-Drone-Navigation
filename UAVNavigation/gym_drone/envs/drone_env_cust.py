@@ -53,16 +53,14 @@ class DroneEnvCust_Disc(gym.Env):
         # Custom Variables
         self.max_steps = env_config.get("max_steps", 200)
         self.random_waypts = env_config.get("random_waypts", 0)
+        self.end_at_start = env_config.get("end_at_start", False)
         if self.random_waypts == 0:
-            self.waypoints = env_config["waypoints"]
+            self.waypoints: list = env_config["waypoints"]
+            if self.end_at_start:
+                self.waypoints.append(copy.copy(self.curr_pos))
             self.goal_idx = len(self.waypoints) - 1
         self.verbose = env_config.get("verbose", False)
         self.render_mode = env_config.get("render_mode", None)
-        self.end_at_start = env_config.get("end_at_start", False)
-        
-        if self.end_at_start:
-            self.waypoints.append(copy.copy(self.curr_pos))
-            self.goal_idx = len(self.waypoints) - 1
         
         self.reward_range = (self.REWARD_CRASH, self.REWARD_GOAL)
         self.episode_count = 0
@@ -537,8 +535,11 @@ class DroneEnvCust_Cont(DroneEnvCust_Disc):
         # Custom Variables
         self.max_steps = env_config.get("max_steps", 200)
         self.random_waypts = env_config.get("random_waypts", 0)
+        self.end_at_start = env_config.get("end_at_start", False)
         if self.random_waypts == 0:
             self.waypoints = env_config["waypoints"]
+            if self.end_at_start:
+                self.waypoints.append(copy.copy(self.curr_pos))
             self.goal_idx = len(self.waypoints) - 1
         self.verbose = env_config.get("verbose", False)
         self.render_mode = env_config.get("render_mode", None)
