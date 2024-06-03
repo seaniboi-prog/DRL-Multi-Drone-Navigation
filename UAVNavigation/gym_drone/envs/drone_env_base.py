@@ -50,9 +50,11 @@ class DroneEnv_Base(gym.Env):
         self.momentum = env_config.get("momentum", True)
         self.render_mode = env_config.get("render_mode", None)
         self.drone_name = env_config.get("drone_name", "Drone1")
+        self.end_at_start = env_config.get("end_at_start", False)
         
-        if env_config.get("end_at_start", False):
+        if self.end_at_start:
             self.waypoints.append(self._get_position())
+            self.goal_idx = len(self.waypoints) - 1
         
         self.reward_range = (self.REWARD_CRASH, self.REWARD_GOAL)
         self.episode_count = 0
@@ -80,7 +82,12 @@ class DroneEnv_Base(gym.Env):
         if self.random_waypts > 0:
             # self.waypoints = get_random_coors([5, 10], [15, 45], z_range=[3., 15.], count=self.episode_count, num_coors=self.random_waypts, env_variant="blocks")
             self.waypoints = random.sample(self.rand_waypt_choices, self.random_waypts)
+            
+            if self.end_at_start:
+                self.waypoints.append(self._get_position())
+            
             self.goal_idx = len(self.waypoints) - 1
+                
         self.waypt_idx = 0
         self.timestep = 0
         self.away_count = 0

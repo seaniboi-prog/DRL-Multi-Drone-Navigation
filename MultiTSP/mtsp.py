@@ -31,6 +31,7 @@ hill_mtsp_solver.solve(EPOCHS)
 
 hill_mtsp_solver.plot_progress()
 hill_mtsp_solver.plot_solution()
+hill_mtsp_solver.print_paths()
 
 # GA Constants
 POPULATION_SIZE = 100
@@ -46,6 +47,7 @@ ga_mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZ
 
 ga_mtsp_solver.plot_progress()
 ga_mtsp_solver.plot_solution()
+ga_mtsp_solver.print_paths()
 
 # ACO Constants
 RHO = 0.03
@@ -62,26 +64,28 @@ aco_mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, False)
 
 aco_mtsp_solver.plot_progress()
 aco_mtsp_solver.plot_solution()
+aco_mtsp_solver.print_paths()
 
 # CVXPY Constants
-cvxpy_mtsp_solver = CVXPYMultiTSP(num_drones, nodes, labels)
+# cvxpy_mtsp_solver = CVXPYMultiTSP(num_drones, nodes, labels)
 
-cvxpy_mtsp_solver.solve(verbose=False)
+# cvxpy_mtsp_solver.solve(verbose=False)
 
-cvxpy_mtsp_solver.plot_solution()
+# cvxpy_mtsp_solver.plot_solution()
+# cvxpy_mtsp_solver.print_paths()
 
 # Compare final distances
-print("Final Distances")
+print("\nFinal Distances")
 print(f"HillClimb: {round(hill_mtsp_solver.get_total_distance(), 2)}")
 print(f"GA: {round(ga_mtsp_solver.get_total_distance(), 2)}")
 print(f"ACO: {round(aco_mtsp_solver.get_total_distance(), 2)}")
-print(f"CVXPY: {round(cvxpy_mtsp_solver.get_total_distance(), 2)}")
+# print(f"CVXPY: {round(cvxpy_mtsp_solver.get_total_distance(), 2)}")
 
 print("\nFinal Scores")
 print(f"HillClimb: {round(hill_mtsp_solver.get_score(), 2)}")
 print(f"GA: {round(ga_mtsp_solver.get_score(), 2)}")
 print(f"ACO: {round(aco_mtsp_solver.get_score(), 2)}")
-print(f"CVXPY: {round(cvxpy_mtsp_solver.get_score(), 2)}")
+# print(f"CVXPY: {round(cvxpy_mtsp_solver.get_score(), 2)}")
 
 
 fig, axs = plt.subplots(2, 2, figsize=(14, 10))
@@ -89,7 +93,7 @@ fig, axs = plt.subplots(2, 2, figsize=(14, 10))
 hill_mtsp_solver.plot_sub_solution(axs, (0,0), "HillClimb Solution")
 ga_mtsp_solver.plot_sub_solution(axs, (0,1), "GA Solution")
 aco_mtsp_solver.plot_sub_solution(axs, (1,0), "ACO Solution")
-cvxpy_mtsp_solver.plot_sub_solution(axs, (1,1), "CVXPY Solution")
+# cvxpy_mtsp_solver.plot_sub_solution(axs, (1,1), "CVXPY Solution")
 
 plt.suptitle("Comparing MultiTSP Solutions")
 

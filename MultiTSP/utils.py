@@ -33,7 +33,7 @@ class Node:
     def get_array(self) -> np.ndarray:
         return np.array([self.x, self.y, self.z])
     
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return f"({round(self.x,2)}, {round(self.y,2)}, {round(self.z,2)})"
     
     def dist_from(self, other: 'Node') -> float:
@@ -70,8 +70,8 @@ class Path:
     def get_time(self, speed: float) -> float:
         return self.get_distance() / speed
     
-    def __repr__(self) -> str:
-        return " -> ".join([str(node.label) for node in self.route])
+    def __str__(self) -> str:
+        return " -> ".join([f"{str(node.label)} {node}" for node in self.route])
 
 class Network:
     def __init__(self, drones: int, nodes, labels=None):
@@ -123,11 +123,13 @@ class Network:
     def get_paths(self) -> 'list[Path]':
         return self.paths
     
-    # FIXME: Fix this to not include the start node
-    def get_paths_list(self) -> 'list[list[np.ndarray]]':
+    def get_paths_list(self, includeStart=True) -> 'list[list[np.ndarray]]':
         paths_list = []
         for path in self.paths:
-            paths_list.append([node.get_array() for node in path.get_path()])
+            if includeStart:
+                paths_list.append([node.get_array() for node in path.get_path()])
+            else:
+                paths_list.append([node.get_array() for node in path.get_path()[1:]])
         return paths_list
 
     def set_path(self, idx: int, path: Path) -> None:
@@ -301,6 +303,9 @@ class AlgoMultiTSP(ABC):
         
     def plot_sub_solution(self, axs, index: tuple, title: str) -> None:
         self.network.plot_sub_paths(axs, index, title)
+        
+    def print_paths(self) -> None:
+        self.network.print_paths()
 
     def get_total_distance(self) -> float:
         return self.network.get_total_dist()
@@ -317,5 +322,5 @@ class AlgoMultiTSP(ABC):
     def get_paths(self) -> 'list[Path]':
         return self.network.get_paths()
     
-    def get_paths_list(self) -> 'list[list[np.ndarray]]':
-        return self.network.get_paths_list()
+    def get_paths_list(self, includeStart=True) -> 'list[list[np.ndarray]]':
+        return self.network.get_paths_list(includeStart)

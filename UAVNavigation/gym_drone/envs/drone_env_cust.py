@@ -58,6 +58,12 @@ class DroneEnvCust_Disc(gym.Env):
             self.goal_idx = len(self.waypoints) - 1
         self.verbose = env_config.get("verbose", False)
         self.render_mode = env_config.get("render_mode", None)
+        self.end_at_start = env_config.get("end_at_start", False)
+        
+        if self.end_at_start:
+            self.waypoints.append(copy.copy(self.curr_pos))
+            self.goal_idx = len(self.waypoints) - 1
+        
         self.reward_range = (self.REWARD_CRASH, self.REWARD_GOAL)
         self.episode_count = 0
         self.timestep = 0
@@ -68,9 +74,6 @@ class DroneEnvCust_Disc(gym.Env):
         self.x_range = [-200, 200]
         self.y_range = [-200, 200]
         self.z_range = [0, 20]
-
-        if env_config.get("end_at_start", False):
-            self.waypoints.append(self._get_position())
         
         # Obstacles [x_min, y_min, z_min, x_max, y_max, z_max]
         self.obstacles = []
@@ -110,7 +113,12 @@ class DroneEnvCust_Disc(gym.Env):
             random.seed(self.episode_count)
             # self.waypoints = get_random_coors(5., 145., count=self.episode_count, num_coors=self.random_waypts)
             self.waypoints = random.sample(self.rand_waypt_choices, self.random_waypts)
+            
+            if self.end_at_start:
+                self.waypoints.append(copy.copy(self.curr_pos))
+            
             self.goal_idx = len(self.waypoints) - 1
+            
         self.waypt_idx = 0
         self.timestep = 0
         self.away_count = 0

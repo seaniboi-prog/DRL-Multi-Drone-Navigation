@@ -27,6 +27,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--mtsp_algo", type=str, help="the algorithm to use for solving the MTSP", default="ga",
                         choices=["ga", "aco", "cvxpy", "hill", "tabu"])
     parser.add_argument("-w", "--waypoint_type", type=str, help="which group of waypoints to choose")
+    parser.add_argument("-s", "--endAtStart", help="end at start", action="store_true")
 
     args = parser.parse_args()
 
@@ -78,7 +79,7 @@ if __name__ == "__main__":
     print(f"Calculated Score: {round(mtsp_solver.get_score(), 2)}")
 
     # Retrieve paths
-    mtsp_paths = mtsp_solver.get_paths_list()
+    mtsp_paths = mtsp_solver.get_paths_list(args.endAtStart)
 
     # Import DRL Model
     rl_algo = args.rl_algo
@@ -97,11 +98,11 @@ if __name__ == "__main__":
     uav_navigation_arg_sets = []
 
     for drone_id in range(no_drones):
-        # TODO: Update path so that last node is starting node of respective drone
         drone_env_config = {
             "waypoints": mtsp_paths[drone_id],
             "max_steps": None,
             "drone_name": vehicle_names[drone_id],
+            "end_at_start": args.endAtStart
         }
         drone_env_instace = getattr(airsim_envs, drone_env_classname)(env_config=drone_env_config)
 
