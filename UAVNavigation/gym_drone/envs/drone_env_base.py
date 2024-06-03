@@ -12,7 +12,10 @@ import pickle
 
 from airsim import Vector3r, ImageType
 
-from gym_drone.envs.env_utils import *
+try:
+    from gym_drone.envs.env_utils import *
+except ImportError:
+    from UAVNavigation.gym_drone.envs.env_utils import *
 
 class DroneEnv_Base(gym.Env):
     # Constants

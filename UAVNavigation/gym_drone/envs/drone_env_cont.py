@@ -7,7 +7,10 @@ import pprint
 from gymnasium import spaces
 from airsim import DrivetrainType, YawMode
 
-from gym_drone.envs.drone_env_base import DroneEnv_Base
+try:
+    from gym_drone.envs.drone_env_base import DroneEnv_Base
+except ImportError:
+    from UAVNavigation.gym_drone.envs.drone_env_base import DroneEnv_Base
 
 class DroneEnvCont(DroneEnv_Base):
     

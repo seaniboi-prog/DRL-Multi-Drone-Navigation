@@ -10,7 +10,10 @@ from enum import Enum
 from gymnasium import spaces
 from airsim import DrivetrainType, YawMode
 
-from gym_drone.envs.drone_env_base import DroneEnv_Base
+try:
+    from gym_drone.envs.drone_env_base import DroneEnv_Base
+except ImportError:
+    from UAVNavigation.gym_drone.envs.drone_env_base import DroneEnv_Base
 
 # from gymnasium.utils import seeding
     
