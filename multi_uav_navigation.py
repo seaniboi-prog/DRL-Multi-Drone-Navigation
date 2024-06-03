@@ -82,9 +82,9 @@ if __name__ == "__main__":
     mtsp_paths = mtsp_solver.get_paths_list(args.endAtStart)
 
     # Import DRL Model
-    rl_algo = args.rl_algo
-    action_type = args.action_type
-    env_variant = "cust" if args.custom else "airsim"
+    rl_algo: str = args.rl_algo
+    action_type: str = args.action_type
+    env_variant: str = "cust" if args.custom else "airsim"
     chkpt_path = os.path.join(os.getcwd(), f"UAVNavigation/training/{rl_algo}/{action_type}/{env_variant}/random_multiple/save_root")
     uav_model = Algorithm.from_checkpoint(chkpt_path)
 
