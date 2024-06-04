@@ -335,7 +335,7 @@ class DroneEnv_Base(gym.Env):
     def _determine_reward(self):
         if self._drone_collision(False):
             reward = self.REWARD_CRASH
-            self.drone.simPrintLogMessage(f"Episode {self.episode_count}: CRASHED")
+            self.drone.simPrintLogMessage(f"Episode {self.episode_count}: CRASHED", severity=2)
             terminated = True
         else:
             curr_pos = self._get_position()
@@ -345,13 +345,13 @@ class DroneEnv_Base(gym.Env):
                 # check if next waypoint is goal
                 if self.waypt_idx == self.goal_idx:
                     reward = self.REWARD_GOAL
-                    self.drone.simPrintLogMessage(f"Episode {self.episode_count}: SOLVED")
+                    self.drone.simPrintLogMessage(f"Episode {self.episode_count}: SOLVED", severity=1)
                     self.state["progress"] = 1.0
                     self.state["solved"] = True
                     terminated = True
                 else:
                     reward = self.REWARD_CKPT
-                    self.drone.simPrintLogMessage(f"Episode {self.episode_count}: CHECKPOINT {self.waypt_idx + 1}/{len(self.waypoints)} REACHED")
+                    self.drone.simPrintLogMessage(f"Episode {self.episode_count}: CHECKPOINT {self.waypt_idx + 1}/{len(self.waypoints)} REACHED", severity=3)
                     terminated = False
                     self.waypt_idx += 1
                     self.last_dist = self._get_distance(curr_pos, self.waypoints[self.waypt_idx])

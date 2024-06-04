@@ -1,8 +1,8 @@
 from git import Repo
 import os
 
-PATH_OF_GIT_REPO_PC = r'C:\\Users\\seanf\\Documents\\Workspace\\Python Scripts\\.git'  # make sure .git folder is properly configured
-PATH_OF_GIT_REPO_LAPTOP = r'C:\\Users\\seanf\\OneDrive\\Desktop\\School\\Python-Scripts\\.git'  # make sure .git folder is properly configured
+PATH_OF_GIT_REPO_PC = r'C:\\Users\\seanf\\Documents\\Workspace\\DRL-Multi-Drone-Navigation\\.git'  # make sure .git folder is properly configured
+PATH_OF_GIT_REPO_LAPTOP = r'C:\\Users\\seanf\\OneDrive\\Desktop\\School\\DRL-Multi-Drone-Navigation\\.git'  # make sure .git folder is properly configured
 
 def git_pull() -> None:
     try:
@@ -33,5 +33,6 @@ def git_push(commit_message, pull) -> None:
     except:
         print('Some error occurred while pushing the code')
 
-# git_push("Automated Commit Message")
-# git_pull()
+if __name__ == "__main__":
+    git_push("Automated Commit Message", pull=True)
+    git_pull()

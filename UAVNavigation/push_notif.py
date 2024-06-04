@@ -16,6 +16,6 @@ def send_notif_image(title, message, image_path):
         push = pb.push_file(**file_data, title=title, body=message)
         print(f"Notification sent! ID: {push['iden']}")
 
-# send_notification("Test", "This is a test message")
-
-# send_notif_image("Test", "This is a test message", "plots/train/reward_plot_disc_env2_ppo.png")
+if __name__ == "__main__":
+    send_notification("Test", "This is a test message")
+    send_notif_image("Test", "This is a test message", "plots/train/reward_train_plot_disc_cust_ppo_random_single.png")

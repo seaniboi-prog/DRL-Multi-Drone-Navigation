@@ -263,7 +263,7 @@ while i < total_iters:
 
     except KeyboardInterrupt:
         print(f"Training Iteration {(i+1)} Interrupted")
-        sys.exit(0)
+        break
 
     except RPCError as err:
         print(f"Training Iteration {(i+1)} Failed with RPCError")
