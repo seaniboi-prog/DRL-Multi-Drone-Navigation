@@ -16,7 +16,7 @@ class DroneEnvCont(DroneEnv_Base):
     
     # Methods
     def __init__(self, env_config: dict):
-        print("Drone Env Cont V1:")
+        print("Drone Env Cont V3:")
         print(pprint.pformat(env_config))
         
         # Gym Variables

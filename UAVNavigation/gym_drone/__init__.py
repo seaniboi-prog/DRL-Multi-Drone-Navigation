@@ -42,7 +42,6 @@ def get_env_config(*args, **kwargs):
     env_config = {
             "max_steps": max_steps,
             "image_shape": (84, 84, 1),
-            "away_limit": 30,
             "far_limit": 50,
             "render_mode": render_mode,
             "verbose": verbose,

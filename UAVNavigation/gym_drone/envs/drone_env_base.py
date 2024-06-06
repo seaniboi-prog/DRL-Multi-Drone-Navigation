@@ -50,9 +50,8 @@ class DroneEnv_Base(gym.Env):
             if self.end_at_start:
                 self.waypoints.append(self._get_position())
             self.goal_idx = len(self.waypoints) - 1
-        self.away_limit = env_config.get("away_limit", 50)
         self.verbose = env_config.get("verbose", False)
-        self.far_limit = env_config.get("far_limit", 100)
+        self.far_limit = env_config.get("far_limit", 50)
         self.momentum = env_config.get("momentum", True)
         self.render_mode = env_config.get("render_mode", None)
         self.drone_name = env_config.get("drone_name", "Drone1")
@@ -91,7 +90,6 @@ class DroneEnv_Base(gym.Env):
                 
         self.waypt_idx = 0
         self.timestep = 0
-        self.away_count = 0
         self.start_time = time.time()
         self.state = dict()
         
@@ -105,7 +103,6 @@ class DroneEnv_Base(gym.Env):
         self.state["position"] = curr_pos
         self.last_dist = self._get_distance(curr_pos, self.waypoints[self.waypt_idx])
         self.route = [copy.deepcopy(curr_pos)]
-        self.far_thresh = self.last_dist + self.far_limit
         self._update_state()
 
         return self._get_obs(), self.state
@@ -160,7 +157,7 @@ class DroneEnv_Base(gym.Env):
         return np.clip(norm_obs, cust_min, cust_max)
         
     def _get_relative_yaw(self, curr_pos: np.ndarray, target_pos: np.ndarray, curr_attitude: list):
-        relative_pose_x = target_pos[0]- curr_pos[0]
+        relative_pose_x = target_pos[0] - curr_pos[0]
         relative_pose_y = target_pos[1] - curr_pos[1]
         angle = math.atan2(relative_pose_y, relative_pose_x)
 
@@ -355,12 +352,7 @@ class DroneEnv_Base(gym.Env):
                     terminated = False
                     self.waypt_idx += 1
                     self.last_dist = self._get_distance(curr_pos, self.waypoints[self.waypt_idx])
-                    self.far_thresh = self.last_dist + self.far_limit
                     self.state["progress"] = self.waypt_idx / len(self.waypoints)
-                    
-            elif dist > self.far_thresh:
-                reward = self.REWARD_FAR_AWAY
-                terminated = True
             
             else:
                 reward = 0
@@ -383,17 +375,6 @@ class DroneEnv_Base(gym.Env):
                 
                 if self.verbose:
                     print(f"Distance Reward: {round(reward, 2)}")
-                
-                # if diff < 0:
-                #     self.away_count += 1
-                #     if self.away_count >= self.away_limit:
-                #         reward = self.REWARD_FAR_AWAY
-                #         terminated = True
-                # else:
-                #     self.away_count = 0
-                    
-                # if self.verbose:
-                #     print(f"Away Count: {self.away_count}")
 
                 # min_dist = self._get_min_sensor_distance()
 
