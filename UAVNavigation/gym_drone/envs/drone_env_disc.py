@@ -33,7 +33,7 @@ class DroneEnvDisc(DroneEnv_Base):
     
     # Methods
     def __init__(self, env_config: dict):
-        print("Drone Env Disc V3:")
+        print("Drone Env Disc V4:")
         print(pprint.pformat(env_config))
         
         # Gym Variables
