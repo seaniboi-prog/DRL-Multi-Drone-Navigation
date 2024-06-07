@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 from typing import Union
 
 # Global imports
+import os
 import random
 import time
 import copy
@@ -71,7 +72,7 @@ class Path:
         return self.get_distance() / speed
     
     def __str__(self) -> str:
-        return " -> ".join([f"{str(node.label)} {node}" for node in self.route])
+        return " -> ".join([node.label for node in self.route])
 
 class Network:
     def __init__(self, drones: int, nodes, labels=None):

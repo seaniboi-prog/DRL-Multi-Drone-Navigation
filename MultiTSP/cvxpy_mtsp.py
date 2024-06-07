@@ -7,7 +7,7 @@ class CVXPYMultiTSP(AlgoMultiTSP):
         super().__init__("CVXPY", drones, nodes, labels)
 
     def solve(self, verbose=False) -> None:
-        random.seed(time.time())
+        random.seed(int.from_bytes(os.urandom(8), 'big'))
 
         n = len(self.network.nodes)
         dist_matrix = self.build_distance_matrix(n)

@@ -3,6 +3,7 @@ from ga_mtsp import GAMultiTSP
 from aco_mtsp import ACOMultiTSP
 from cvxpy_mtsp import CVXPYMultiTSP
 from hill_mtsp import HillClimbMultiTSP
+from tabu_mtsp import TabuSearchMultiTSP
 
 from utils import *
 import string
@@ -23,7 +24,7 @@ network = Network(num_drones, nodes, labels)
 network.plot_network()
 
 # HillClimb Constants
-EPOCHS = 10000
+EPOCHS = 50000
 
 hill_mtsp_solver = HillClimbMultiTSP(num_drones, nodes, labels)
 
@@ -32,6 +33,7 @@ hill_mtsp_solver.solve(EPOCHS)
 hill_mtsp_solver.plot_progress()
 hill_mtsp_solver.plot_solution()
 hill_mtsp_solver.print_paths()
+print()
 
 # GA Constants
 POPULATION_SIZE = 100
@@ -48,6 +50,7 @@ ga_mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZ
 ga_mtsp_solver.plot_progress()
 ga_mtsp_solver.plot_solution()
 ga_mtsp_solver.print_paths()
+print()
 
 # ACO Constants
 RHO = 0.03
@@ -55,7 +58,7 @@ Q = 1
 ALPHA = 1
 BETA = 3
 GEN_SIZE = None
-LIMIT = 200
+LIMIT = 500
 OPT2 = 30
 
 aco_mtsp_solver = ACOMultiTSP(num_drones, nodes, labels)
@@ -65,6 +68,21 @@ aco_mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, False)
 aco_mtsp_solver.plot_progress()
 aco_mtsp_solver.plot_solution()
 aco_mtsp_solver.print_paths()
+print()
+
+# Tabu Search Constants
+MAX_TABU_SIZE = 10000
+STOPPING_TURN = 500
+NEIGHBOURHOOD_SIZE = 50
+
+tabu_mtsp_solver = TabuSearchMultiTSP(num_drones, nodes, labels)
+
+tabu_mtsp_solver.solve(NEIGHBOURHOOD_SIZE, MAX_TABU_SIZE, STOPPING_TURN)
+
+tabu_mtsp_solver.plot_progress()
+tabu_mtsp_solver.plot_solution()
+tabu_mtsp_solver.print_paths()
+print()
 
 # CVXPY Constants
 # cvxpy_mtsp_solver = CVXPYMultiTSP(num_drones, nodes, labels)
@@ -79,12 +97,14 @@ print("\nFinal Distances")
 print(f"HillClimb: {round(hill_mtsp_solver.get_total_distance(), 2)}")
 print(f"GA: {round(ga_mtsp_solver.get_total_distance(), 2)}")
 print(f"ACO: {round(aco_mtsp_solver.get_total_distance(), 2)}")
+print(f"Tabu Search: {round(tabu_mtsp_solver.get_total_distance(), 2)}")
 # print(f"CVXPY: {round(cvxpy_mtsp_solver.get_total_distance(), 2)}")
 
 print("\nFinal Scores")
 print(f"HillClimb: {round(hill_mtsp_solver.get_score(), 2)}")
 print(f"GA: {round(ga_mtsp_solver.get_score(), 2)}")
 print(f"ACO: {round(aco_mtsp_solver.get_score(), 2)}")
+print(f"Tabu Search: {round(tabu_mtsp_solver.get_score(), 2)}")
 # print(f"CVXPY: {round(cvxpy_mtsp_solver.get_score(), 2)}")
 
 
@@ -93,6 +113,7 @@ fig, axs = plt.subplots(2, 2, figsize=(14, 10))
 hill_mtsp_solver.plot_sub_solution(axs, (0,0), "HillClimb Solution")
 ga_mtsp_solver.plot_sub_solution(axs, (0,1), "GA Solution")
 aco_mtsp_solver.plot_sub_solution(axs, (1,0), "ACO Solution")
+tabu_mtsp_solver.plot_sub_solution(axs, (1,1), "Tabu Search Solution")
 # cvxpy_mtsp_solver.plot_sub_solution(axs, (1,1), "CVXPY Solution")
 
 plt.suptitle("Comparing MultiTSP Solutions")

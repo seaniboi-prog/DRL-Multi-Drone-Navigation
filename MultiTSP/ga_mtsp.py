@@ -363,7 +363,7 @@ class GAMultiTSP(AlgoMultiTSP):
         self.pop = None
 
     def solve(self, numGenerations=70, mutationRate=0.02, tournamentSize=10, populationSize=100, elitism=True, cont=False):
-        random.seed(time.time())
+        random.seed(int.from_bytes(os.urandom(8), 'big'))
 
         for node in self.network.nodes:
             RouteManager.addDustbin(Dustbin(x=node.x, y=node.y, z=node.z, label=node.label))

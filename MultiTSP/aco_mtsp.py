@@ -162,7 +162,7 @@ class ACOMultiTSP(AlgoMultiTSP):
         super().__init__("ACO", n_drones, nodes, labels)
 
     def solve(self, alpha: float, beta: float, rho: float, q: float, limit: int, opt2: int, cont: bool = False) -> None:
-        random.seed(time.time())
+        random.seed(int.from_bytes(os.urandom(8), 'big'))
 
         self.network.init_networkx_graph()
 
