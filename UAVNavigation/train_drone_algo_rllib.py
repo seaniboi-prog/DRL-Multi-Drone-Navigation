@@ -220,7 +220,7 @@ while i < total_iters:
         
         # Evaluate the algorithm
         print("\nEvaluating Algorithm...")
-        eval_rewards, eval_lengths, success_rate = evaluate_algorithm(algo, select_env, epochs=5, env_config=env_config, render_mode=render_mode)
+        eval_rewards, eval_lengths, success_rate, crashes, timeouts = evaluate_algorithm(algo, select_env, epochs=5, env_config=env_config, render_mode=render_mode)
         
         eval_episode_count += len(eval_rewards)
         
@@ -234,7 +234,7 @@ while i < total_iters:
             notif_title = "Evaluation Iteration {} Finished with {} episodes".format(result["training_iteration"], len(eval_rewards))
             notif_msg1 = "Average reward of {:.2f} with a range between {:.2f} and {:.2f}".format(average_list(eval_rewards), min(eval_rewards), max(eval_rewards))
             notif_msg2 = "Average episode length of {:.2f} with a range between {} and {}".format(average_list(eval_lengths), min(eval_lengths), max(eval_lengths))
-            notif_msg3 = "Success Rate: {:.2%}".format(success_rate)
+            notif_msg3 = "Success Rate: {:.2%}, Crashes: {}, Timeouts: {}".format(success_rate, crashes, timeouts)
             
             send_notif_image(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}", eval_plot)
             # send_notification(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}")

@@ -57,13 +57,15 @@ print("Using environment: {}".format(env_id))
 
 chkpt_path = f"training/{algorithm}/{env_type}/{env_var}/{waypoint_str}/{chkpt_root}"
 model = Algorithm.from_checkpoint(chkpt_path)
-eval_rewards, eval_lengths, success_rate = evaluate_algorithm(model, env_id, epochs=total_iters, env_config=env_config, render_mode=render_mode)
+eval_rewards, eval_lengths, success_rate, crashes, timeouts = evaluate_algorithm(model, env_id, epochs=total_iters, env_config=env_config, render_mode=render_mode)
 
 # model_root = f"models/{algorithm}/{env_type}/{env_var}/{waypoint_str}/model/model.pt"
 # model = torch.load(model_root)
-# eval_rewards, eval_lengths, success_rate = evaluate_algorithm_pytorch(model_root, env_id, epochs=total_iters, env_config=env_config, render_mode=render_mode)
+# eval_rewards, eval_lengths, success_rate, crashes, timeouts = evaluate_algorithm_pytorch(model_root, env_id, epochs=total_iters, env_config=env_config, render_mode=render_mode)
 
 print(f"Best reward over {total_iters} iterations: {max(eval_rewards)}")
 print(f"Average reward over {total_iters} iterations: {sum(eval_rewards) / total_iters}")
 print(f"Average episode length over {total_iters} iterations: {sum(eval_lengths) / total_iters}")
 print(f"Success rate over {total_iters} iterations: {success_rate}")
+print(f"Number of crashes: {crashes}/{total_iters}")
+print(f"Number of timeouts: {timeouts}/{total_iters}")

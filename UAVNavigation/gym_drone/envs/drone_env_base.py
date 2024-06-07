@@ -60,6 +60,7 @@ class DroneEnv_Base(gym.Env):
         self.episode_count = 0
         self.timestep = 0
         self.totalsteps = 0
+        self.extra_steps = 0
         self.waypt_idx = 0
         self.start_time = time.time()
         self.camera = self.DEFAULT_CAM
@@ -90,6 +91,7 @@ class DroneEnv_Base(gym.Env):
                 
         self.waypt_idx = 0
         self.timestep = 0
+        self.extra_steps = 0
         self.start_time = time.time()
         self.state = dict()
         
@@ -150,7 +152,7 @@ class DroneEnv_Base(gym.Env):
         self.state["route"] = self.route
         self.state["distance_travelled"] = self._get_path_dist()
         self.state["time_elapsed"] = time.time() - self.start_time
-        self.state["solved"] = False
+        self.state["status"] = "running"
         
     def _normalize_obs(self, obs: np.ndarray, d_min: int, d_max: int, cust_min: int, cust_max: int) -> np.ndarray:
         norm_obs = cust_min + (obs - d_min) * (cust_max - cust_min) / (d_max - d_min)
@@ -278,7 +280,7 @@ class DroneEnv_Base(gym.Env):
         obs = self._get_obs()
         
         if self.max_steps is not None:
-            truncated = self.timestep >= self.max_steps
+            truncated = self.timestep >= (self.max_steps + self.extra_steps)
         else:
             truncated = False
         self.timestep += 1
@@ -290,6 +292,10 @@ class DroneEnv_Base(gym.Env):
             self.drone.simPrintLogMessage(f"Episode: {self.episode_count} | Step: {self.timestep} | Pos: {pos_str} | Goal: {goal_str} | Total Steps: {self.totalsteps}")
         
         reward, terminated = self._determine_reward()
+
+        if truncated:
+            self.drone.simPrintLogMessage(f"Episode {self.episode_count}: TIMED OUT", severity=2)
+            self.state["status"] = "timed_out"
         
         return obs, reward, terminated, truncated, self.state
     
@@ -333,6 +339,7 @@ class DroneEnv_Base(gym.Env):
         if self._drone_collision(False):
             reward = self.REWARD_CRASH
             self.drone.simPrintLogMessage(f"Episode {self.episode_count}: CRASHED", severity=2)
+            self.state["status"] = "crashed"
             terminated = True
         else:
             curr_pos = self._get_position()
@@ -344,13 +351,14 @@ class DroneEnv_Base(gym.Env):
                     reward = self.REWARD_GOAL
                     self.drone.simPrintLogMessage(f"Episode {self.episode_count}: SOLVED", severity=1)
                     self.state["progress"] = 1.0
-                    self.state["solved"] = True
+                    self.state["status"] = "solved"
                     terminated = True
                 else:
                     reward = self.REWARD_CKPT
                     self.drone.simPrintLogMessage(f"Episode {self.episode_count}: CHECKPOINT {self.waypt_idx + 1}/{len(self.waypoints)} REACHED", severity=3)
                     terminated = False
                     self.waypt_idx += 1
+                    self.extra_steps = copy.copy(self.timestep)
                     self.last_dist = self._get_distance(curr_pos, self.waypoints[self.waypt_idx])
                     self.state["progress"] = self.waypt_idx / len(self.waypoints)
             
@@ -468,10 +476,6 @@ class DroneEnv_Base(gym.Env):
         
         # Plot the current position
         plt.scatter(curr_pos[0], curr_pos[1], c='b', s=30, marker=MarkerStyle(marker='o'))
-        if self.waypt_idx != self.goal_idx:
-            w_col = 'orange'
-        else:
-            w_col = 'red'
             
         # Plot route
         route = np.array(self.route)

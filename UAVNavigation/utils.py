@@ -28,7 +28,6 @@ NUM_LP_GPU = 0
 def compute_single_episode(env: Env, model: Union[Algorithm, Policy]):
     obs, info = env.reset()
     done = False
-    success: bool = False
     total_reward: float = 0.0
     episode_length: int = 0
     while not done:
@@ -38,10 +37,10 @@ def compute_single_episode(env: Env, model: Union[Algorithm, Policy]):
         
         if terminated or truncated:
             done = True
-            success = info["solved"]
+            status = info["status"]
         
         total_reward += float(reward)
-    return total_reward, episode_length, success
+    return total_reward, episode_length, status
 
 def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int = 10, env_config: Union[dict,None] = None, render_mode: Union[str, None] = None):
     if env_config is None:
@@ -53,18 +52,24 @@ def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int 
     rewards_list: list[float] = []
     episode_lengths: list[int] = []
     successes = 0
+    timeouts = 0
+    crashes = 0
     for _ in tqdm(range(epochs), desc="Evaluating..."):
-        cum_reward, episode_len, success = compute_single_episode(env, model)
+        cum_reward, episode_len, status = compute_single_episode(env, model)
         rewards_list.append(cum_reward)
         episode_lengths.append(episode_len)
-        if success:
+        if status == "solved":
             successes += 1
+        elif status == "timed_out":
+            timeouts += 1
+        elif status == "crashed":
+            crashes += 1
             
     env.close()
     
     success_rate = successes / epochs
     
-    return rewards_list, episode_lengths, success_rate
+    return rewards_list, episode_lengths, success_rate, crashes, timeouts
 
 def get_algo_config(algo_name: str, env_name:str, env_config: Union[dict, None] = None, batch_size: int = 1024, params: dict = {}):
     if algo_name == "ppo":
