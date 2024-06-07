@@ -27,13 +27,15 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--mtsp_algo", type=str, help="the algorithm to use for solving the MTSP", default="ga",
                         choices=["ga", "aco", "cvxpy", "hill", "tabu"])
     parser.add_argument("-w", "--waypoint_type", type=str, help="which group of waypoints to choose")
+    parser.add_argument("-p", "--waypoint_path", type=str, help="path to custom waypoints file", default="random_multiple")
+    parser.add_argument("-b", "--best", help="use best model", action="store_true")
     parser.add_argument("-s", "--endAtStart", help="end at start", action="store_true")
 
     args = parser.parse_args()
 
     # Check for missing required arguments
     if args.waypoint_type is None:
-        raise ValueError("Missing required argument: --waypoint_type (or -w)")
+        raise ValueError(F"{RED}Missing required argument: --waypoint_type (or -w){RESET}")
 
     # Retrieve inputs
     ## All waypoints
@@ -66,8 +68,8 @@ if __name__ == "__main__":
         mtsp_solver = mtsp.HillClimbMultiTSP(no_drones, waypoints, labels)
         mtsp_solver.solve(EPOCHS)
     elif mtsp_algo == "tabu":
-        # TODO: Implement Tabu Search
-        raise NotImplementedError("Tabu Search not yet implemented")
+        mtsp_solver = mtsp.TabuSearchMultiTSP(no_drones, waypoints, labels)
+        mtsp_solver.solve()
     else:
         raise ValueError("Invalid MTSP algorithm. Must be one of: 'ga', 'aco', 'cvxpy', 'hill'")
 
@@ -84,8 +86,10 @@ if __name__ == "__main__":
     # Import DRL Model
     rl_algo: str = args.rl_algo
     action_type: str = args.action_type
+    waypoint_path: str = args.waypoint_path
+    root_path: str = "best_root" if args.best else "save_root"
     env_variant: str = "cust" if args.custom else "airsim"
-    chkpt_path = os.path.join(os.getcwd(), f"UAVNavigation/training/{rl_algo}/{action_type}/{env_variant}/random_multiple/save_root")
+    chkpt_path = os.path.join(os.getcwd(), f"UAVNavigation/training/{rl_algo}/{action_type}/{env_variant}/{waypoint_path}/{root_path}")
     uav_model = Algorithm.from_checkpoint(chkpt_path)
 
     # Retrieve environment class name
@@ -110,22 +114,19 @@ if __name__ == "__main__":
 
     # client.reset()
 
-    start_time = time.time()
-
     # Execute drone navigation
     with multiprocessing.Pool(processes=len(uav_navigation_arg_sets)) as pool:
         results = pool.starmap(compute_single_episode, uav_navigation_arg_sets)
-
-    elapsed_time = time.time() - start_time
 
     print("All drones completed navigation")
 
     # Plot drone routes
     drone_routes = [result["route"] for result in results]
     total_distance = sum(result["total_distance"] for result in results)
+    total_time = sum(result["total_time"] for result in results)
+    mins, secs = divmod(total_time, 60)
 
     print(f"Total Distance Travelled: {total_distance}")
-    mins, secs = divmod(elapsed_time, 60)
     print(f"Total Time Elapsed: {int(mins)} min/s, {secs:.2f} sec/s")
 
     plot_all_routes(waypoints, drone_routes, filename=f"results/{mtsp_algo}/{rl_algo}/{action_type}/{env_variant}/{args.waypoint_type}_drone_routes.png")

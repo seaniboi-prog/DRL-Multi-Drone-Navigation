@@ -27,17 +27,19 @@ def compute_single_episode(env: DroneEnv_Base, model: Union[Algorithm, Policy]) 
     results = {
         "total_reward": total_reward,
         "episode_length": episode_length,
-        "success": info["solved"],
+        "status": info["status"],
         "route": info["route"],
         "total_distance": info["distance_travelled"],
         "total_time": info["time_elapsed"],
     }
 
     print(f"\n{env.drone_name} RESULTS:")
-    if info["solved"]:
+    if info["status"] == "solved":
         print(f"{GREEN}{env.drone_name} COMPLETED SUCCESSFULLY!{RESET}")
-    else:
-        print(f"{RED}{env.drone_name} FAILED{RESET}")
+    elif info["status"] == "timed_out":
+        print(f"{RED}{env.drone_name} TIMED OUT{RESET}")
+    elif info["status"] == "crashed":
+        print(f"{RED}{env.drone_name} CRASHED{RESET}")
     print(f"Total Reward: {results['total_reward']}")
     print(f"Episode Length: {results['episode_length']}")
     print(f"Total Distance: {results['total_distance']}")
