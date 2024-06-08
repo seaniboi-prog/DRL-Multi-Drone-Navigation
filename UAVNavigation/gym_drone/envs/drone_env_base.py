@@ -267,9 +267,6 @@ class DroneEnv_Base(gym.Env):
     #     # Collided
     #     if "collided" in self.observation_list:
     #         observation["collided"] = np.array([self._drone_collision(True)])
-            
-    #     if self.verbose:
-    #         print("Collision Info: ", self.drone.simGetCollisionInfo(vehicle_name=self.drone_name))
         
     #     return observation
     
@@ -286,7 +283,7 @@ class DroneEnv_Base(gym.Env):
         self.timestep += 1
         self.totalsteps += 1
         
-        if self.timestep % 10 == 0:
+        if self.verbose and self.timestep % 10 == 0:
             pos_str = ', '.join([str(round(i, 1)) for i in self._get_position()])
             goal_str = ', '.join([str(round(i, 1)) for i in self.waypoints[self.waypt_idx]])
             self.drone.simPrintLogMessage(f"Episode: {self.episode_count} | Step: {self.timestep} | Pos: {pos_str} | Goal: {goal_str} | Total Steps: {self.totalsteps}")
@@ -294,7 +291,7 @@ class DroneEnv_Base(gym.Env):
         reward, terminated = self._determine_reward()
 
         if truncated:
-            self.drone.simPrintLogMessage(f"Episode {self.episode_count}: TIMED OUT", severity=2)
+            self.drone.simPrintLogMessage(f"{self.drone_name} - Episode {self.episode_count}: TIMED OUT", severity=2)
             self.state["status"] = "timed_out"
         
         return obs, reward, terminated, truncated, self.state
@@ -324,9 +321,6 @@ class DroneEnv_Base(gym.Env):
         suf = "_distance"
         distances = np.array([self.drone.getDistanceSensorData(dist+suf, vehicle_name=self.drone_name).distance for dist in dist_sensors])
         clipped = np.clip(distances, 0, 10)
-        if self.verbose:
-            print("Distance Sensors: ", dist_sensors)
-            print("Distances: ", clipped)
         return clipped
     
     def _get_min_sensor_distance(self):
@@ -338,7 +332,7 @@ class DroneEnv_Base(gym.Env):
     def _determine_reward(self):
         if self._drone_collision(False):
             reward = self.REWARD_CRASH
-            self.drone.simPrintLogMessage(f"Episode {self.episode_count}: CRASHED", severity=2)
+            self.drone.simPrintLogMessage(f"{self.drone_name} - Episode {self.episode_count}: CRASHED", severity=2)
             self.state["status"] = "crashed"
             terminated = True
         else:
@@ -349,13 +343,13 @@ class DroneEnv_Base(gym.Env):
                 # check if next waypoint is goal
                 if self.waypt_idx == self.goal_idx:
                     reward = self.REWARD_GOAL
-                    self.drone.simPrintLogMessage(f"Episode {self.episode_count}: SOLVED", severity=1)
+                    self.drone.simPrintLogMessage(f"{self.drone_name} - Episode {self.episode_count}: SOLVED", severity=1)
                     self.state["progress"] = 1.0
                     self.state["status"] = "solved"
                     terminated = True
                 else:
                     reward = self.REWARD_CKPT
-                    self.drone.simPrintLogMessage(f"Episode {self.episode_count}: CHECKPOINT {self.waypt_idx + 1}/{len(self.waypoints)} REACHED", severity=3)
+                    self.drone.simPrintLogMessage(f"{self.drone_name} - Episode {self.episode_count}: CHECKPOINT {self.waypt_idx + 1}/{len(self.waypoints)} REACHED", severity=3)
                     terminated = False
                     self.waypt_idx += 1
                     self.extra_steps = copy.copy(self.timestep)
@@ -366,23 +360,13 @@ class DroneEnv_Base(gym.Env):
                 reward = 0
                 terminated = False
                 
-                if self.verbose:
-                    print(f"Previous distance to next waypoint: {round(self.last_dist, 2)}")
-                    print(f"Distance to next waypoint: {round(dist, 2)}")
-                
                 diff = self.last_dist - dist
                 self.last_dist = dist
                 
-                if self.verbose:
-                    print(f"Distance difference: {round(diff, 2)}")
-                
                 reward += self._calculate_reward(diff, var="negative")
                 
-                if self.timestep % 10 == 0:
+                if self.verbose and self.timestep % 10 == 0:
                     self.drone.simPrintLogMessage(f"Episode {self.episode_count}: Reward Function - Dist: {dist:.2f} | Diff: {diff:.2f} | Reward: {reward:.2f}")
-                
-                if self.verbose:
-                    print(f"Distance Reward: {round(reward, 2)}")
 
                 # min_dist = self._get_min_sensor_distance()
 
@@ -395,13 +379,7 @@ class DroneEnv_Base(gym.Env):
                 #                                         self._get_attitude(deg=False))
                 #     pos_rad_rel_yaw = abs(math.radians(relative_yaw))
                     
-                #     if self.verbose:
-                #         print(f"Relative Yaw: {round(pos_rad_rel_yaw, 2)}")
-                    
                 #     reward -= pos_rad_rel_yaw
-                    
-        if self.verbose:
-            print(f"Final Reward: {round(reward, 2)}")
                 
         return reward, terminated
     

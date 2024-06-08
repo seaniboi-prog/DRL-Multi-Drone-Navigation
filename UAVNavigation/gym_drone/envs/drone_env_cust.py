@@ -402,8 +402,6 @@ class DroneEnvCust_Disc(gym.Env):
     
     def _determine_reward(self):
         if self._did_crash():
-            if self.verbose:
-                print("CRASHED")
             reward = self.REWARD_CRASH
             terminated = True
         else:
@@ -413,8 +411,6 @@ class DroneEnvCust_Disc(gym.Env):
                 # check if next waypoint is goal
                 if self.waypt_idx == self.goal_idx:
                     reward = self.REWARD_GOAL
-                    if self.verbose:
-                        print("SOLVED")
                     terminated = True
                     self.state['progress'] = 1.0
                     self.state['solved'] = True
@@ -429,20 +425,10 @@ class DroneEnvCust_Disc(gym.Env):
                 reward = 0
                 terminated = False
                 
-                if self.verbose:
-                    print(f"Previous distance to next waypoint: {round(self.last_dist, 2)}")
-                    print(f"Distance to next waypoint: {round(dist, 2)}")
-                
                 diff = self.last_dist - dist
                 self.last_dist = dist
                 
-                if self.verbose:
-                    print(f"Distance difference: {round(diff, 2)}")
-                
                 reward += self._calculate_reward(diff, var="negative")
-                
-                if self.verbose:
-                    print(f"Distance Reward: {round(reward, 2)}")
                 
         return reward, terminated
     

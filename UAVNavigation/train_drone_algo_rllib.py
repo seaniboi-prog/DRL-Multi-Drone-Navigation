@@ -38,7 +38,6 @@ parser.add_argument("-i", "--iter", type=int, help="the number of iterations to 
 parser.add_argument("-b", "--batch", type=int, help="the batch size to use for training", default=2048)
 parser.add_argument("-r", "--render", type=str, help="the render mode to use for evaluation", default="none")
 parser.add_argument("-m", "--momentum", help="use momentum in the environment", action="store_true")
-parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
 parser.add_argument("-w", "--waypoints", type=str, help="the waypoint type to use for the environment", default="random_single",
                     choices=["random_single", "random_multiple", "fixed_single", "fixed_multiple"])
 parser.add_argument("--tuned", help="use tuned hyperparameters", action="store_true")
@@ -61,7 +60,6 @@ render_mode: Union[str, None] = args.render
 if render_mode == "none":
     render_mode = None
 momentum: bool = args.momentum
-verbose: bool = args.verbose
 waypoint_str: str = args.waypoints
 waypoint_list = waypoint_str.split("_")
 if waypoint_list[0] == "random":
@@ -71,7 +69,7 @@ else:
 waypoint_cap = " ".join([cap_first(word) for word in waypoint_list])
 max_steps = args.max_steps
 
-env_config, env_ids = gym_drone.get_env_config(verbose=verbose, random_waypts=rand_waypoints, waypoint_type=waypoint_list[1], momentum=momentum, max_steps=max_steps)
+env_config, env_ids = gym_drone.get_env_config(verbose=True, random_waypts=rand_waypoints, waypoint_type=waypoint_list[1], momentum=momentum, max_steps=max_steps)
 
 print("Training on {} environment {} with {} waypoints using {} algorithm for {} iterations".format(env_type_long, cap_first(env_var), waypoint_cap, algo_name.upper(), args.iter))
 

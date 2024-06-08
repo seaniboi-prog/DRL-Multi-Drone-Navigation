@@ -186,7 +186,6 @@ parser.add_argument("-p", "--parallel", type=int, help="the number of parallel t
 parser.add_argument("-r", "--restore", help="restore from a previous checkpoint", action="store_true")
 parser.add_argument("-s", "--samples", type=int, help="total number of samples to take", default=20)
 parser.add_argument("-u", "--update-best", help="update the best result config only with a higher reward average", action="store_true")
-parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
 parser.add_argument("-w", "--waypoints", type=str, help="the waypoint type to use for the environment", default="random_single",
                     choices=["random_single", "random_multiple", "fixed_single", "fixed_multiple"])
 parser.add_argument("--no-notif", help="disable sending notifications", action="store_true")
@@ -205,7 +204,6 @@ parallel_trials: int = args.parallel
 restore: bool = args.restore
 total_samples: int = args.samples
 update_best_config: bool = args.update_best
-verbose: bool = args.verbose
 waypoint_str: str = args.waypoints
 waypoint_list = waypoint_str.split("_")
 if waypoint_list[0] == "random":
@@ -215,7 +213,7 @@ else:
 allow_notif: bool = not args.no_notif
 max_steps = args.max_steps
 
-env_config, env_ids = gym_drone.get_env_config(verbose=verbose, random_waypts=rand_waypoints, waypoint_type=waypoint_list[1], momentum=momentum, max_steps=max_steps)
+env_config, env_ids = gym_drone.get_env_config(verbose=True, random_waypts=rand_waypoints, waypoint_type=waypoint_list[1], momentum=momentum, max_steps=max_steps)
 
 # start Ray -- add `local_mode=True` here for debugging
 print("Initialising ray...")

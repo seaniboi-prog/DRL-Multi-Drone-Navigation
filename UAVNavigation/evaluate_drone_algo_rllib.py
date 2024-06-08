@@ -22,7 +22,6 @@ parser.add_argument("-a", "--algo", type=str, help="the algorithm to use for tra
 parser.add_argument("-i", "--iter", type=int, help="the number of iterations to evaluate for", default=10)
 parser.add_argument("-r", "--render", type=str, help="the render mode to use for evaluation", default="none")
 parser.add_argument("-b", "--best", help="evaluate the best model over the iterations", action="store_true")
-parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
 parser.add_argument("-w", "--waypoints", type=str, help="the waypoint type to use for the environment", default="random_single",
                     choices=["random_single", "random_multiple", "fixed_single", "fixed_multiple"])
 
@@ -37,7 +36,6 @@ render_mode: Union[str, None] = args.render
 if render_mode == "none":
     render_mode = None
 chkpt_root = "best_root" if args.best else "save_root"
-verbose: bool = args.verbose
 waypoint_str: str = args.waypoints
 waypoint_list = waypoint_str.split("_")
 if waypoint_list[0] == "random":
@@ -45,7 +43,7 @@ if waypoint_list[0] == "random":
 else:
     rand_waypoints = False
 
-env_config, env_ids = gym_drone.get_env_config(verbose=verbose, random_waypts=rand_waypoints, waypoint_type=waypoint_list[1])
+env_config, env_ids = gym_drone.get_env_config(verbose=True, random_waypts=rand_waypoints, waypoint_type=waypoint_list[1])
 
 env_id = f"drone-env-{env_type}-{env_var}"
 # env = gym.make(env_id, env_config=env_config)
