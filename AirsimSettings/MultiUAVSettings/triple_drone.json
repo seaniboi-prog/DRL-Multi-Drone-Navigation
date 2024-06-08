@@ -1,0 +1,301 @@
+{
+    "SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/main/docs/settings.md",
+    "SettingsVersion": 1.2,
+    "ClockType": "",
+    "ClockSpeed": 1,
+    "LocalHostIp": "127.0.0.1",
+    "ApiServerPort": 41451,
+    "SimMode": "Multirotor",
+    "ViewMode": "FlyWithMe",
+    "CameraDefaults": {
+        "CaptureSettings": [
+            {
+                "ImageType": 0,
+                "Width": 640,
+                "Height": 480,
+                "FOV_Degrees": 90
+            }
+        ],
+        "X": 0.5,
+        "Y": 0,
+        "Z": 0.1,
+        "Pitch": 0,
+        "Roll": 0,
+        "Yaw": 0
+    },
+    "Vehicles": {
+        "Drone1": {
+            "VehicleType": "SimpleFlight",
+            "X": 0,
+            "Y": 5,
+            "Z": -1,
+            "Cameras": {
+                "front": {},
+                "left": {
+                    "X": 0,
+                    "Y": -0.5,
+                    "Yaw": -90
+                },
+                "right": {
+                    "X": 0,
+                    "Y": 0.5,
+                    "Yaw": 90
+                },
+                "back": {
+                    "X": -0.5,
+                    "Yaw": 180
+                }
+            },
+            "Sensors": {
+                "front_distance": {
+                  "SensorType": 5,
+                  "Enabled": true,
+                  "MaxDistance": 20,
+                  "X": 0.5,
+                  "Y": 0.0,
+                  "Z": 0.0,
+                  "Yaw": 0,
+                  "Pitch": 0,
+                  "Roll": 0
+                },
+                "right_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.5,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": 90.0
+                },
+                "left_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": -0.5,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": -90.0
+                },
+                "rear_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": -0.5,
+                    "Y": 0.0,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": 180.0
+                },
+                "top_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.5,
+                    "Pitch": 90.0,
+                    "Roll": 0.0,
+                    "Yaw": 0.0
+                },
+                "bottom_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.5,
+                    "Pitch": -90.0,
+                    "Roll": 0.0,
+                    "Yaw": 0.0
+                }
+            }
+        },
+        "Drone2": {
+            "VehicleType": "SimpleFlight",
+            "X": 0,
+            "Y": 0,
+            "Z": -1,
+            "Cameras": {
+                "front": {},
+                "left": {
+                    "X": 0,
+                    "Y": -0.5,
+                    "Yaw": -90
+                },
+                "right": {
+                    "X": 0,
+                    "Y": 0.5,
+                    "Yaw": 90
+                },
+                "back": {
+                    "X": -0.5,
+                    "Yaw": 180
+                }
+            },
+            "Sensors": {
+                "front_distance": {
+                  "SensorType": 5,
+                  "Enabled": true,
+                  "MaxDistance": 20,
+                  "X": 0.5,
+                  "Y": 0.0,
+                  "Z": 0.0,
+                  "Yaw": 0,
+                  "Pitch": 0,
+                  "Roll": 0
+                },
+                "right_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.5,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": 90.0
+                },
+                "left_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": -0.5,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": -90.0
+                },
+                "rear_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": -0.5,
+                    "Y": 0.0,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": 180.0
+                },
+                "top_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.5,
+                    "Pitch": 90.0,
+                    "Roll": 0.0,
+                    "Yaw": 0.0
+                },
+                "bottom_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.5,
+                    "Pitch": -90.0,
+                    "Roll": 0.0,
+                    "Yaw": 0.0
+                }
+            }
+        },
+        "Drone3": {
+            "VehicleType": "SimpleFlight",
+            "X": 0,
+            "Y": -5,
+            "Z": -1,
+            "Cameras": {
+                "front": {},
+                "left": {
+                    "X": 0,
+                    "Y": -0.5,
+                    "Yaw": -90
+                },
+                "right": {
+                    "X": 0,
+                    "Y": 0.5,
+                    "Yaw": 90
+                },
+                "back": {
+                    "X": -0.5,
+                    "Yaw": 180
+                }
+            },
+            "Sensors": {
+                "front_distance": {
+                  "SensorType": 5,
+                  "Enabled": true,
+                  "MaxDistance": 20,
+                  "X": 0.5,
+                  "Y": 0.0,
+                  "Z": 0.0,
+                  "Yaw": 0,
+                  "Pitch": 0,
+                  "Roll": 0
+                },
+                "right_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.5,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": 90.0
+                },
+                "left_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": -0.5,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": -90.0
+                },
+                "rear_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": -0.5,
+                    "Y": 0.0,
+                    "Z": 0.0,
+                    "Pitch": 0.0,
+                    "Roll": 0.0,
+                    "Yaw": 180.0
+                },
+                "top_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.5,
+                    "Pitch": 90.0,
+                    "Roll": 0.0,
+                    "Yaw": 0.0
+                },
+                "bottom_distance": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "MaxDistance": 20,
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.5,
+                    "Pitch": -90.0,
+                    "Roll": 0.0,
+                    "Yaw": 0.0
+                }
+            }
+        }
+    }
+}
