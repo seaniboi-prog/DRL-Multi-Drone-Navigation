@@ -47,5 +47,7 @@ def plot_all_routes(targets, drone_paths, filename=None):
     plt.xlabel("X")
     plt.ylabel("Y")
     if filename is not None:
+        if os.path.dirname(filename) != '' and not os.path.exists(os.path.dirname(filename)):
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
         plt.savefig(filename)
     plt.show()

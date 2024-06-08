@@ -36,10 +36,26 @@ if __name__ == "__main__":
     # Check for missing required arguments
     if args.waypoint_type is None:
         raise ValueError(F"{RED}Missing required argument: --waypoint_type (or -w){RESET}")
+    
+    # Get all arguments
+    waypoint_type = args.waypoint_type
+    mtsp_algo = args.mtsp_algo
+    end_at_start = args.endAtStart
+    
+    rl_algo: str = args.rl_algo
+    action_type: str = args.action_type
+    waypoint_path: str = args.waypoint_path
+    root_path: str = "best_root" if args.best else "save_root"
+    env_variant: str = "cust" if args.custom else "airsim"
+    
+    is_custom = args.custom
+    
+    # Results Path
+    results_root_path = os.path.join(os.getcwd(), "results", mtsp_algo, rl_algo, action_type, env_variant)
 
     # Retrieve inputs
     ## All waypoints
-    waypoints = get_waypoints(args.waypoint_type)
+    waypoints = get_waypoints(waypoint_type)
     num_nodes = len(waypoints)
     labels = [letter for letter in string.ascii_uppercase[:num_nodes]]
 
@@ -52,48 +68,48 @@ if __name__ == "__main__":
 
     vehicle_names = client.listVehicles()
     no_drones = len(vehicle_names)
+    print(f"Number of drones: {no_drones}\n")
+    
+    redo = True
 
-    # Generate paths
-    mtsp_algo = args.mtsp_algo
-    if mtsp_algo == "ga":
-        mtsp_solver = mtsp.GAMultiTSP(no_drones, waypoints, labels)
-        mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZE, ELITISM, cont=False)
-    elif mtsp_algo == "aco":
-        mtsp_solver = mtsp.ACOMultiTSP(no_drones, waypoints, labels)
-        mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, cont=False)
-    elif mtsp_algo == "cvxpy":
-        mtsp_solver = mtsp.CVXPYMultiTSP(no_drones, waypoints, labels)
-        mtsp_solver.solve(verbose=False)
-    elif mtsp_algo == "hill":
-        mtsp_solver = mtsp.HillClimbMultiTSP(no_drones, waypoints, labels)
-        mtsp_solver.solve(EPOCHS)
-    elif mtsp_algo == "tabu":
-        mtsp_solver = mtsp.TabuSearchMultiTSP(no_drones, waypoints, labels)
-        mtsp_solver.solve()
-    else:
-        raise ValueError("Invalid MTSP algorithm. Must be one of: 'ga', 'aco', 'cvxpy', 'hill'")
+    while redo:
+        # Generate paths
+        if mtsp_algo == "ga":
+            mtsp_solver = mtsp.GAMultiTSP(no_drones, waypoints, labels)
+            mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZE, ELITISM, cont=False)
+        elif mtsp_algo == "aco":
+            mtsp_solver = mtsp.ACOMultiTSP(no_drones, waypoints, labels)
+            mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, cont=False)
+        elif mtsp_algo == "cvxpy":
+            mtsp_solver = mtsp.CVXPYMultiTSP(no_drones, waypoints, labels)
+            mtsp_solver.solve(verbose=False)
+        elif mtsp_algo == "hill":
+            mtsp_solver = mtsp.HillClimbMultiTSP(no_drones, waypoints, labels)
+            mtsp_solver.solve(EPOCHS)
+        elif mtsp_algo == "tabu":
+            mtsp_solver = mtsp.TabuSearchMultiTSP(no_drones, waypoints, labels)
+            mtsp_solver.solve(NEIGHBOURHOOD_SIZE, MAX_TABU_SIZE, STOPPING_TURN)
+        else:
+            raise ValueError("Invalid MTSP algorithm. Must be one of: 'ga', 'aco', 'cvxpy', 'hill'")
 
-    # Visualize paths
-    mtsp_solver.plot_progress()
-    mtsp_solver.plot_solution()
+        # Visualize paths
+        mtsp_solver.plot_solution(pause=0, filename=os.path.join(results_root_path, f"{waypoint_type}_mtsp_solution.png"))
 
-    print(f"Calculated Distance: {round(mtsp_solver.get_total_distance(), 2)}")
-    print(f"Calculated Score: {round(mtsp_solver.get_score(), 2)}")
+        print(f"Calculated Distance: {round(mtsp_solver.get_total_distance(), 2)}")
+        print(f"Calculated Score: {round(mtsp_solver.get_score(), 2)}")
+        
+        if input("Do you want to redo the MTSP algorithm? (y/n): ").lower() != "y":
+            redo = False
 
     # Retrieve paths
-    mtsp_paths = mtsp_solver.get_paths_list(args.endAtStart)
+    mtsp_paths = mtsp_solver.get_paths_list(end_at_start)
 
     # Import DRL Model
-    rl_algo: str = args.rl_algo
-    action_type: str = args.action_type
-    waypoint_path: str = args.waypoint_path
-    root_path: str = "best_root" if args.best else "save_root"
-    env_variant: str = "cust" if args.custom else "airsim"
     chkpt_path = os.path.join(os.getcwd(), f"UAVNavigation/training/{rl_algo}/{action_type}/{env_variant}/{waypoint_path}/{root_path}")
     uav_model = Algorithm.from_checkpoint(chkpt_path)
 
     # Retrieve environment class name
-    if args.custom:
+    if is_custom:
         drone_env_classname = f"DroneEnvCust_{action_type.capitalize()}"
     else:
         drone_env_classname = f"DroneEnv{action_type.capitalize()}"
@@ -107,13 +123,13 @@ if __name__ == "__main__":
             "max_steps": None,
             "drone_name": vehicle_names[drone_id],
             "verbose": False,
-            "end_at_start": args.endAtStart
+            "end_at_start": end_at_start
         }
         drone_env_instace = getattr(airsim_envs, drone_env_classname)(env_config=drone_env_config)
 
         uav_navigation_arg_sets.append((drone_env_instace, uav_model))
 
-    # client.reset()
+    client.reset()
 
     # Execute drone navigation
     with multiprocessing.Pool(processes=len(uav_navigation_arg_sets)) as pool:
@@ -129,6 +145,6 @@ if __name__ == "__main__":
 
     print(f"Total Distance Travelled: {total_distance}")
     print(f"Total Time Elapsed: {int(mins)} min/s, {secs:.2f} sec/s")
-
-    plot_all_routes(waypoints, drone_routes, filename=f"results/{mtsp_algo}/{rl_algo}/{action_type}/{env_variant}/{args.waypoint_type}_drone_routes.png")
+    
+    plot_all_routes(waypoints, drone_routes, filename=os.path.join(results_root_path, f"{waypoint_type}_drone_routes.png"))
 

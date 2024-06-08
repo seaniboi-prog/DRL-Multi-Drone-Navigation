@@ -205,7 +205,7 @@ class Network:
         plt.close()
         
 
-    def plot_paths(self, title: str = "Paths") -> None:
+    def plot_paths(self, title: str = "Paths", pause: int = 3, filename = None) -> None:
         plt.figure(figsize=(8, 8))
         
         plt.scatter(self.get_start().x, self.get_start().y, c='red', s=500, zorder=2, marker=MarkerStyle(marker='*'))
@@ -226,14 +226,21 @@ class Network:
         
         plt.legend(loc='best')
         plt.title(title)
-        # Display the plot for a few seconds
-        plt.show(block=False)  # Set block=False to allow code execution to continue
+        
+        if filename is not None:
+            if os.path.dirname(filename) != '' and not os.path.exists(os.path.dirname(filename)):
+                os.makedirs(os.path.dirname(filename), exist_ok=True)
+            plt.savefig(filename)
 
         # Pause for a few seconds (e.g., 3 seconds)
-        plt.pause(3)
+        if pause > 0:
+            plt.show(block=False)  # Set block=False to allow code execution to continue
+            plt.pause(pause)
 
-        # Close the plot window
-        plt.close()
+            # Close the plot window
+            plt.close()
+        else:
+            plt.show(block=True)
         
     def plot_sub_paths(self, axs, index: tuple, title: str) -> None:
         axs[index].scatter(self.get_start().x, self.get_start().y, c='red', s=500, zorder=2, marker='*')
@@ -279,7 +286,7 @@ class AlgoMultiTSP(ABC):
         
         return dist_matrix
 
-    def plot_progress(self):
+    def plot_progress(self, pause: int = 3) -> None:
         plt.figure(figsize=(12, 6))
         xaxis = np.arange(len(self.cost_hist))
         plt.plot(xaxis, self.cost_hist, 'b-')
@@ -288,7 +295,7 @@ class AlgoMultiTSP(ABC):
         plt.show(block=False)  # Set block=False to allow code execution to continue
 
         # Pause for a few seconds (e.g., 3 seconds)
-        plt.pause(3)
+        plt.pause(pause)
 
         # Close the plot window
         plt.close()
@@ -296,8 +303,8 @@ class AlgoMultiTSP(ABC):
     def draw_network(self) -> None:
         self.network.display_graph(f"{self.algorithm.upper()}: Weight Graph")
 
-    def plot_solution(self) -> None:
-        self.network.plot_paths(f"{self.algorithm.upper()}: Paths")
+    def plot_solution(self, pause: int = 3, filename=None) -> None:
+        self.network.plot_paths(f"{self.algorithm.upper()}: Paths", pause, filename)
         print(f"Total score: {round(self.network.get_score(), 2)}")
         print(f"Longest salesman distance: {round(self.network.get_minmax_dist(), 2)}")
         print(f"Total distance: {round(self.network.get_total_dist(), 2)}")
