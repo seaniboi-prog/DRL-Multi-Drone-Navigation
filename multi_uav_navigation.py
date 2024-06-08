@@ -8,7 +8,7 @@ import multiprocessing
 # from MultiPathPlanning.cust_classes import DronePaths
 from MultiPathPlanning.utils import *
 from MultiPathPlanning.constants import *
-from MultiPathPlanning.waypoints import get_waypoints
+from MultiPathPlanning.coordinates import get_waypoints
 from MultiPathPlanning.navigate_drone import compute_single_episode
 
 import MultiTSP as mtsp

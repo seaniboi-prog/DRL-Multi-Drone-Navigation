@@ -6,17 +6,28 @@ from hill_mtsp import HillClimbMultiTSP
 from tabu_mtsp import TabuSearchMultiTSP
 
 from utils import *
+from cities import get_cities
 import string
 
 # General Constants
-num_drones = 3
-num_nodes = 20
-n_x = np.random.uniform(low=0, high=100, size=num_nodes-1)
-n_y = np.random.uniform(low=0, high=100, size=num_nodes-1)
-n_z = np.random.uniform(low=3, high=10, size=num_nodes-1)
+city_type = "blocks"
+# city_type = "random"
 
-nodes = [np.array([n_x[i], n_y[i], n_z[i]]) for i in range(num_nodes-1)]
-nodes.insert(0, np.array([50, 50, 6])) # Start node
+num_drones = 3
+
+if city_type == "random":
+    num_nodes = 20
+    n_x = np.random.uniform(low=0, high=100, size=num_nodes-1)
+    n_y = np.random.uniform(low=0, high=100, size=num_nodes-1)
+    n_z = np.random.uniform(low=3, high=10, size=num_nodes-1)
+
+    nodes = [np.array([n_x[i], n_y[i], n_z[i]]) for i in range(num_nodes-1)]
+    nodes.insert(0, np.array([50, 50, 6])) # Start node
+
+elif city_type == "blocks":
+    nodes = get_cities(city_type)
+    num_nodes = len(nodes)
+
 labels = [letter for letter in string.ascii_uppercase[:num_nodes]]
 
 network = Network(num_drones, nodes, labels)
@@ -24,7 +35,7 @@ network = Network(num_drones, nodes, labels)
 network.plot_network()
 
 # HillClimb Constants
-EPOCHS = 50000
+EPOCHS = 5000
 
 hill_mtsp_solver = HillClimbMultiTSP(num_drones, nodes, labels)
 
@@ -119,5 +130,7 @@ tabu_mtsp_solver.plot_sub_solution(axs, (1,1), "Tabu Search Solution")
 plt.suptitle("Comparing MultiTSP Solutions")
 
 plt.tight_layout()
+
+plt.savefig("plots/blocks_comparison.png")
 
 plt.show()
