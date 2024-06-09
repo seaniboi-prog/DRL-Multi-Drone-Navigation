@@ -166,3 +166,6 @@ if __name__ == "__main__":
     
     plot_all_routes(waypoints, drone_routes, filename=os.path.join(results_root_path, f"{waypoint_type}_drone_routes.png"))
 
+    # Save results
+    results_path = os.path.join(results_root_path, f"{waypoint_type}_results.pkl")
+    save_obj_file(results, results_path)
