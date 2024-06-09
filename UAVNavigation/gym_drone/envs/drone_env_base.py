@@ -39,6 +39,11 @@ class DroneEnv_Base(gym.Env):
     
     # Methods
     def __init__(self, env_config: dict):
+        # Starting Simulation API
+        self.drone = airsim.MultirotorClient()
+        self.drone.confirmConnection()
+        self.drone_name = env_config.get("drone_name", "Drone1")
+        
         # Custom Variables
         self.max_steps = env_config.get("max_steps", 500)
         self.image_shape = env_config.get("image_shape", (84, 84, 1))
@@ -54,7 +59,6 @@ class DroneEnv_Base(gym.Env):
         self.far_limit = env_config.get("far_limit", 50)
         self.momentum = env_config.get("momentum", True)
         self.render_mode = env_config.get("render_mode", None)
-        self.drone_name = env_config.get("drone_name", "Drone1")
         
         self.reward_range = (self.REWARD_CRASH, self.REWARD_GOAL)
         self.episode_count = 0
@@ -69,10 +73,6 @@ class DroneEnv_Base(gym.Env):
         
         waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\DRL-Multi-Drone-Navigation\\UAVNavigation\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
         self.rand_waypt_choices = pickle.load(open(waypoint_root, "rb"))
-        
-        # Starting Simulation API
-        self.drone = airsim.MultirotorClient()
-        self.drone.confirmConnection()
         
         self.reset()
         

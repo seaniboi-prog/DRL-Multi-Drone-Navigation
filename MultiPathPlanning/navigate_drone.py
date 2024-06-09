@@ -12,6 +12,8 @@ def compute_single_episode(env: DroneEnv_Base, model: Union[Algorithm, Policy]) 
 
     # Take off and get initial observation
     obs, info = env.reset(options={"_reset": False})
+    
+    print("Starting episode of ", env.drone_name)
 
     # Start episode
     while not done:

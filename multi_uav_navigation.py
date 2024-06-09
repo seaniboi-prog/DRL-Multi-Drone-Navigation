@@ -5,17 +5,76 @@ import airsim
 import argparse
 import multiprocessing
 
+# from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 # Import Local Packages
 from MultiPathPlanning.utils import *
 from MultiPathPlanning.constants import *
 from MultiPathPlanning.coordinates import get_waypoints
-from MultiPathPlanning.navigate_drone import compute_single_episode
+from MultiPathPlanning.register_envs import register_ray_gym_envs
+# from MultiPathPlanning.navigate_drone import compute_single_episode
 
 import MultiTSP as mtsp
 
 import UAVNavigation.gym_drone.envs as airsim_envs
 
 from ray.rllib.algorithms.algorithm import Algorithm
+
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
+
+from typing import Union
+from ray.rllib.algorithms.algorithm import Algorithm
+from ray.rllib.policy import Policy
+from UAVNavigation.gym_drone.envs import DroneEnv_Base
+from MultiPathPlanning.constants import RED, GREEN, RESET
+
+def compute_single_episode(env: DroneEnv_Base, model: Union[Algorithm, Policy]) -> dict:
+    print("Starting episode of ", env.drone_name)
+
+    # Initialize variables
+    done = False
+    total_reward: float = 0.0
+    episode_length: int = 0
+
+    # Take off and get initial observation
+    obs, info = env.reset(options={"_reset": False})    
+
+    # Start episode
+    while not done:
+        action = model.compute_single_action(obs)
+        obs, reward, terminated, truncated, info = env.step(action)
+        episode_length += 1
+        
+        if terminated or truncated:
+            done = True
+        
+        total_reward += float(reward)
+
+    results = {
+        "total_reward": total_reward,
+        "episode_length": episode_length,
+        "status": info["status"],
+        "route": info["route"],
+        "total_distance": info["distance_travelled"],
+        "total_time": info["time_elapsed"],
+    }
+
+    print(f"\n{env.drone_name} RESULTS:")
+    if info["status"] == "solved":
+        print(f"{GREEN}{env.drone_name} COMPLETED SUCCESSFULLY!{RESET}")
+    elif info["status"] == "timed_out":
+        print(f"{RED}{env.drone_name} TIMED OUT{RESET}")
+    elif info["status"] == "crashed":
+        print(f"{RED}{env.drone_name} CRASHED{RESET}")
+    print(f"Total Reward: {results['total_reward']}")
+    print(f"Episode Length: {results['episode_length']}")
+    print(f"Total Distance: {results['total_distance']}")
+    mins, secs = divmod(results["total_time"], 60)
+    print(f"Total Time: {int(mins)} min/s, {secs:.2f} sec/s")
+    print()
+
+    return results
 
 if __name__ == "__main__":
     # Parse Arguments
@@ -121,6 +180,8 @@ if __name__ == "__main__":
             else:
                 print(f"({node[0]}, {node[1]}, {node[2]})", end=" -> ")
     print()
+    
+    register_ray_gym_envs(waypoint_type=waypoint_type, end_at_start=end_at_start)
 
     # Import DRL Model
     chkpt_path = os.path.join(os.getcwd(), f"UAVNavigation/training/{rl_algo}/{action_type}/{env_variant}/{waypoint_path}/{root_path}")
@@ -150,8 +211,14 @@ if __name__ == "__main__":
     client.reset()
 
     # Execute drone navigation
-    with multiprocessing.Pool(processes=len(uav_navigation_arg_sets)) as pool:
-        results = pool.starmap(compute_single_episode, uav_navigation_arg_sets)
+    # with multiprocessing.Pool(processes=len(uav_navigation_arg_sets)) as pool:
+    #     results = pool.starmap(compute_single_episode, uav_navigation_arg_sets)
+    
+    results = []
+    with ThreadPoolExecutor(max_workers=len(uav_navigation_arg_sets)) as executor:
+        futures = [executor.submit(compute_single_episode, env, model) for env, model in uav_navigation_arg_sets]
+        for future in as_completed(futures):
+            results.append(future.result())
 
     print("All drones completed navigation")
 
@@ -168,4 +235,4 @@ if __name__ == "__main__":
 
     # Save results
     results_path = os.path.join(results_root_path, f"{waypoint_type}_results.pkl")
-    save_obj_file(results, results_path)
+    save_obj_file(results_path, results)
