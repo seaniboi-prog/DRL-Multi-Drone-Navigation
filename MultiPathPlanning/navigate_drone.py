@@ -2,7 +2,7 @@ from typing import Union
 from ray.rllib.algorithms.algorithm import Algorithm
 from ray.rllib.policy import Policy
 from UAVNavigation.gym_drone.envs import DroneEnv_Base
-from constants import RED, GREEN, RESET
+from MultiPathPlanning.constants import RED, GREEN, RESET
 
 def compute_single_episode(env: DroneEnv_Base, model: Union[Algorithm, Policy]) -> dict:
     # Initialize variables

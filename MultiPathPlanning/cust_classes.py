@@ -1,4 +1,4 @@
-from utils import *
+from MultiPathPlanning.utils import *
 import numpy as np
 
 class DronePaths:

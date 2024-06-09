@@ -16,7 +16,10 @@ import os
 from typing import Union
 
 # from utils import *
-from gym_drone.envs.env_utils import *
+try:
+    from gym_drone.envs.env_utils import *
+except ImportError:
+    from UAVNavigation.gym_drone.envs.env_utils import *
 
 class CustActionDisc(Enum):
     LEFT = 0

@@ -1,11 +1,14 @@
-from  gym_drone.envs import *
-
 from gymnasium.envs.registration import register
 from gymnasium.wrappers.time_limit import TimeLimit
 
 from ray.tune.registry import register_env
 
-from gym_drone.waypoint_utils import get_waypoints
+try:
+    from gym_drone.envs import *
+    from gym_drone.waypoint_utils import get_waypoints
+except ImportError:
+    from UAVNavigation.gym_drone.envs import *
+    from UAVNavigation.gym_drone.waypoint_utils import get_waypoints
 
 def get_env_config(*args, **kwargs):
     

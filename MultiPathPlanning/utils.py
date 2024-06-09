@@ -4,7 +4,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from constants import PLOT_COLOURS
+from MultiPathPlanning.constants import PLOT_COLOURS
 
 def save_obj_file(filename: str, obj):
     if os.path.dirname(filename) != '' and not os.path.exists(os.path.dirname(filename)):
