@@ -44,6 +44,15 @@ hill_mtsp_solver.solve(EPOCHS)
 hill_mtsp_solver.plot_progress()
 hill_mtsp_solver.plot_solution()
 hill_mtsp_solver.print_paths()
+hill_paths_list = hill_mtsp_solver.get_paths_list(includeStart=False)
+for i, path in enumerate(hill_paths_list):
+    print(f"Drone {i+1}: ", end="")
+    for j, node in enumerate(path):
+        if j == len(path) - 1:
+            print(f"({node[0]}, {node[1]}, {node[2]})", end="")
+        else:
+            print(f"({node[0]}, {node[1]}, {node[2]})", end=" -> ")
+    print()
 print()
 
 # GA Constants
@@ -61,6 +70,15 @@ ga_mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZ
 ga_mtsp_solver.plot_progress()
 ga_mtsp_solver.plot_solution()
 ga_mtsp_solver.print_paths()
+ga_paths_list = ga_mtsp_solver.get_paths_list(includeStart=False)
+for i, path in enumerate(ga_paths_list):
+    print(f"Drone {i+1}: ", end="")
+    for j, node in enumerate(path):
+        if j == len(path) - 1:
+            print(f"({node[0]}, {node[1]}, {node[2]})", end="")
+        else:
+            print(f"({node[0]}, {node[1]}, {node[2]})", end=" -> ")
+    print()
 print()
 
 # ACO Constants
@@ -79,6 +97,15 @@ aco_mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, False)
 aco_mtsp_solver.plot_progress()
 aco_mtsp_solver.plot_solution()
 aco_mtsp_solver.print_paths()
+aco_paths_list = aco_mtsp_solver.get_paths_list(includeStart=False)
+for i, path in enumerate(aco_paths_list):
+    print(f"Drone {i+1}: ", end="")
+    for j, node in enumerate(path):
+        if j == len(path) - 1:
+            print(f"({node[0]}, {node[1]}, {node[2]})", end="")
+        else:
+            print(f"({node[0]}, {node[1]}, {node[2]})", end=" -> ")
+    print()
 print()
 
 # Tabu Search Constants
@@ -93,6 +120,15 @@ tabu_mtsp_solver.solve(NEIGHBOURHOOD_SIZE, MAX_TABU_SIZE, STOPPING_TURN)
 tabu_mtsp_solver.plot_progress()
 tabu_mtsp_solver.plot_solution()
 tabu_mtsp_solver.print_paths()
+tabu_paths_list = tabu_mtsp_solver.get_paths_list(includeStart=False)
+for i, path in enumerate(tabu_paths_list):
+    print(f"Drone {i+1}: ", end="")
+    for j, node in enumerate(path):
+        if j == len(path) - 1:
+            print(f"({node[0]}, {node[1]}, {node[2]})", end="")
+        else:
+            print(f"({node[0]}, {node[1]}, {node[2]})", end=" -> ")
+    print()
 print()
 
 # CVXPY Constants

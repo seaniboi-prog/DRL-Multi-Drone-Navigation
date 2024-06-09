@@ -1,11 +1,11 @@
 # Import Global Packages
-import argparse
+import copy
 import string
 import airsim
+import argparse
 import multiprocessing
 
 # Import Local Packages
-# from MultiPathPlanning.cust_classes import DronePaths
 from MultiPathPlanning.utils import *
 from MultiPathPlanning.constants import *
 from MultiPathPlanning.coordinates import get_waypoints
@@ -71,6 +71,9 @@ if __name__ == "__main__":
     print(f"Number of drones: {no_drones}\n")
     
     redo = True
+    
+    mtsp_path_retries = []
+    mtsp_path_scores = []
 
     while redo:
         # Generate paths
@@ -98,11 +101,26 @@ if __name__ == "__main__":
         print(f"Calculated Distance: {round(mtsp_solver.get_total_distance(), 2)}")
         print(f"Calculated Score: {round(mtsp_solver.get_score(), 2)}")
         
+        # Retrieve paths
+        mtsp_path_retries.append(copy.deepcopy(mtsp_solver.get_paths_list(includeStart=False)))
+        mtsp_path_scores.append(mtsp_solver.get_score())
+        
         if input("Do you want to redo the MTSP algorithm? (y/n): ").lower() != "y":
             redo = False
-
-    # Retrieve paths
-    mtsp_paths = mtsp_solver.get_paths_list(end_at_start)
+            
+    # Retrieve best path
+    best_path_idx = mtsp_path_scores.index(max(mtsp_path_scores))
+    mtsp_paths = mtsp_path_retries[best_path_idx]
+    print(f"Best Path Score: {mtsp_path_scores[best_path_idx]}")
+    print("Executing the following paths:")
+    for i, path in enumerate(mtsp_paths):
+        print(f"Drone {i+1}: ", end="")
+        for j, node in enumerate(path):
+            if j == len(path) - 1:
+                print(f"({node[0]}, {node[1]}, {node[2]})", end="")
+            else:
+                print(f"({node[0]}, {node[1]}, {node[2]})", end=" -> ")
+    print()
 
     # Import DRL Model
     chkpt_path = os.path.join(os.getcwd(), f"UAVNavigation/training/{rl_algo}/{action_type}/{env_variant}/{waypoint_path}/{root_path}")
