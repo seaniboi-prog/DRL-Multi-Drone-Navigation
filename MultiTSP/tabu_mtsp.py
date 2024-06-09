@@ -1,4 +1,7 @@
-from utils import *
+try:
+    from utils import *
+except ImportError:
+    from MultiTSP.utils import *
 
 def route_lengths(numNodes, numDrones):
     min_route_length = (numNodes - 1) // numDrones

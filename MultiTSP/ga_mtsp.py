@@ -1,4 +1,7 @@
-from utils import *
+try:
+    from utils import *
+except ImportError:
+    from MultiTSP.utils import *
 
 def random_range(n, total):
     """Return a randomly chosen list of n positive integers summing to total.

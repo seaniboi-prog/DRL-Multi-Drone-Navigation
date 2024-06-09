@@ -1,4 +1,7 @@
-from utils import *
+try:
+    from utils import *
+except ImportError:
+    from MultiTSP.utils import *
 
 class Chromosome():
     

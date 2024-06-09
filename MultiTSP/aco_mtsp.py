@@ -1,5 +1,7 @@
-from threading import local
-from utils import *
+try:
+    from utils import *
+except ImportError:
+    from MultiTSP.utils import *
 
 import bisect
 import random
