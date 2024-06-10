@@ -201,7 +201,7 @@ if __name__ == "__main__":
             "waypoints": mtsp_paths[drone_id],
             "max_steps": None,
             "drone_name": vehicle_names[drone_id],
-            "verbose": False,
+            "verbose": True,
             "end_at_start": end_at_start
         }
         drone_env_instace = getattr(airsim_envs, drone_env_classname)(env_config=drone_env_config)
