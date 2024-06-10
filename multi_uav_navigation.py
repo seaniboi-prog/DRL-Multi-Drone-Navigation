@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 # Import Local Packages
 from MultiPathPlanning.utils import *
 from MultiPathPlanning.constants import *
-from MultiPathPlanning.coordinates import get_waypoints
+from MultiPathPlanning.coordinates import get_waypoints, get_obstacles
 from MultiPathPlanning.register_envs import register_ray_gym_envs
 # from MultiPathPlanning.navigate_drone import compute_single_episode
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--custom", help="use custom version of environment", action="store_true")
     parser.add_argument("-r", "--rl_algo", type=str, help="the algorithm which the model was trained on", default="ppo",
                         choices=["ppo", "a2c", "a3c", "dqn", "td3", "ddpg", "sac", "impala", "marwil"])
-    parser.add_argument("-m", "--mtsp_algo", type=str, help="the algorithm to use for solving the MTSP", default="ga",
+    parser.add_argument("-m", "--mtsp_algo", type=str, help="the algorithm to use for solving the MTSP", default="aco",
                         choices=["ga", "aco", "cvxpy", "hill", "tabu"])
     parser.add_argument("-w", "--waypoint_type", type=str, help="which group of waypoints to choose")
     parser.add_argument("-p", "--waypoint_path", type=str, help="path to custom waypoints file", default="random_multiple")
@@ -115,6 +115,7 @@ if __name__ == "__main__":
     # Retrieve inputs
     ## All waypoints
     waypoints = get_waypoints(waypoint_type)
+    obstacles = get_obstacles(waypoint_type)
     num_nodes = len(waypoints)
     labels = [letter for letter in string.ascii_uppercase[:num_nodes]]
 
@@ -202,6 +203,7 @@ if __name__ == "__main__":
             "max_steps": None,
             "drone_name": vehicle_names[drone_id],
             "verbose": True,
+            "momentum": False,
             "end_at_start": end_at_start
         }
         drone_env_instace = getattr(airsim_envs, drone_env_classname)(env_config=drone_env_config)
@@ -214,24 +216,27 @@ if __name__ == "__main__":
     # with multiprocessing.Pool(processes=len(uav_navigation_arg_sets)) as pool:
     #     results = pool.starmap(compute_single_episode, uav_navigation_arg_sets)
     
+    start_time = time.time()
+    
     results = []
     with ThreadPoolExecutor(max_workers=len(uav_navigation_arg_sets)) as executor:
         futures = [executor.submit(compute_single_episode, env, model) for env, model in uav_navigation_arg_sets]
         for future in as_completed(futures):
             results.append(future.result())
+            
+    elapsed_time = time.time() - start_time
 
     print("All drones completed navigation")
 
     # Plot drone routes
     drone_routes = [result["route"] for result in results]
     total_distance = sum(result["total_distance"] for result in results)
-    total_time = sum(result["total_time"] for result in results)
-    mins, secs = divmod(total_time, 60)
+    mins, secs = divmod(elapsed_time, 60)
 
     print(f"Total Distance Travelled: {total_distance}")
     print(f"Total Time Elapsed: {int(mins)} min/s, {secs:.2f} sec/s")
     
-    plot_all_routes(waypoints, drone_routes, filename=os.path.join(results_root_path, f"{waypoint_type}_drone_routes.png"))
+    plot_all_routes(waypoints, obstacles, drone_routes, filename=os.path.join(results_root_path, f"{waypoint_type}_drone_routes.png"))
 
     # Save results
     results_path = os.path.join(results_root_path, f"{waypoint_type}_results.pkl")

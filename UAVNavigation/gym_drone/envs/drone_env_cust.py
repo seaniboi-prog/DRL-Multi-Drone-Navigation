@@ -84,8 +84,8 @@ class DroneEnvCust_Disc(gym.Env):
         self.obstacles.append(np.array([40, 95, 0, 65, 120, 15])) # Obs 4
         self.obstacles.append(np.array([-100, 95, 0, -75, 120, 15])) # Obs 5
         self.obstacles.append(np.array([-80, 45, 0, -65, 60, 15])) # Obs 6
-        self.obstacles.append(np.array([-40, 15, 0, -15, 40, 15])) # Obs 7
-        self.obstacles.append(np.array([-40, -45, 0, -15, 20, 15])) # Obs 8
+        self.obstacles.append(np.array([-40, 12, 0, -15, 35, 15])) # Obs 7
+        self.obstacles.append(np.array([-40, -48, 0, -15, -25, 15])) # Obs 8
         self.obstacles.append(np.array([-80, -63, 0, -65, -50, 15])) # Obs 9
         self.obstacles.append(np.array([-100, -125, 0, -75, -100, 15])) # Obs 10
         self.obstacles.append(np.array([10, -75, 0, 35, -48, 15])) # Obs 11
@@ -555,8 +555,8 @@ class DroneEnvCust_Cont(DroneEnvCust_Disc):
         self.obstacles.append(np.array([40, 95, 0, 65, 120, 15])) # Obs 4
         self.obstacles.append(np.array([-100, 95, 0, -75, 120, 15])) # Obs 5
         self.obstacles.append(np.array([-80, 45, 0, -65, 60, 15])) # Obs 6
-        self.obstacles.append(np.array([-40, 15, 0, -15, 40, 15])) # Obs 7
-        self.obstacles.append(np.array([-40, -45, 0, -15, 20, 15])) # Obs 8
+        self.obstacles.append(np.array([-40, 12, 0, -15, 35, 15])) # Obs 7
+        self.obstacles.append(np.array([-40, -48, 0, -15, -25, 15])) # Obs 8
         self.obstacles.append(np.array([-80, -63, 0, -65, -50, 15])) # Obs 9
         self.obstacles.append(np.array([-100, -125, 0, -75, -100, 15])) # Obs 10
         self.obstacles.append(np.array([10, -75, 0, 35, -48, 15])) # Obs 11

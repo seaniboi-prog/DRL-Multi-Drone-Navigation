@@ -3,6 +3,7 @@ import os
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 from MultiPathPlanning.constants import PLOT_COLOURS
 
@@ -29,9 +30,14 @@ def thread_test_func(title, fruit, dur):
 def pop_first_element(arr):
     return arr[0], arr[1:]
 
-def plot_all_routes(targets, drone_paths, filename=None):
+def plot_all_routes(targets, drone_paths, obstacles=[], filename=None):
     
     plt.figure(figsize=(8, 8))
+    
+    # Plot the obstacles
+    for obs in obstacles:
+        x_min, y_min, _, x_max, y_max, _ = obs
+        plt.gca().add_patch(Rectangle((x_min, y_min), x_max - x_min, y_max - y_min, fill=True, color='grey', alpha=0.8, zorder=1))
 
     for i, path in enumerate(drone_paths):
         route = np.array(path)

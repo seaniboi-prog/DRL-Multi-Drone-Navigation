@@ -38,8 +38,8 @@ block_obstacles.append(np.array([10, 45, 0, 35, 70, 15])) # Obs 3
 block_obstacles.append(np.array([40, 95, 0, 65, 120, 15])) # Obs 4
 block_obstacles.append(np.array([-100, 95, 0, -75, 120, 15])) # Obs 5
 block_obstacles.append(np.array([-80, 45, 0, -65, 60, 15])) # Obs 6
-block_obstacles.append(np.array([-40, 15, 0, -15, 40, 15])) # Obs 7
-block_obstacles.append(np.array([-40, -45, 0, -15, 20, 15])) # Obs 8
+block_obstacles.append(np.array([-40, 12, 0, -15, 35, 15])) # Obs 7
+block_obstacles.append(np.array([-40, -48, 0, -15, -25, 15])) # Obs 8
 block_obstacles.append(np.array([-80, -63, 0, -65, -50, 15])) # Obs 9
 block_obstacles.append(np.array([-100, -125, 0, -75, -100, 15])) # Obs 10
 block_obstacles.append(np.array([10, -75, 0, 35, -48, 15])) # Obs 11
