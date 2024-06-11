@@ -135,6 +135,7 @@ if __name__ == "__main__":
     mtsp_path_retries = []
     mtsp_path_scores = []
 
+    # TODO: Update this part so it is done beforehand
     while redo:
         # Generate paths
         if mtsp_algo == "ga":
