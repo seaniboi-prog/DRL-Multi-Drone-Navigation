@@ -5,7 +5,7 @@ except ImportError:
 
 class DRLMultiTSP(AlgoMultiTSP):
     def __init__(self, drones: int, nodes, labels=None):
-        super().__init__("DRL", drones, nodes, labels)
+        super().__init__("drl", drones, nodes, labels)
 
     def solve(self) -> None:
         random.seed(time.time())

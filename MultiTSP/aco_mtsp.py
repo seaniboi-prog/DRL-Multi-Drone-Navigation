@@ -1,13 +1,13 @@
-try:
-    from utils import *
-except ImportError:
-    from MultiTSP.utils import *
-
 import bisect
 import random
 import functools
 import itertools
 from collections import defaultdict
+
+try:
+    from utils import *
+except ImportError:
+    from MultiTSP.utils import *
 
 @functools.total_ordering
 class Solution:
@@ -161,7 +161,7 @@ class Colony:
 
 class ACOMultiTSP(AlgoMultiTSP):
     def __init__(self, n_drones: int, nodes, labels=None):
-        super().__init__("ACO", n_drones, nodes, labels)
+        super().__init__("aco", n_drones, nodes, labels)
 
     def solve(self, alpha: float, beta: float, rho: float, q: float, limit: int, opt2: int, cont: bool = False) -> None:
         random.seed(int.from_bytes(os.urandom(8), 'big'))

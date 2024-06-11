@@ -109,7 +109,7 @@ def generateInitialSolution(nodes: 'list[Node]', num_drones: int) -> 'list[Path]
 
 class TabuSearchMultiTSP(AlgoMultiTSP):
     def __init__(self, drones: int, nodes, labels=None):
-        super().__init__("TS", drones, nodes, labels)
+        super().__init__("tabu", drones, nodes, labels)
 
     def solve(self, neighbourhoodSize, maxTabuSize, stoppingTurn) -> None:
         random.seed(int.from_bytes(os.urandom(8), 'big'))

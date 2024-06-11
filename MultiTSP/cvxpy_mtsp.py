@@ -7,7 +7,7 @@ import cvxpy as cp
 
 class CVXPYMultiTSP(AlgoMultiTSP):
     def __init__(self, drones: int, nodes, labels=None):
-        super().__init__("CVXPY", drones, nodes, labels)
+        super().__init__("cvxpy", drones, nodes, labels)
 
     def solve(self, verbose=False) -> None:
         random.seed(int.from_bytes(os.urandom(8), 'big'))

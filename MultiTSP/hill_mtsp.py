@@ -71,7 +71,7 @@ class Chromosome():
 
 class HillClimbMultiTSP(AlgoMultiTSP):
     def __init__(self, drones: int, nodes, labels=None):
-        super().__init__("Hill Climbing", drones, nodes, labels)
+        super().__init__("hill", drones, nodes, labels)
 
     def solve(self, epochs, cont=False) -> None:
         random.seed(int.from_bytes(os.urandom(8), 'big'))

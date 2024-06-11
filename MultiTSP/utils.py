@@ -1,3 +1,5 @@
+import os
+import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.markers import MarkerStyle
@@ -6,7 +8,6 @@ from abc import ABC, abstractmethod
 from typing import Union
 
 # Global imports
-import os
 import random
 import time
 import copy
@@ -332,3 +333,27 @@ class AlgoMultiTSP(ABC):
     
     def get_paths_list(self, includeStart=True) -> 'list[list[np.ndarray]]':
         return self.network.get_paths_list(includeStart)
+    
+
+def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,None]:
+    filename = os.path.join("paths", city_type, f"{mtsp_solver.algorithm}_best_solution.pkl")
+    plot_path = os.path.join("plots", city_type, f"{city_type}_{mtsp_solver.algorithm}_solution.png")
+    
+    if os.path.exists(filename):
+        with open(filename, 'rb') as f:
+            prev_best_solver: AlgoMultiTSP = pickle.load(f)
+        
+        if mtsp_solver.get_score() < prev_best_solver.get_score():
+            with open(filename, 'wb') as f:
+                pickle.dump(mtsp_solver, f)
+            return plot_path
+        else:
+            return None
+                
+    else:
+        if not os.path.exists(os.path.dirname(filename)):
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, 'wb') as f:
+            pickle.dump(mtsp_solver, f)
+        return plot_path
+        

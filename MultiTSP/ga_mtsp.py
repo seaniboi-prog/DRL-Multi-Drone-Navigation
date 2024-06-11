@@ -362,7 +362,7 @@ class GA:
 
 class GAMultiTSP(AlgoMultiTSP):
     def __init__(self, n_drones: int, nodes, labels=None):
-        super().__init__("GA", n_drones, nodes, labels)
+        super().__init__("ga", n_drones, nodes, labels)
         self.pop = None
 
     def solve(self, numGenerations=70, mutationRate=0.02, tournamentSize=10, populationSize=100, elitism=True, cont=False):

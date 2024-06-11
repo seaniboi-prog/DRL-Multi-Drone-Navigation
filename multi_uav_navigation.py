@@ -130,49 +130,18 @@ if __name__ == "__main__":
     no_drones = len(vehicle_names)
     print(f"Number of drones: {no_drones}\n")
     
-    redo = True
+    # Retrieve MTSP Algorithm
+    mtsp_solver: mtsp.AlgoMultiTSP = load_obj_file(os.path.join("MultiTSP", "paths", waypoint_type, f"{mtsp_algo}_best_solution.pkl"))
     
-    mtsp_path_retries = []
-    mtsp_path_scores = []
+    # Visualize paths
+    mtsp_solver.plot_solution(pause=5)
 
-    # TODO: Update this part so it is done beforehand
-    while redo:
-        # Generate paths
-        if mtsp_algo == "ga":
-            mtsp_solver = mtsp.GAMultiTSP(no_drones, waypoints, labels)
-            mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZE, ELITISM, cont=False)
-        elif mtsp_algo == "aco":
-            mtsp_solver = mtsp.ACOMultiTSP(no_drones, waypoints, labels)
-            mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, cont=False)
-        elif mtsp_algo == "cvxpy":
-            mtsp_solver = mtsp.CVXPYMultiTSP(no_drones, waypoints, labels)
-            mtsp_solver.solve(verbose=False)
-        elif mtsp_algo == "hill":
-            mtsp_solver = mtsp.HillClimbMultiTSP(no_drones, waypoints, labels)
-            mtsp_solver.solve(EPOCHS)
-        elif mtsp_algo == "tabu":
-            mtsp_solver = mtsp.TabuSearchMultiTSP(no_drones, waypoints, labels)
-            mtsp_solver.solve(NEIGHBOURHOOD_SIZE, MAX_TABU_SIZE, STOPPING_TURN)
-        else:
-            raise ValueError("Invalid MTSP algorithm. Must be one of: 'ga', 'aco', 'cvxpy', 'hill'")
-
-        # Visualize paths
-        mtsp_solver.plot_solution(pause=0, filename=os.path.join(results_root_path, f"{waypoint_type}_mtsp_solution.png"))
-
-        print(f"Calculated Distance: {round(mtsp_solver.get_total_distance(), 2)}")
-        print(f"Calculated Score: {round(mtsp_solver.get_score(), 2)}")
-        
-        # Retrieve paths
-        mtsp_path_retries.append(copy.deepcopy(mtsp_solver.get_paths_list(includeStart=False)))
-        mtsp_path_scores.append(mtsp_solver.get_score())
-        
-        if input("Do you want to redo the MTSP algorithm? (y/n): ").lower() != "y":
-            redo = False
-            
-    # Retrieve best path
-    best_path_idx = mtsp_path_scores.index(max(mtsp_path_scores))
-    mtsp_paths = mtsp_path_retries[best_path_idx]
-    print(f"Best Path Score: {mtsp_path_scores[best_path_idx]}")
+    print(f"Calculated Distance: {round(mtsp_solver.get_total_distance(), 2)}")
+    print(f"Calculated Score: {round(mtsp_solver.get_score(), 2)}")
+    
+    # Retrieve paths
+    mtsp_paths = mtsp_solver.get_paths_list(includeStart=False)
+    print(f"Path Score: {mtsp_solver.get_score()}")
     print("Executing the following paths:")
     for i, path in enumerate(mtsp_paths):
         print(f"Drone {i+1}: ", end="")

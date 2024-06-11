@@ -1,3 +1,4 @@
+from fileinput import filename
 import sys
 from ga_mtsp import GAMultiTSP
 from aco_mtsp import ACOMultiTSP
@@ -23,8 +24,7 @@ if city_type == "random":
 
     nodes = [np.array([n_x[i], n_y[i], n_z[i]]) for i in range(num_nodes-1)]
     nodes.insert(0, np.array([50, 50, 6])) # Start node
-
-elif city_type == "blocks":
+else:
     nodes = get_cities(city_type)
     num_nodes = len(nodes)
 
@@ -41,8 +41,10 @@ hill_mtsp_solver = HillClimbMultiTSP(num_drones, nodes, labels)
 
 hill_mtsp_solver.solve(EPOCHS)
 
+plot_filename = compare_solution_scores(hill_mtsp_solver, city_type)
+
 hill_mtsp_solver.plot_progress()
-hill_mtsp_solver.plot_solution()
+hill_mtsp_solver.plot_solution(filename=plot_filename)
 hill_mtsp_solver.print_paths()
 hill_paths_list = hill_mtsp_solver.get_paths_list(includeStart=False)
 for i, path in enumerate(hill_paths_list):
@@ -67,8 +69,10 @@ ga_mtsp_solver = GAMultiTSP(num_drones, nodes, labels)
 
 ga_mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZE, ELITISM, False)
 
+plot_filename = compare_solution_scores(ga_mtsp_solver, city_type)
+
 ga_mtsp_solver.plot_progress()
-ga_mtsp_solver.plot_solution()
+ga_mtsp_solver.plot_solution(filename=plot_filename)
 ga_mtsp_solver.print_paths()
 ga_paths_list = ga_mtsp_solver.get_paths_list(includeStart=False)
 for i, path in enumerate(ga_paths_list):
@@ -94,8 +98,10 @@ aco_mtsp_solver = ACOMultiTSP(num_drones, nodes, labels)
 
 aco_mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, False)
 
+plot_filename = compare_solution_scores(aco_mtsp_solver, city_type)
+
 aco_mtsp_solver.plot_progress()
-aco_mtsp_solver.plot_solution()
+aco_mtsp_solver.plot_solution(filename=plot_filename)
 aco_mtsp_solver.print_paths()
 aco_paths_list = aco_mtsp_solver.get_paths_list(includeStart=False)
 for i, path in enumerate(aco_paths_list):
@@ -117,8 +123,10 @@ tabu_mtsp_solver = TabuSearchMultiTSP(num_drones, nodes, labels)
 
 tabu_mtsp_solver.solve(NEIGHBOURHOOD_SIZE, MAX_TABU_SIZE, STOPPING_TURN)
 
+plot_filename = compare_solution_scores(tabu_mtsp_solver, city_type)
+
 tabu_mtsp_solver.plot_progress()
-tabu_mtsp_solver.plot_solution()
+tabu_mtsp_solver.plot_solution(filename=plot_filename)
 tabu_mtsp_solver.print_paths()
 tabu_paths_list = tabu_mtsp_solver.get_paths_list(includeStart=False)
 for i, path in enumerate(tabu_paths_list):
@@ -167,6 +175,6 @@ plt.suptitle("Comparing MultiTSP Solutions")
 
 plt.tight_layout()
 
-plt.savefig("plots/blocks_comparison.png")
+plt.savefig(f"plots/{city_type}/blocks_comparison.png")
 
 plt.show()
