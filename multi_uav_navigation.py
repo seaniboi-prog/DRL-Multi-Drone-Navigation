@@ -108,9 +108,6 @@ if __name__ == "__main__":
     env_variant: str = "cust" if args.custom else "airsim"
     
     is_custom = args.custom
-    
-    # Results Path
-    results_root_path = os.path.join(os.getcwd(), "results", mtsp_algo, rl_algo, action_type, env_variant)
 
     # Retrieve inputs
     ## All waypoints
@@ -129,9 +126,12 @@ if __name__ == "__main__":
     vehicle_names = client.listVehicles()
     no_drones = len(vehicle_names)
     print(f"Number of drones: {no_drones}\n")
+
+    # Results Path
+    results_root_path = os.path.join(os.getcwd(), "results", mtsp_algo, f"{no_drones}_drones", rl_algo, action_type, env_variant)
     
     # Retrieve MTSP Algorithm
-    mtsp_solver: mtsp.AlgoMultiTSP = load_obj_file(os.path.join("MultiTSP", "paths", waypoint_type, f"{mtsp_algo}_best_solution.pkl"))
+    mtsp_solver: mtsp.AlgoMultiTSP = load_obj_file(os.path.join("MultiTSP", "paths", waypoint_type, f"{no_drones}_drones", f"{waypoint_type}_{no_drones}_{mtsp_algo}_best_solution.pkl"))
     
     # Visualize paths
     mtsp_solver.plot_solution(pause=5)
@@ -207,10 +207,10 @@ if __name__ == "__main__":
     print(f"Total Distance Travelled: {total_distance}")
     print(f"Total Time Elapsed: {int(mins)} min/s, {secs:.2f} sec/s")
     
-    plot_all_routes(waypoints, obstacles, drone_routes, filename=os.path.join(results_root_path, f"{waypoint_type}_drone_routes.png"))
+    plot_all_routes(waypoints, obstacles, drone_routes, filename=os.path.join(results_root_path, f"{waypoint_type}_{no_drones}_drone_routes.png"))
 
     # Save results
-    results_path = os.path.join(results_root_path, f"{waypoint_type}_results.pkl")
+    results_path = os.path.join(results_root_path, f"{waypoint_type}_{no_drones}_results.pkl")
     save_obj_file(results_path, results)
 
     # Add results to Table
@@ -239,8 +239,10 @@ if __name__ == "__main__":
 
     # Check if the slug exists in the 'Slug' column and update or append the row
     if slug in results_table["Slug"].values:
+        print("Updating existing row with slug:", slug)
         results_table.loc[results_table["Slug"] == slug, :] = pd.DataFrame([row]).values
     else:
+        print("Appending new row with slug:", slug)
         results_table = results_table.append(row, ignore_index=True)
 
     # Save the updated DataFrame back to the CSV file
