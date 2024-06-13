@@ -2,6 +2,8 @@ import pickle
 import os
 import time
 import numpy as np
+from rich.console import Console
+from rich.table import Table
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
@@ -57,3 +59,18 @@ def plot_all_routes(targets, drone_paths, obstacles=[], filename=None):
             os.makedirs(os.path.dirname(filename), exist_ok=True)
         plt.savefig(filename)
     plt.show()
+
+def display_table(df, title):
+    table = Table(title=title)
+    rows = df.values.tolist()
+    rows = [[str(el) for el in row] for row in rows]
+    columns = df.columns.tolist()
+
+    for column in columns:
+        table.add_column(column)
+
+    for row in rows:
+        table.add_row(*row, style='bright_green')
+
+    console = Console()
+    console.print(table)
