@@ -336,8 +336,9 @@ class AlgoMultiTSP(ABC):
     
 
 def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,None]:
-    filename = os.path.join("paths", city_type, f"{mtsp_solver.algorithm}_best_solution.pkl")
-    plot_path = os.path.join("plots", city_type, f"{city_type}_{mtsp_solver.algorithm}_solution.png")
+    no_drones = mtsp_solver.n_drones
+    filename = os.path.join("paths", city_type, f"{no_drones}_drones", f"{city_type}_{no_drones}_{mtsp_solver.algorithm}_best_solution.pkl")
+    plot_path = os.path.join("plots", city_type, f"{no_drones}_drones", f"{city_type}_{no_drones}_{mtsp_solver.algorithm}_solution.png")
     
     if os.path.exists(filename):
         with open(filename, 'rb') as f:

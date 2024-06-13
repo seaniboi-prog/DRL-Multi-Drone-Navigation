@@ -1,4 +1,3 @@
-from fileinput import filename
 import sys
 from ga_mtsp import GAMultiTSP
 from aco_mtsp import ACOMultiTSP
@@ -175,6 +174,6 @@ plt.suptitle("Comparing MultiTSP Solutions")
 
 plt.tight_layout()
 
-plt.savefig(f"plots/{city_type}/blocks_comparison.png")
+plt.savefig(f"plots/{city_type}/{num_drones}_drones/{city_type}_{num_drones}_comparison.png")
 
 plt.show()
