@@ -15,7 +15,7 @@ from MultiPathPlanning.coordinates import get_waypoints, get_obstacles
 from MultiPathPlanning.register_envs import register_ray_gym_envs
 # from MultiPathPlanning.navigate_drone import compute_single_episode
 
-import MultiTSP as mtsp
+from MultiTSP import *
 
 import UAVNavigation.gym_drone.envs as airsim_envs
 
@@ -131,7 +131,7 @@ if __name__ == "__main__":
     results_root_path = os.path.join(os.getcwd(), "results", mtsp_algo, f"{no_drones}_drones", rl_algo, action_type, env_variant)
     
     # Retrieve MTSP Algorithm
-    mtsp_solver: mtsp.AlgoMultiTSP = load_obj_file(os.path.join("mtsp_results", "paths", waypoint_type, f"{no_drones}_drones", f"{waypoint_type}_{no_drones}_{mtsp_algo}_best_solution.pkl"))
+    mtsp_solver: AlgoMultiTSP = load_obj_file(os.path.join("mtsp_results", "paths", waypoint_type, f"{no_drones}_drones", f"{waypoint_type}_{no_drones}_{mtsp_algo}_best_solution.pkl"))
     
     # Visualize paths
     mtsp_solver.plot_solution(pause=5)
