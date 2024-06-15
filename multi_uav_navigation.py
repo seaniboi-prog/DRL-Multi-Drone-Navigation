@@ -214,36 +214,7 @@ if __name__ == "__main__":
     save_obj_file(results_path, results)
 
     # Add results to Table
-    # TODO: Add results to table with pandas
-    results_table_path = "results_table.csv"
+    results_table_path = os.path.join(os.getcwd(), "multi_uav_nav_results.csv")
+    results_table = update_multiuav_table(results_table_path, waypoint_type, no_drones, mtsp_algo, rl_algo, action_type, env_variant, results, mtsp_solver)
 
-    # Check if the file exists and read the CSV, otherwise create an empty DataFrame with specified columns
-    if os.path.exists(results_table_path):
-        results_table = pd.read_csv(results_table_path)
-    else:
-        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "No Drones", "MTSP Algorithm", "RL Algorithm", "Action Type", "Total Distance", "Total Time"])
-
-    # Construct the slug and row dictionary
-    slug = f"{waypoint_type}_{no_drones}_{mtsp_algo}_{rl_algo}_{action_type}_{env_variant}"
-    row = {
-        "Slug": slug,
-        "Waypoint Type": waypoint_type,
-        "No Drones": no_drones,
-        "MTSP Algorithm": mtsp_algo,
-        "RL Algorithm": rl_algo,
-        "Action Type": action_type,
-        "Total Distance": total_distance,
-        "Total Time": elapsed_time,
-        "Average Time": average_time
-    }
-
-    # Check if the slug exists in the 'Slug' column and update or append the row
-    if slug in results_table["Slug"].values:
-        print("Updating existing row with slug:", slug)
-        results_table.loc[results_table["Slug"] == slug, :] = pd.DataFrame([row]).values
-    else:
-        print("Appending new row with slug:", slug)
-        results_table = results_table.append(row, ignore_index=True)
-
-    # Save the updated DataFrame back to the CSV file
-    results_table.to_csv(results_table_path, index=True, index_label="Index")
+    display_table(results_table, "Multi UAV Navigation Results")

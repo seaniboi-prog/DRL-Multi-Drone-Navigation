@@ -15,6 +15,8 @@ city_type = "blocks"
 
 num_drones = 3
 
+results_table_path = os.path.join(os.getcwd(), "mtsp_results.csv")
+
 if city_type == "random":
     num_nodes = 20
     n_x = np.random.uniform(low=0, high=100, size=num_nodes-1)
@@ -41,6 +43,7 @@ hill_mtsp_solver = HillClimbMultiTSP(num_drones, nodes, labels)
 hill_mtsp_solver.solve(EPOCHS)
 
 plot_filename = compare_solution_scores(hill_mtsp_solver, city_type)
+results_table = update_mtsp_table(results_table_path, city_type, num_drones, "hill", hill_mtsp_solver)
 
 hill_mtsp_solver.plot_progress()
 hill_mtsp_solver.plot_solution(filename=plot_filename)
@@ -69,6 +72,7 @@ ga_mtsp_solver = GAMultiTSP(num_drones, nodes, labels)
 ga_mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZE, ELITISM, False)
 
 plot_filename = compare_solution_scores(ga_mtsp_solver, city_type)
+results_table = update_mtsp_table(results_table_path, city_type, num_drones, "ga", ga_mtsp_solver)
 
 ga_mtsp_solver.plot_progress()
 ga_mtsp_solver.plot_solution(filename=plot_filename)
@@ -98,6 +102,7 @@ aco_mtsp_solver = ACOMultiTSP(num_drones, nodes, labels)
 aco_mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, False)
 
 plot_filename = compare_solution_scores(aco_mtsp_solver, city_type)
+results_table = update_mtsp_table(results_table_path, city_type, num_drones, "aco", aco_mtsp_solver)
 
 aco_mtsp_solver.plot_progress()
 aco_mtsp_solver.plot_solution(filename=plot_filename)
@@ -123,6 +128,7 @@ tabu_mtsp_solver = TabuSearchMultiTSP(num_drones, nodes, labels)
 tabu_mtsp_solver.solve(NEIGHBOURHOOD_SIZE, MAX_TABU_SIZE, STOPPING_TURN)
 
 plot_filename = compare_solution_scores(tabu_mtsp_solver, city_type)
+results_table = update_mtsp_table(results_table_path, city_type, num_drones, "tabu", tabu_mtsp_solver)
 
 tabu_mtsp_solver.plot_progress()
 tabu_mtsp_solver.plot_solution(filename=plot_filename)
@@ -174,6 +180,9 @@ plt.suptitle("Comparing MultiTSP Solutions")
 
 plt.tight_layout()
 
-plt.savefig(f"plots/{city_type}/{num_drones}_drones/{city_type}_{num_drones}_comparison.png")
+# plt.savefig(f"plots/{city_type}/{num_drones}_drones/{city_type}_{num_drones}_comparison.png")
 
 plt.show()
+
+# Display results table
+display_table(results_table, "MultiTSP Results")

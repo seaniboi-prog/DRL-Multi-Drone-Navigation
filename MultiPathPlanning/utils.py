@@ -1,7 +1,9 @@
 import pickle
+import dill
 import os
 import time
 import numpy as np
+import pandas as pd
 from rich.console import Console
 from rich.table import Table
 import matplotlib.pyplot as plt
@@ -59,6 +61,46 @@ def plot_all_routes(targets, drone_paths, obstacles=[], filename=None):
             os.makedirs(os.path.dirname(filename), exist_ok=True)
         plt.savefig(filename)
     plt.show()
+
+def update_multiuav_table(results_table_path, waypoint_type, no_drones, mtsp_algo, rl_algo, action_type, env_variant, results, mtsp_solver):
+    total_distance = sum(result["total_distance"] for result in results)
+    elapsed_time = max(result["total_time"] for result in results)
+    average_time = sum(result["total_time"] for result in results) / len(results)
+
+    # Check if the file exists and read the CSV, otherwise create an empty DataFrame with specified columns
+    if os.path.exists(results_table_path):
+        results_table = pd.read_csv(results_table_path)
+    else:
+        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "No Drones", "MTSP Algorithm", "RL Algorithm", "Action Type", "Calc Mean Distance",
+                                              "Calc Total Distance", "Real Mean Distance", "Real Total Distance", "Average Time", "Elapsed Time"])
+
+    # Construct the slug and row dictionary
+    slug = f"{waypoint_type}_{mtsp_algo}_{rl_algo}_{action_type}_{env_variant}_{no_drones}"
+    row = {
+        "Slug": slug,
+        "Waypoint Type": waypoint_type.capitalize(),
+        "No Drones": no_drones,
+        "MTSP Algorithm": mtsp_algo.upper(),
+        "RL Algorithm": rl_algo.upper(),
+        "Action Type": action_type.capitalize(),
+        "Calc Mean Distance": mtsp_solver.get_total_distance() / no_drones,
+        "Calc Total Distance": mtsp_solver.get_total_distance(),
+        "Real Mean Distance": total_distance / no_drones,
+        "Real Total Distance": total_distance,
+        "Average Time": average_time,
+        "Elapsed Time": elapsed_time
+    }
+
+    # Check if the slug exists in the 'Slug' column and update or append the row
+    if slug in results_table["Slug"].values:
+        results_table.loc[results_table["Slug"] == slug, :] = pd.DataFrame([row]).values
+    else:
+        results_table = pd.concat([results_table, pd.DataFrame([row])], ignore_index=True)
+
+    # Save the updated DataFrame back to the CSV file
+    results_table.to_csv(results_table_path, index=False)
+
+    return results_table
 
 def display_table(df, title):
     table = Table(title=title)

@@ -1,11 +1,16 @@
 import os
 import pickle
+import dill
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.markers import MarkerStyle
 import networkx as nx
 from abc import ABC, abstractmethod
 from typing import Union
+
+from rich.console import Console
+from rich.table import Table
 
 # Global imports
 import random
@@ -147,6 +152,9 @@ class Network:
     def get_total_dist(self) -> float:
         return sum([path.get_distance() for path in self.paths])
     
+    def get_all_dists(self) -> 'list[float]':
+        return [path.get_distance() for path in self.paths]
+    
     def get_minmax_dist(self) -> float:
         return max([path.get_distance() for path in self.paths])
     
@@ -158,9 +166,6 @@ class Network:
         max_drone_dist = max(drone_dists)
 
         return max_drone_dist / speed
-    
-    def get_total_cost(self) -> float:
-        return self.get_total_time(10) + self.get_total_dist()
     
     def display_graph(self, title: str = "Graph", edges=False, positions="spring") -> None:
         plt.figure(figsize=(12, 12))
@@ -319,14 +324,14 @@ class AlgoMultiTSP(ABC):
     def get_total_distance(self) -> float:
         return self.network.get_total_dist()
     
+    def get_all_dists(self) -> 'list[float]':
+        return self.network.get_all_dists()
+    
     def get_minmax_distance(self) -> float:
         return self.network.get_minmax_dist()
     
     def get_score(self) -> float:
         return self.network.get_score()
-    
-    def get_total_cost(self) -> float:
-        return self.network.get_total_cost()
     
     def get_paths(self) -> 'list[Path]':
         return self.network.get_paths()
@@ -345,8 +350,9 @@ def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,N
             prev_best_solver: AlgoMultiTSP = pickle.load(f)
         
         if mtsp_solver.get_score() < prev_best_solver.get_score():
+            serialized = dill.dumps(mtsp_solver)
             with open(filename, 'wb') as f:
-                pickle.dump(mtsp_solver, f)
+                f.write(serialized)
             return plot_path
         else:
             return None
@@ -354,7 +360,55 @@ def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,N
     else:
         if not os.path.exists(os.path.dirname(filename)):
             os.makedirs(os.path.dirname(filename), exist_ok=True)
+        serialized = dill.dumps(mtsp_solver)
         with open(filename, 'wb') as f:
-            pickle.dump(mtsp_solver, f)
+            f.write(serialized)
         return plot_path
-        
+
+# TODO: Implement the following functions    
+def update_mtsp_table(results_table_path, city_type, no_drones, mtsp_algo, mtsp_solver):
+    # Check if the file exists and read the CSV, otherwise create an empty DataFrame with specified columns
+    if os.path.exists(results_table_path):
+        results_table = pd.read_csv(results_table_path)
+    else:
+        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "No Drones", "MTSP Algorithm", "Min Distance", "Mean Distance", "Max Distance", "Total Distance", "Score"])
+
+    # Construct the slug and row dictionary
+    slug = f"{city_type}_{mtsp_algo}_{no_drones}"
+    row = {
+        "Slug": slug,
+        "Waypoint Type": city_type.capitalize(),
+        "No Drones": no_drones,
+        "MTSP Algorithm": mtsp_algo.upper(),
+        "Min Distance": min(mtsp_solver.get_all_dists()),
+        "Mean Distance": mtsp_solver.get_total_distance() / no_drones,
+        "Max Distance": max(mtsp_solver.get_all_dists()),
+        "Total Distance": mtsp_solver.get_total_distance(),
+        "Score": mtsp_solver.get_score()
+    }
+
+    # Check if the slug exists in the 'Slug' column and update or append the row
+    if slug in results_table["Slug"].values:
+        results_table.loc[results_table["Slug"] == slug, :] = pd.DataFrame([row]).values
+    else:
+        results_table = pd.concat([results_table, pd.DataFrame([row])], ignore_index=True)
+
+    # Save the updated DataFrame back to the CSV file
+    results_table.to_csv(results_table_path, index=False)
+
+    return results_table
+
+def display_table(df, title):
+    table = Table(title=title)
+    rows = df.values.tolist()
+    rows = [[str(el) for el in row] for row in rows]
+    columns = df.columns.tolist()
+
+    for column in columns:
+        table.add_column(column)
+
+    for row in rows:
+        table.add_row(*row, style='bright_green')
+
+    console = Console()
+    console.print(table)
