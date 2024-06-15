@@ -25,10 +25,7 @@ drone_routes = [result["route"] for result in results]
 plot_all_routes(waypoints, drone_routes, obstacles, os.path.join(results_root_path, f"{waypoint_type}_{no_drones}_drone_routes.png"))
 
 results_table_path = os.path.join(os.getcwd(), "multi_uav_nav_results.csv")
-mtsp_solver_path = os.path.join("MultiTSP", "paths", waypoint_type, f"{no_drones}_drones", f"{waypoint_type}_{no_drones}_{mtsp_algo}_best_solution.pkl")
-with open(mtsp_solver_path, "rb") as file:
-    mtsp_solver_serialized = file.read()
-mtsp_solver: AlgoMultiTSP = dill.loads(mtsp_solver_serialized)
+mtsp_solver: AlgoMultiTSP = load_obj_file(os.path.join("mtsp_results", "paths", waypoint_type, f"{no_drones}_drones", f"{waypoint_type}_{no_drones}_{mtsp_algo}_best_solution.pkl"))
 results_table = update_multiuav_table(results_table_path, waypoint_type, no_drones, mtsp_algo, rl_algo, action_type, env_variant, results, mtsp_solver)
 
 display_table(results_table, "Multi UAV Navigation Results")

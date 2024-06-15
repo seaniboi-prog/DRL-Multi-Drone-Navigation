@@ -1,12 +1,9 @@
 import sys
-from ga_mtsp import GAMultiTSP
-from aco_mtsp import ACOMultiTSP
-from cvxpy_mtsp import CVXPYMultiTSP
-from hill_mtsp import HillClimbMultiTSP
-from tabu_mtsp import TabuSearchMultiTSP
 
-from utils import *
-from cities import get_cities
+from MultiPathPlanning.coordinates import get_waypoints
+
+from MultiTSP import *
+
 import string
 
 # General Constants
@@ -26,7 +23,7 @@ if city_type == "random":
     nodes = [np.array([n_x[i], n_y[i], n_z[i]]) for i in range(num_nodes-1)]
     nodes.insert(0, np.array([50, 50, 6])) # Start node
 else:
-    nodes = get_cities(city_type)
+    nodes = get_waypoints(city_type)
     num_nodes = len(nodes)
 
 labels = [letter for letter in string.ascii_uppercase[:num_nodes]]

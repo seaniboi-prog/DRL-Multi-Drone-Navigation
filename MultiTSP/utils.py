@@ -1,6 +1,5 @@
 import os
 import pickle
-import dill
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -342,17 +341,16 @@ class AlgoMultiTSP(ABC):
 
 def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,None]:
     no_drones = mtsp_solver.n_drones
-    filename = os.path.join("paths", city_type, f"{no_drones}_drones", f"{city_type}_{no_drones}_{mtsp_solver.algorithm}_best_solution.pkl")
-    plot_path = os.path.join("plots", city_type, f"{no_drones}_drones", f"{city_type}_{no_drones}_{mtsp_solver.algorithm}_solution.png")
+    filename = os.path.join("mtsp_results", "paths", city_type, f"{no_drones}_drones", f"{city_type}_{no_drones}_{mtsp_solver.algorithm}_best_solution.pkl")
+    plot_path = os.path.join("mtsp_results", "plots", city_type, f"{no_drones}_drones", f"{city_type}_{no_drones}_{mtsp_solver.algorithm}_solution.png")
     
     if os.path.exists(filename):
         with open(filename, 'rb') as f:
             prev_best_solver: AlgoMultiTSP = pickle.load(f)
         
         if mtsp_solver.get_score() < prev_best_solver.get_score():
-            serialized = dill.dumps(mtsp_solver)
             with open(filename, 'wb') as f:
-                f.write(serialized)
+                pickle.dump(mtsp_solver, f)
             return plot_path
         else:
             return None
@@ -360,9 +358,8 @@ def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,N
     else:
         if not os.path.exists(os.path.dirname(filename)):
             os.makedirs(os.path.dirname(filename), exist_ok=True)
-        serialized = dill.dumps(mtsp_solver)
         with open(filename, 'wb') as f:
-            f.write(serialized)
+            pickle.dump(mtsp_solver, f)
         return plot_path
 
 # TODO: Implement the following functions    

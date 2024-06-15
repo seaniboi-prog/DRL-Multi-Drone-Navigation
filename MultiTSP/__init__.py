@@ -5,8 +5,6 @@ try:
     from hill_mtsp import HillClimbMultiTSP
     from tabu_mtsp import TabuSearchMultiTSP
 
-    import aco_mtsp
-
     from utils import *
 except ImportError:
     from MultiTSP.ga_mtsp import GAMultiTSP
@@ -14,7 +12,5 @@ except ImportError:
     from MultiTSP.cvxpy_mtsp import CVXPYMultiTSP
     from MultiTSP.hill_mtsp import HillClimbMultiTSP
     from MultiTSP.tabu_mtsp import TabuSearchMultiTSP
-
-    import MultiTSP.aco_mtsp
 
     from MultiTSP.utils import *
