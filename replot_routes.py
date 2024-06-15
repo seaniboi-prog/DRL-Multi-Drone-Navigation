@@ -8,7 +8,7 @@ import os
 
 waypoint_type = "blocks"
 no_drones = 3
-mtsp_algo = "aco"
+mtsp_algo = "hill"
 rl_algo = "ppo"
 action_type = "disc"
 env_variant = "airsim"
