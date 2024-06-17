@@ -5,15 +5,15 @@ from UAVNavigation.gym_drone.envs import DroneEnv_Base
 from MultiPathPlanning.constants import RED, GREEN, RESET
 
 def compute_single_episode(env: DroneEnv_Base, model: Union[Algorithm, Policy]) -> dict:
+    print("Starting episode of ", env.drone_name)
+
     # Initialize variables
     done = False
     total_reward: float = 0.0
     episode_length: int = 0
 
     # Take off and get initial observation
-    obs, info = env.reset(options={"_reset": False})
-    
-    print("Starting episode of ", env.drone_name)
+    obs, info = env.reset(options={"_reset": False})    
 
     # Start episode
     while not done:
