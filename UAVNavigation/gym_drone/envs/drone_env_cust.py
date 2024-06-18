@@ -175,7 +175,7 @@ class DroneEnvCust_Disc(gym.Env):
         self.state["route"] = self.route
         self.state["distance_travelled"] = self._get_path_dist()
         self.state["time_elapsed"] = time.time() - self.start_time
-        self.state['solved'] = False
+        self.state["status"] = "running"
 
     def _get_yaw(self, deg) -> float:
         return self._normalize_angle(self.curr_orient, deg)
@@ -332,6 +332,9 @@ class DroneEnvCust_Disc(gym.Env):
         
         self.render()
         
+        if truncated:
+            self.state["status"] = "truncated"
+        
         return obs, reward, terminated, truncated, self.state
     
     def _interprate_action(self, action):
@@ -407,6 +410,7 @@ class DroneEnvCust_Disc(gym.Env):
         if self._did_crash():
             reward = self.REWARD_CRASH
             terminated = True
+            self.state['status'] = "crashed"
         else:
             dist = self._get_distance(self.curr_pos, self.waypoints[self.waypt_idx])
             
@@ -416,7 +420,7 @@ class DroneEnvCust_Disc(gym.Env):
                     reward = self.REWARD_GOAL
                     terminated = True
                     self.state['progress'] = 1.0
-                    self.state['solved'] = True
+                    self.state['status'] = "solved"
                 else:
                     reward = self.REWARD_CKPT
                     terminated = False

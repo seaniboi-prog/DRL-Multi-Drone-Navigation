@@ -16,7 +16,11 @@ import math
 from tqdm import tqdm
 
 from ray.rllib.algorithms import ppo, dqn, sac, impala, marwil, bc
-from ray.rllib.algorithms import a2c, a3c, td3, ddpg # deprecated
+# from ray.rllib.algorithms import a2c, a3c, td3, ddpg # deprecated
+# from rllib_a2c.a2c import a2c
+# from rllib_a3c.a3c import a3c
+# from rllib_ddpg.ddpg import ddpg
+# from rllib_td3.td3 import td3
 
 from pickle_utils import save_obj_file, load_obj_file
 
@@ -75,16 +79,16 @@ def get_algo_config(algo_name: str, env_name:str, env_config: Union[dict, None] 
     if algo_name == "ppo":
         config = ppo.PPOConfig()
         config = config.training(kl_coeff=params.get("kl_coeff", 0.3), clip_param=params.get("clip_param", 0.3))
-    elif algo_name == "a2c":
-        config = a2c.A2CConfig()
-    elif algo_name == "a3c":
-        config = a3c.A3CConfig()
+    # elif algo_name == "a2c":
+    #     config = a2c.A2CConfig()
+    # elif algo_name == "a3c":
+    #     config = a3c.A3CConfig()
     elif algo_name == "dqn":
         config = dqn.DQNConfig()
-    elif algo_name == "ddpg":
-        config = ddpg.DDPGConfig()
-    elif algo_name == "td3":
-        config = td3.TD3Config()
+    # elif algo_name == "ddpg":
+    #     config = ddpg.DDPGConfig()
+    # elif algo_name == "td3":
+    #     config = td3.TD3Config()
     elif algo_name == "sac":
         config = sac.SACConfig()
     elif algo_name == "impala":

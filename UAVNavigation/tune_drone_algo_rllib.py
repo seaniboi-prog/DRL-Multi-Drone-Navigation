@@ -18,7 +18,11 @@ from ray.tune.search import ConcurrencyLimiter
 from ray.tune.search.optuna import OptunaSearch
 
 from ray.rllib.algorithms import ppo, dqn, sac, impala, marwil, bc
-from ray.rllib.algorithms import a2c, a3c, td3, ddpg # deprecated
+# from ray.rllib.algorithms import a2c, a3c, td3, ddpg # deprecated
+# from rllib_a2c.a2c import a2c
+# from rllib_a3c.a3c import a3c
+# from rllib_ddpg.ddpg import ddpg
+# from rllib_td3.td3 import td3
 
 from push_notif import send_notification
 
@@ -33,36 +37,36 @@ def get_tune_config(algo_name: str, tune_config: dict, env_name: str, env_config
                                  clip_param=tune_config["clip_param"],
                                  train_batch_size=tune_config["train_batch_size"]
                                 )
-    elif algo_name == "a2c":
-        config = a2c.A2CConfig()
-        config = config.training(gamma=tune_config["gamma"],
-                                 lr=tune_config["lr"],
-                                 train_batch_size=tune_config["train_batch_size"]
-                                )
-    elif algo_name == "a3c":
-        config = a3c.A3CConfig()
-        config = config.training(gamma=tune_config["gamma"],
-                                 lr=tune_config["lr"],
-                                 train_batch_size=tune_config["train_batch_size"]
-                                )
+    # elif algo_name == "a2c":
+    #     config = a2c.A2CConfig()
+    #     config = config.training(gamma=tune_config["gamma"],
+    #                              lr=tune_config["lr"],
+    #                              train_batch_size=tune_config["train_batch_size"]
+    #                             )
+    # elif algo_name == "a3c":
+    #     config = a3c.A3CConfig()
+    #     config = config.training(gamma=tune_config["gamma"],
+    #                              lr=tune_config["lr"],
+    #                              train_batch_size=tune_config["train_batch_size"]
+    #                             )
     elif algo_name == "dqn":
         config = dqn.DQNConfig()
         config = config.training(gamma=tune_config["gamma"],
                                  lr=tune_config["lr"],
                                  train_batch_size=tune_config["train_batch_size"]
                                 )
-    elif algo_name == "ddpg":
-        config = ddpg.DDPGConfig()
-        config = config.training(gamma=tune_config["gamma"],
-                                 lr=tune_config["lr"],
-                                 train_batch_size=tune_config["train_batch_size"]
-                                )
-    elif algo_name == "td3":
-        config = td3.TD3Config()
-        config = config.training(gamma=tune_config["gamma"],
-                                 lr=tune_config["lr"],
-                                 train_batch_size=tune_config["train_batch_size"]
-                                )
+    # elif algo_name == "ddpg":
+    #     config = ddpg.DDPGConfig()
+    #     config = config.training(gamma=tune_config["gamma"],
+    #                              lr=tune_config["lr"],
+    #                              train_batch_size=tune_config["train_batch_size"]
+    #                             )
+    # elif algo_name == "td3":
+    #     config = td3.TD3Config()
+    #     config = config.training(gamma=tune_config["gamma"],
+    #                              lr=tune_config["lr"],
+    #                              train_batch_size=tune_config["train_batch_size"]
+    #                             )
     elif algo_name == "sac":
         config = sac.SACConfig()
         config = config.training(gamma=tune_config["gamma"],
