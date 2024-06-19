@@ -68,6 +68,7 @@ class DroneEnvCust_Disc(gym.Env):
         self.reward_range = (self.REWARD_CRASH, self.REWARD_GOAL)
         self.episode_count = 0
         self.timestep = 0
+        self.extra_steps = 0
         self.curr_pos = np.array([0.0, 0.0, 3.0])
         self.curr_orient = 0
         self.start_time = time.time()
@@ -123,6 +124,7 @@ class DroneEnvCust_Disc(gym.Env):
         self.waypt_idx = 0
         self.timestep = 0
         self.away_count = 0
+        self.extra_steps = 0
         self.curr_pos = np.array([0.0, 0.0, 3.0])
         self.route = [copy.deepcopy(self.curr_pos)]
         self.curr_orient = 0
@@ -323,7 +325,7 @@ class DroneEnvCust_Disc(gym.Env):
         self.route.append(copy.deepcopy(self.curr_pos))
         
         if self.max_steps is not None:
-            truncated = self.timestep >= self.max_steps
+            truncated = self.timestep >= (self.max_steps + self.extra_steps)
         else:
             truncated = False
         self.timestep += 1
@@ -425,6 +427,7 @@ class DroneEnvCust_Disc(gym.Env):
                     reward = self.REWARD_CKPT
                     terminated = False
                     self.waypt_idx += 1
+                    self.extra_steps = copy.copy(self.timestep)
                     self.state['progress'] = self.waypt_idx / len(self.waypoints)
                     self.last_dist = self._get_distance(self.curr_pos, self.waypoints[self.waypt_idx])
             
@@ -539,6 +542,7 @@ class DroneEnvCust_Cont(DroneEnvCust_Disc):
         self.reward_range = (self.REWARD_CRASH, self.REWARD_GOAL)
         self.episode_count = 0
         self.timestep = 0
+        self.extra_steps = 0
         self.curr_pos = np.array([0.0, 0.0, 3.0])
         self.curr_orient = 0
         self.route = []
