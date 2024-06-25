@@ -12,6 +12,7 @@ import pickle
 import random
 import time
 import os
+import torch
 
 from typing import Union
 
@@ -92,7 +93,10 @@ class DroneEnvCust_Disc(gym.Env):
         self.obstacles.append(np.array([10, -75, 0, 35, -48, 15])) # Obs 11
         self.obstacles.append(np.array([40, -125, 0, 65, -100, 15])) # Obs 12
         
-        waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\DRL-Multi-Drone-Navigation\\UAVNavigation\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
+        if torch.cuda.is_available():
+            waypoint_root = os.path.join("C:\\Users\\seanf\\Documents\\Workspace\\DRL-Multi-Drone-Navigation\\UAVNavigation\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
+        else:
+            waypoint_root = os.path.join("C:\\Users\\seanf\\OneDrive\\Desktop\\School\\DRL-Multi-Drone-Navigation\\UAVNavigation\\gym_drone\\envs", "waypoints", "blocks_waypoints.pkl")
         self.rand_waypt_choices = pickle.load(open(waypoint_root, "rb"))
                 
         # Gym Variables
