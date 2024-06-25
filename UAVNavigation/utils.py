@@ -13,6 +13,9 @@ import os
 import sys
 import math
 
+from rich.console import Console
+from rich.table import Table
+
 from tqdm import tqdm
 
 from ray.rllib.algorithms import ppo, dqn, sac, impala, marwil, bc
@@ -251,3 +254,18 @@ class Rewards:
     def restore_rewards(self, path: str) -> None:
         loaded_obj = load_obj_file(path)
         self.__dict__.update(loaded_obj.__dict__)
+
+def display_table(df, title):
+    table = Table(title=title)
+    rows = df.values.tolist()
+    rows = [[str(el) for el in row] for row in rows]
+    columns = df.columns.tolist()
+
+    for column in columns:
+        table.add_column(column)
+
+    for row in rows:
+        table.add_row(*row, style='bright_green')
+
+    console = Console()
+    console.print(table)

@@ -1,0 +1,5 @@
+Slug,Algorithm,Action,Waypoints,Gamma,LR,Reward Mean,Reward Max,Training Time
+ppo_cont_multiple,ppo,cont,multiple,0.7,1e-05,-149.4199423531049,555.1292718344791,2732.4890847206116
+ppo_cont_single,ppo,cont,single,0.7,1e-05,55.966297811934076,298.6565324271577,2538.821256875992
+ppo_disc_multiple,ppo,disc,multiple,0.8,0.0001,-81.26356153255374,467.53086512511015,2605.317711353302
+ppo_disc_single,ppo,disc,single,0.7,0.0001,123.20586221371909,274.7707940474499,2439.2543244361877

@@ -363,19 +363,22 @@ def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,N
         return plot_path
 
 # TODO: Implement the following functions    
-def update_mtsp_table(results_table_path, city_type, no_drones, mtsp_algo, mtsp_solver):
+def update_mtsp_table(results_table_path, city_type, no_drones, mtsp_algo, mtsp_solver: AlgoMultiTSP):
     # Check if the file exists and read the CSV, otherwise create an empty DataFrame with specified columns
     if os.path.exists(results_table_path):
         results_table = pd.read_csv(results_table_path)
     else:
-        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "No Drones", "MTSP Algorithm", "Min Distance", "Mean Distance", "Max Distance", "Total Distance", "Score"])
+        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "No. Drones", "No. Targets", "MTSP Algorithm", "Min Distance", "Mean Distance", "Max Distance", "Total Distance", "Score"])
+
+    num_nodes = len(mtsp_solver.network.nodes)
 
     # Construct the slug and row dictionary
-    slug = f"{city_type}_{mtsp_algo}_{no_drones}"
+    slug = f"{city_type}_{num_nodes}_{mtsp_algo}_{no_drones}"
     row = {
         "Slug": slug,
         "Waypoint Type": city_type.capitalize(),
-        "No Drones": no_drones,
+        "No. Drones": no_drones,
+        "No. Targets": num_nodes,
         "MTSP Algorithm": mtsp_algo.upper(),
         "Min Distance": min(mtsp_solver.get_all_dists()),
         "Mean Distance": mtsp_solver.get_total_distance() / no_drones,

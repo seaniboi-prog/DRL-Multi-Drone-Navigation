@@ -182,7 +182,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--type", help="type of environment to train on", default="disc", choices=["cont", "disc"])
 parser.add_argument("-c", "--custom", help="use the custom variant of the environment", action="store_true")
 parser.add_argument("-a", "--algo", type=str, help="the algorithm to use for training", default="ppo",
-                    choices=["ppo", "a2c", "a3c", "dqn", "td3", "ddpg", "sac", "impala", "marwil"])
+                    choices=["ppo", "a2c", "a3c", "dqn", "td3", "ddpg", "sac", "impala", "marwil", "bc"])
 parser.add_argument("-i", "--iter", type=int, help="the number of iterations to train for", default=20)
 parser.add_argument("-m", "--momentum", help="use momentum in the environment", action="store_true")
 parser.add_argument("-b", "--batch", type=int, help="the batch size to use for training", default=2048)
