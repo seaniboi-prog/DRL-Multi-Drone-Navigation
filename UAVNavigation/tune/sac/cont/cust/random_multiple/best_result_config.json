@@ -1,0 +1,34 @@
+{
+    "metrics": {
+        "episode_reward_mean": -353.11540941044194,
+        "episode_reward_max": -163.0979851154165,
+        "episode_reward_min": -1346.2004107342211,
+        "episode_len_mean": 76.51923076923077,
+        "training_iteration": 40,
+        "timesteps_total": 4000,
+        "episodes_total": 52,
+        "timestamp": 1719364287,
+        "checkpoint_dir_name": null,
+        "done": true,
+        "trial_id": "19b91fa1",
+        "date": "2024-06-26_03-11-27",
+        "time_this_iter_s": 9389.931864976883,
+        "time_total_s": 9389.931864976883,
+        "pid": 10384,
+        "hostname": "DESKTOP-VHISOER",
+        "node_ip": "127.0.0.1",
+        "config": {
+            "gamma": 0.9,
+            "lr": 1e-05,
+            "train_batch_size": 4096
+        },
+        "time_since_restore": 9389.931864976883,
+        "iterations_since_restore": 1,
+        "experiment_tag": "9_gamma=0.9000,lr=0.0000,train_batch_size=4096"
+    },
+    "best_params": {
+        "gamma": 0.9,
+        "lr": 1e-05,
+        "train_batch_size": 4096
+    }
+}
