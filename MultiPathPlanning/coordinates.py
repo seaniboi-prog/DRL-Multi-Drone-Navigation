@@ -35,6 +35,23 @@ obstacles["blocks"] = [
                 np.array([40, -125, 0, 65, -100, 15]), # Obs 12
             ]
 
+waypoints["neighbourhood"] = [
+
+            ]
+
+waypoints["africa"] = [
+
+            ]
+
+waypoints["mountains"] = [
+
+            ]
+
+waypoints["adrl"] = [
+
+            ]
+
+
 def get_waypoints(type: str) -> list:
     return waypoints[type]
 
