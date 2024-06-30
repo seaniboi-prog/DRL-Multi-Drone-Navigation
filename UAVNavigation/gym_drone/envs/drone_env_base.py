@@ -192,7 +192,7 @@ class DroneEnv_Base(gym.Env):
         
         if collision_info.has_collided or collision_info.object_name != "" or collision_info.object_id != -1:
             collided = True
-        elif self._get_position()[2] < -0.5:
+        elif self.drone.getDistanceSensorData('bottom_distance', self.drone_name) <= 0.5:
             collided = True
         else:
             collided = False
