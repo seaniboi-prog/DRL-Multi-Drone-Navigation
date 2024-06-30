@@ -4,6 +4,7 @@ import string
 import airsim
 import pandas as pd
 import argparse
+import pyfiglet
 
 # from concurrent.futures import ProcessPoolExecutor, as_completed
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -36,6 +37,7 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--waypoint_path", type=str, help="path to custom waypoints file", default="random_multiple")
     parser.add_argument("-b", "--best", help="use best model", action="store_true")
     parser.add_argument("-s", "--endAtStart", help="end at start", action="store_true")
+    parser.add_argument("-f", "--fails", help="number of fails to allow", type=int, default=3)
 
     args = parser.parse_args()
 
@@ -127,21 +129,35 @@ if __name__ == "__main__":
 
         uav_navigation_arg_sets.append((drone_env_instace, uav_model))
 
-    client.reset()
 
     # Execute drone navigation
     # with multiprocessing.Pool(processes=len(uav_navigation_arg_sets)) as pool:
     #     results = pool.starmap(compute_single_episode, uav_navigation_arg_sets)
     
-    start_time = time.time()
     
-    results = []
-    with ThreadPoolExecutor(max_workers=len(uav_navigation_arg_sets)) as executor:
-        futures = [executor.submit(compute_single_episode, env, model) for env, model in uav_navigation_arg_sets]
-        for future in as_completed(futures):
-            results.append(future.result())
-            
-    elapsed_time = time.time() - start_time
+    no_fails = 0
+    max_fails = args.fails
+    redo = True
+    
+    while redo:
+        client.reset()
+        start_time = time.time()
+        
+        results = []
+        with ThreadPoolExecutor(max_workers=len(uav_navigation_arg_sets)) as executor:
+            futures = [executor.submit(compute_single_episode, env, model) for env, model in uav_navigation_arg_sets]
+            for future in as_completed(futures):
+                results.append(future.result())
+                
+        elapsed_time = time.time() - start_time
+        
+        solved = all(result["status"] == "solved" for result in results)
+        
+        if solved or no_fails >= max_fails:
+            redo = False
+        else:
+            no_fails += 1
+            print(f"Failed attempt: {no_fails}")
 
     print("All drones completed navigation")
 
@@ -165,3 +181,6 @@ if __name__ == "__main__":
     results_table = update_multiuav_table(results_table_path, waypoint_type, no_drones, mtsp_algo, rl_algo, action_type, env_variant, results, mtsp_solver)
 
     display_table(results_table, "Multi UAV Navigation Results")
+    
+    ascii_art = pyfiglet.figlet_format("COMPLETE", font='slant')
+    print(ascii_art)
