@@ -6,7 +6,7 @@
     "LocalHostIp": "127.0.0.1",
     "ApiServerPort": 41451,
     "SimMode": "Multirotor",
-    "ViewMode": "FlyWithMe",
+    "ViewMode": "NoDisplay",
     "CameraDefaults": {
         "CaptureSettings": [
             {

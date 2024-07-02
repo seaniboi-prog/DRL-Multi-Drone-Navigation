@@ -46,8 +46,8 @@ if __name__ == "__main__":
         raise ValueError(F"{RED}Missing required argument: --waypoint_type (or -w){RESET}")
     
     # Get all arguments
-    waypoint_type = args.waypoint_type
-    mtsp_algo = args.mtsp_algo
+    waypoint_type: str = args.waypoint_type
+    mtsp_algo: str = args.mtsp_algo
     end_at_start = args.endAtStart
     
     rl_algo: str = args.rl_algo
@@ -137,9 +137,8 @@ if __name__ == "__main__":
     
     no_fails = 0
     max_fails = args.fails
-    redo = True
     
-    while redo:
+    while True:
         client.reset()
         start_time = time.time()
         
@@ -154,7 +153,7 @@ if __name__ == "__main__":
         solved = all(result["status"] == "solved" for result in results)
         
         if solved or no_fails >= max_fails:
-            redo = False
+            break
         else:
             no_fails += 1
             print(f"Failed attempt: {no_fails}")
@@ -166,21 +165,26 @@ if __name__ == "__main__":
     total_distance = sum(result["total_distance"] for result in results)
     average_time = sum(result["total_time"] for result in results) / len(results)
     mins, secs = divmod(elapsed_time, 60)
+    
+    solved = all(result["status"] == "solved" for result in results)
 
     print(f"Total Distance Travelled: {total_distance}")
     print(f"Total Time Elapsed: {int(mins)} min/s, {secs:.2f} sec/s")
     
-    plot_all_routes(waypoints, obstacles, drone_routes, filename=os.path.join(results_root_path, f"{waypoint_type}_{no_drones}_drone_routes.png"))
+    plot_all_routes(waypoints, drone_routes, obstacles, filename=os.path.join(results_root_path, f"{waypoint_type}_{no_drones}_drone_routes.png"))
 
     # Save results
     results_path = os.path.join(results_root_path, f"{waypoint_type}_{no_drones}_results.pkl")
     save_obj_file(results_path, results)
 
-    # Add results to Table
-    results_table_path = os.path.join(os.getcwd(), "multi_uav_nav_results.csv")
-    results_table = update_multiuav_table(results_table_path, waypoint_type, no_drones, mtsp_algo, rl_algo, action_type, env_variant, results, mtsp_solver)
+    if solved:
+        # Add results to Table
+        results_table_path = os.path.join(os.getcwd(), "multi_uav_nav_results.csv")
+        results_table = update_multiuav_table(results_table_path, waypoint_type, no_drones, mtsp_algo, rl_algo, action_type, env_variant, results, mtsp_solver)
 
-    display_table(results_table, "Multi UAV Navigation Results")
+        display_table(results_table, "Multi UAV Navigation Results")
+    
+    git_push(f"Exp: {waypoint_type}, {no_drones} drones, {mtsp_algo.upper()}, {rl_algo.upper()}, {action_type}")
     
     ascii_art = pyfiglet.figlet_format("COMPLETE", font='slant')
     print(ascii_art)
