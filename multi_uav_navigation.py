@@ -184,7 +184,7 @@ if __name__ == "__main__":
 
         display_table(results_table, "Multi UAV Navigation Results")
     
-    git_push(f"Exp: {waypoint_type}, {no_drones} drones, {mtsp_algo.upper()}, {rl_algo.upper()}, {action_type}")
+    git_push(f"Exp: {waypoint_type}, {no_drones} drones, {mtsp_algo.upper()}, {rl_algo.upper()}, {action_type}", True)
     
     ascii_art = pyfiglet.figlet_format("COMPLETE", font='slant')
     print(ascii_art)

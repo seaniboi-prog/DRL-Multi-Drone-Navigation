@@ -1,5 +1,6 @@
 import os
 import pickle
+import string
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -201,13 +202,13 @@ class Network:
         
         plt.title(title)
         # Display the plot for a few seconds
-        plt.show(block=False)  # Set block=False to allow code execution to continue
+        plt.show(block=True)  # Set block=False to allow code execution to continue
 
         # Pause for a few seconds (e.g., 3 seconds)
-        plt.pause(3)
+        # plt.pause(3)
 
         # Close the plot window
-        plt.close()
+        # plt.close()
         
 
     def plot_paths(self, title: str = "Paths", pause: int = 3, filename = None) -> None:
@@ -412,3 +413,19 @@ def display_table(df, title):
 
     console = Console()
     console.print(table)
+    
+def generate_labels(num_labels):
+    labels = []
+    letters = string.ascii_uppercase
+    while num_labels > 0:
+        num_labels -= 1
+        labels.append(letters[num_labels % 26])
+        num_labels //= 26
+
+    return ''.join(reversed(labels))
+
+def get_labels(num_nodes):
+    labels = []
+    for i in range(num_nodes):
+        labels.append(generate_labels(i + 1))
+    return labels

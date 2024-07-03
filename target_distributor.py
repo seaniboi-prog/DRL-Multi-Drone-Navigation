@@ -40,7 +40,7 @@ if __name__ == "__main__":
         nodes = get_waypoints(city_type)
         num_nodes = len(nodes)
 
-    labels = [letter for letter in string.ascii_uppercase[:num_nodes]]
+    labels = get_labels(num_nodes)
 
     network = Network(num_drones, nodes, labels)
 
@@ -54,7 +54,8 @@ if __name__ == "__main__":
     hill_mtsp_solver.solve(EPOCHS)
 
     plot_filename = compare_solution_scores(hill_mtsp_solver, city_type)
-    results_table = update_mtsp_table(results_table_path, city_type, num_drones, "hill", hill_mtsp_solver)
+    if plot_filename is not None:
+        results_table = update_mtsp_table(results_table_path, city_type, num_drones, "hill", hill_mtsp_solver)
 
     hill_mtsp_solver.plot_progress()
     hill_mtsp_solver.plot_solution(filename=plot_filename)
@@ -75,7 +76,8 @@ if __name__ == "__main__":
     ga_mtsp_solver.solve(GENERATIONS, MUTATION_RATE, TOURNAMENT_SIZE, POPULATION_SIZE, ELITISM, False)
 
     plot_filename = compare_solution_scores(ga_mtsp_solver, city_type)
-    results_table = update_mtsp_table(results_table_path, city_type, num_drones, "ga", ga_mtsp_solver)
+    if plot_filename is not None:
+        results_table = update_mtsp_table(results_table_path, city_type, num_drones, "ga", ga_mtsp_solver)
 
     ga_mtsp_solver.plot_progress()
     ga_mtsp_solver.plot_solution(filename=plot_filename)
@@ -96,7 +98,8 @@ if __name__ == "__main__":
     aco_mtsp_solver.solve(ALPHA, BETA, RHO, Q, LIMIT, OPT2, False)
 
     plot_filename = compare_solution_scores(aco_mtsp_solver, city_type)
-    results_table = update_mtsp_table(results_table_path, city_type, num_drones, "aco", aco_mtsp_solver)
+    if plot_filename is not None:
+        results_table = update_mtsp_table(results_table_path, city_type, num_drones, "aco", aco_mtsp_solver)
 
     aco_mtsp_solver.plot_progress()
     aco_mtsp_solver.plot_solution(filename=plot_filename)
@@ -117,7 +120,8 @@ if __name__ == "__main__":
     tabu_mtsp_solver.solve(NEIGHBOURHOOD_SIZE, MAX_TABU_SIZE, STOPPING_TURN)
 
     plot_filename = compare_solution_scores(tabu_mtsp_solver, city_type)
-    results_table = update_mtsp_table(results_table_path, city_type, num_drones, "tabu", tabu_mtsp_solver)
+    if plot_filename is not None:
+        results_table = update_mtsp_table(results_table_path, city_type, num_drones, "tabu", tabu_mtsp_solver)
 
     tabu_mtsp_solver.plot_progress()
     tabu_mtsp_solver.plot_solution(filename=plot_filename)

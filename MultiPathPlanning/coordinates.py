@@ -51,8 +51,13 @@ waypoints["neighbourhood"] = [
                 np.array([130.0, -65.0, 5.0], dtype=np.float32),
                 np.array([130.0, 63.0, 5.0], dtype=np.float32),
                 np.array([0.0, 63.0, 5.0], dtype=np.float32),
-                np.array([0.0, 0.0, 5.0], dtype=np.float32),
-                np.array([0.0, 0.0, 5.0], dtype=np.float32),
+                np.array([0.0, -63.0, 5.0], dtype=np.float32),
+                np.array([-128.0, -65.0, 5.0], dtype=np.float32),
+                np.array([-128.0, 63.0, 5.0], dtype=np.float32),
+                np.array([-63.0, -130.0, 5.0], dtype=np.float32),
+                np.array([-63.0, 0.0, 5.0], dtype=np.float32),
+                np.array([-63.0, 128.0, 5.0], dtype=np.float32),
+                np.array([64.0, 128.0, 5.0], dtype=np.float32),
             ]
 
 waypoints["africa"] = [
