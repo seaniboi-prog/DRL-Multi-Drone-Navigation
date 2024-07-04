@@ -91,11 +91,12 @@ if __name__ == "__main__":
     print(f"Calculated Score: {round(mtsp_solver.get_score(), 2)}")
     
     # Retrieve paths
-    if specific_path is not None:
+    if specific_path is None:
         mtsp_paths = mtsp_solver.get_paths_list(includeStart=False)
         print(f"Path Score: {mtsp_solver.get_score()}")
     else:
         mtsp_paths = get_specific_path(specific_path)
+    
     print("Executing the following paths:")
     for i, path in enumerate(mtsp_paths):
         print(f"Drone {i+1}: ", end="")
