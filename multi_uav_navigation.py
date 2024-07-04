@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 # Import Local Packages
 from MultiPathPlanning.utils import *
 from MultiPathPlanning.constants import *
-from MultiPathPlanning.coordinates import get_waypoints, get_obstacles
+from MultiPathPlanning.coordinates import get_waypoints, get_obstacles, get_specific_path
 from MultiPathPlanning.register_envs import register_ray_gym_envs
 from MultiPathPlanning.navigate_drone import compute_single_episode
 
@@ -38,6 +38,7 @@ if __name__ == "__main__":
     parser.add_argument("-b", "--best", help="use best model", action="store_true")
     parser.add_argument("-s", "--endAtStart", help="end at start", action="store_true")
     parser.add_argument("-f", "--fails", help="number of fails to allow", type=int, default=3)
+    parser.add_argument("-sp", "--specific_path", help="specific path to use for waypoints", type=str)
 
     args = parser.parse_args()
 
@@ -49,6 +50,7 @@ if __name__ == "__main__":
     waypoint_type: str = args.waypoint_type
     mtsp_algo: str = args.mtsp_algo
     end_at_start = args.endAtStart
+    specific_path: str = args.specific_path
     
     rl_algo: str = args.rl_algo
     action_type: str = args.action_type
@@ -89,8 +91,11 @@ if __name__ == "__main__":
     print(f"Calculated Score: {round(mtsp_solver.get_score(), 2)}")
     
     # Retrieve paths
-    mtsp_paths = mtsp_solver.get_paths_list(includeStart=False)
-    print(f"Path Score: {mtsp_solver.get_score()}")
+    if specific_path is not None:
+        mtsp_paths = mtsp_solver.get_paths_list(includeStart=False)
+        print(f"Path Score: {mtsp_solver.get_score()}")
+    else:
+        mtsp_paths = get_specific_path(specific_path)
     print("Executing the following paths:")
     for i, path in enumerate(mtsp_paths):
         print(f"Drone {i+1}: ", end="")
@@ -113,32 +118,32 @@ if __name__ == "__main__":
     else:
         drone_env_classname = f"DroneEnv{action_type.capitalize()}"
 
-    # Configuration of the Drone Agents
-    uav_navigation_arg_sets = []
-
-    for drone_id in range(no_drones):
-        drone_env_config = {
-            "waypoints": mtsp_paths[drone_id],
-            "max_steps": None,
-            "drone_name": vehicle_names[drone_id],
-            "verbose": True,
-            "momentum": False,
-            "end_at_start": end_at_start
-        }
-        drone_env_instace = getattr(airsim_envs, drone_env_classname)(env_config=drone_env_config)
-
-        uav_navigation_arg_sets.append((drone_env_instace, uav_model))
-
 
     # Execute drone navigation
     # with multiprocessing.Pool(processes=len(uav_navigation_arg_sets)) as pool:
     #     results = pool.starmap(compute_single_episode, uav_navigation_arg_sets)
     
-    
     no_fails = 0
     max_fails = args.fails
     
     while True:
+        # Configuration of the Drone Agents
+        uav_navigation_arg_sets = []
+
+        for drone_id in range(no_drones):
+            drone_idx = (drone_id + no_fails) % no_drones
+            drone_env_config = {
+                "waypoints": mtsp_paths[drone_id],
+                "max_steps": None,
+                "drone_name": vehicle_names[drone_id],
+                "verbose": True,
+                "momentum": False,
+                "end_at_start": end_at_start
+            }
+            drone_env_instace = getattr(airsim_envs, drone_env_classname)(env_config=drone_env_config)
+
+            uav_navigation_arg_sets.append((drone_env_instace, uav_model))
+            
         client.reset()
         start_time = time.time()
         

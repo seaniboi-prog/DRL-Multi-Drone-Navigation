@@ -2,6 +2,7 @@ import numpy as np
 
 waypoints = dict()
 obstacles = dict()
+specific_paths = dict()
 
 waypoints["blocks"] = [
                 np.array([0.0, 0.0, 5.0], dtype=np.float32), # starting point
@@ -19,6 +20,8 @@ waypoints["blocks"] = [
                 np.array([-115.0, 80.0, 11.0], dtype=np.float32),
                 np.array([-115.0, -80.0, 18.0], dtype=np.float32),
             ]
+
+specific_paths["blocks"] = [ [], [], [] ]
 
 obstacles["blocks"] = [
                 np.array([19, -25, 0, 65, 22, 15]), # Obs 1
@@ -59,6 +62,8 @@ waypoints["neighbourhood"] = [
                 np.array([-63.0, 128.0, 5.0], dtype=np.float32),
                 np.array([64.0, 128.0, 5.0], dtype=np.float32),
             ]
+
+specific_paths["neighbourhood"] = [ [], [], [] ]
 
 waypoints["africa"] = [
                 np.array([0.0, 0.0, 5.0], dtype=np.float32), # starting point
@@ -145,3 +150,6 @@ def get_waypoints(type: str) -> list:
 
 def get_obstacles(type: str) -> list:
     return obstacles[type]
+
+def get_specific_path(type: str) -> list:
+    return specific_paths[type]
