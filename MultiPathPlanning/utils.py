@@ -60,7 +60,12 @@ def plot_all_routes(targets, drone_paths, obstacles=[], filename=None):
         if os.path.dirname(filename) != '' and not os.path.exists(os.path.dirname(filename)):
             os.makedirs(os.path.dirname(filename), exist_ok=True)
         plt.savefig(filename)
-    plt.show()
+    
+    plt.show(block=False)  # Set block=False to allow code execution to continue
+    plt.pause(5)
+
+    # Close the plot window
+    plt.close()
 
 def update_multiuav_table(results_table_path, waypoint_type, no_drones, mtsp_algo, rl_algo, action_type, env_variant, results, mtsp_solver):
     total_distance = sum(result["total_distance"] for result in results)
