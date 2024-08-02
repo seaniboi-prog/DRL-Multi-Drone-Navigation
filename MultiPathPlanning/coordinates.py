@@ -149,6 +149,8 @@ def get_waypoints(type: str) -> list:
     return waypoints[type]
 
 def get_obstacles(type: str) -> list:
+    if type not in obstacles:
+        return []
     return obstacles[type]
 
 def get_specific_path(type: str) -> list:
