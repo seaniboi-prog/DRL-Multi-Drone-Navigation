@@ -305,32 +305,32 @@ class GA:
     # Mutation opeeration
     @classmethod
     def mutate (cls, route, numDrones, mutationRate):
-        index1 = 0
-        index2 = 0
-        while index1 == index2:
-            index1 = random.randint(0, numDrones - 1)
-            index2 = random.randint(0, numDrones - 1)
-        #print ('Indexes selected: ' + str(index1) + ',' + str(index2))
-
-        #generate replacement range for 1
-        route1startPos = 0
-        route1lastPos = 0
-        while route1startPos >= route1lastPos or route1startPos == 1:
-            route1startPos = random.randint(1, route.routeLengths[index1] - 1)
-            route1lastPos = random.randint(1, route.routeLengths[index1] - 1)
-
-        #generate replacement range for 2
-        route2startPos = 0
-        route2lastPos = 0
-        while route2startPos >= route2lastPos or route2startPos == 1:
-            route2startPos = random.randint(1, route.routeLengths[index2] - 1)
-            route2lastPos= random.randint(1, route.routeLengths[index2] - 1)
-
-        #print ('startPos, lastPos: ' + str(route1startPos) + ',' + str(route1lastPos) + ',' + str(route2startPos) + ',' + str(route2lastPos))
-        swap1 = [] # values from 1
-        swap2 = [] # values from 2
-
         if random.randrange(1) < mutationRate:
+            index1 = 0
+            index2 = 0
+            while index1 == index2 or route.routeLengths[index1] <= 3 or route.routeLengths[index2] <= 3:
+                index1 = random.randint(0, numDrones - 1)
+                index2 = random.randint(0, numDrones - 1)
+            #print ('Indexes selected: ' + str(index1) + ',' + str(index2))
+
+            #generate replacement range for 1
+            route1startPos = 0
+            route1lastPos = 0
+            while route1startPos >= route1lastPos or route1startPos == 1:
+                route1startPos = random.randint(1, route.routeLengths[index1] - 1)
+                route1lastPos = random.randint(1, route.routeLengths[index1] - 1)
+
+            #generate replacement range for 2
+            route2startPos = 0
+            route2lastPos = 0
+            while route2startPos >= route2lastPos or route2startPos == 1:
+                route2startPos = random.randint(1, route.routeLengths[index2] - 1)
+                route2lastPos= random.randint(1, route.routeLengths[index2] - 1)
+
+            #print ('startPos, lastPos: ' + str(route1startPos) + ',' + str(route1lastPos) + ',' + str(route2startPos) + ',' + str(route2lastPos))
+            swap1 = [] # values from 1
+            swap2 = [] # values from 2
+
             # pop all the values to be replaced
             for i in range(route1startPos, route1lastPos + 1):
                 swap1.append(route.route[index1].pop(route1startPos))

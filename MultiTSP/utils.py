@@ -202,13 +202,13 @@ class Network:
         
         plt.title(title)
         # Display the plot for a few seconds
-        plt.show(block=True)  # Set block=False to allow code execution to continue
+        plt.show(block=False)  # Set block=False to allow code execution to continue
 
         # Pause for a few seconds (e.g., 3 seconds)
-        # plt.pause(3)
+        plt.pause(3)
 
         # Close the plot window
-        # plt.close()
+        plt.close()
         
 
     def plot_paths(self, title: str = "Paths", pause: int = 3, filename = None) -> None:
@@ -364,12 +364,12 @@ def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,N
         return plot_path
 
 # TODO: Implement the following functions    
-def update_mtsp_table(results_table_path, city_type, no_drones, mtsp_algo, mtsp_solver: AlgoMultiTSP):
+def update_mtsp_table(results_table_path, city_type, no_drones, mtsp_algo, mtsp_solver: AlgoMultiTSP, time) -> pd.DataFrame:
     # Check if the file exists and read the CSV, otherwise create an empty DataFrame with specified columns
     if os.path.exists(results_table_path):
         results_table = pd.read_csv(results_table_path)
     else:
-        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "No. Drones", "No. Targets", "MTSP Algorithm", "Min Distance", "Mean Distance", "Max Distance", "Total Distance", "Score"])
+        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "No. Drones", "No. Targets", "MTSP Algorithm", "Min Distance", "Mean Distance", "Max Distance", "Total Distance", "Score", "Time"])
 
     num_nodes = len(mtsp_solver.network.nodes)
 
@@ -385,7 +385,8 @@ def update_mtsp_table(results_table_path, city_type, no_drones, mtsp_algo, mtsp_
         "Mean Distance": mtsp_solver.get_total_distance() / no_drones,
         "Max Distance": max(mtsp_solver.get_all_dists()),
         "Total Distance": mtsp_solver.get_total_distance(),
-        "Score": mtsp_solver.get_score()
+        "Score": mtsp_solver.get_score(),
+        "Time": time
     }
 
     # Check if the slug exists in the 'Slug' column and update or append the row

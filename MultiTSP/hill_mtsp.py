@@ -58,9 +58,7 @@ class Chromosome():
         
         
         index1, index2 = np.random.randint(0,self.m), np.random.randint(0,self.m)
-        while index1 == index2:
-            index1, index2 = np.random.randint(0,self.m), np.random.randint(0,self.m)
-        while len(self.solution[index1]) < 4:
+        while len(self.solution[index1]) < 4 or index1 == index2:
             index1, index2 = np.random.randint(0,self.m), np.random.randint(0,self.m)
         mutant1, mutant2 = self.solution[index1], self.solution[index2]
         i,j = np.random.randint(1,len(mutant1)-1), np.random.randint(1,len(mutant2)-1)
