@@ -159,6 +159,8 @@ while i < total_iters:
         
         # Export Model and Checkpoint
         model_file = algo.export_model(["model", "checkpoint"], model_root)
+
+        print(pretty_print(result))
         
         # Retrieve Rewards and Episode Lengths
         episode_rewards = result["hist_stats"]["episode_reward"]
@@ -218,7 +220,7 @@ while i < total_iters:
         
         # Evaluate the algorithm
         print("\nEvaluating Algorithm...")
-        eval_rewards, eval_lengths, success_rate, crashes, timeouts = evaluate_algorithm(algo, select_env, epochs=5, env_config=env_config, render_mode=render_mode)
+        eval_rewards, eval_lengths, success_rate, crashes, timeouts, route_list = evaluate_algorithm(algo, select_env, epochs=5, env_config=env_config, render_mode=render_mode)
         
         eval_episode_count += len(eval_rewards)
         

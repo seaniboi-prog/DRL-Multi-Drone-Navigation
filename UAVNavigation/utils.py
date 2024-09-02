@@ -27,6 +27,9 @@ from ray.rllib.algorithms import ppo, dqn, sac, impala, marwil, bc
 
 from pickle_utils import save_obj_file, load_obj_file
 
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+
 NUM_PC_CPU = 4
 NUM_PC_GPU = 1
 NUM_LP_CPU = 8
@@ -45,9 +48,10 @@ def compute_single_episode(env: Env, model: Union[Algorithm, Policy]):
         if terminated or truncated:
             done = True
             status = info["status"]
+            route = info["route"]
         
         total_reward += float(reward)
-    return total_reward, episode_length, status
+    return total_reward, episode_length, status, route
 
 def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int = 10, env_config: Union[dict,None] = None, render_mode: Union[str, None] = None):
     if env_config is None:
@@ -58,13 +62,15 @@ def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int 
     
     rewards_list: list[float] = []
     episode_lengths: list[int] = []
+    route_list = []
     successes = 0
     timeouts = 0
     crashes = 0
     for _ in tqdm(range(epochs), desc="Evaluating..."):
-        cum_reward, episode_len, status = compute_single_episode(env, model)
+        cum_reward, episode_len, status, route = compute_single_episode(env, model)
         rewards_list.append(cum_reward)
         episode_lengths.append(episode_len)
+        route_list.append(route)
         if status == "solved":
             successes += 1
         elif status == "timed_out":
@@ -76,7 +82,7 @@ def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int 
     
     success_rate = successes / epochs
     
-    return rewards_list, episode_lengths, success_rate, crashes, timeouts
+    return rewards_list, episode_lengths, success_rate, crashes, timeouts, route_list
 
 def get_algo_config(algo_name: str, env_name:str, env_config: Union[dict, None] = None, batch_size: int = 1024, params: dict = {}):
     if algo_name == "ppo":
@@ -269,3 +275,39 @@ def display_table(df, title):
 
     console = Console()
     console.print(table)
+
+def pop_first_element(arr):
+    return arr[0], arr[1:]
+
+def plot_route(targets, drone_path, obstacles=[], filename=None):
+    
+    plt.figure(figsize=(8, 8))
+    
+    # Plot the obstacles
+    for obs in obstacles:
+        x_min, y_min, _, x_max, y_max, _ = obs
+        plt.gca().add_patch(Rectangle((x_min, y_min), x_max - x_min, y_max - y_min, fill=True, color='grey', alpha=0.8, zorder=1))
+
+    for i, path in enumerate(drone_path):
+        route = np.array(path)
+        plt.plot(route[:, 0], route[:, 1], c="green", zorder=2, label=f"Drone {i+1}")
+
+    np_targets = np.array(targets)
+    start, np_targets = pop_first_element(np_targets)
+    plt.scatter(start[0], start[1], c='red', marker='x', s=60, zorder=3, label="Start")
+    plt.scatter(np_targets[:, 0], np_targets[:, 1], c='black', s=60, marker='x', zorder=3, label="Waypoints")
+
+    plt.legend()
+    plt.title("Drone Routes")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    if filename is not None:
+        if os.path.dirname(filename) != '' and not os.path.exists(os.path.dirname(filename)):
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+        plt.savefig(filename)
+    
+    plt.show(block=False)  # Set block=False to allow code execution to continue
+    plt.pause(5)
+
+    # Close the plot window
+    plt.close()
