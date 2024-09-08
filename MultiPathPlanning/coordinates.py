@@ -40,30 +40,67 @@ obstacles["blocks"] = [
 
 waypoints["neighbourhood"] = [
                 np.array([0.0, 0.0, 5.0], dtype=np.float32), # starting point
-                np.array([130.0, 0.0, 5.0], dtype=np.float32),
-                np.array([127.0, -127.0, 5.0], dtype=np.float32),
-                np.array([80.0, -128.0, 5.0], dtype=np.float32),
-                np.array([0.0, -128.0, 5.0], dtype=np.float32),
-                np.array([-125.0, -130.0, 5.0], dtype=np.float32),
-                np.array([-128.0, 0.0, 5.0], dtype=np.float32),
-                np.array([-125.0, 127.0, 5.0], dtype=np.float32),
-                np.array([0.0, 127.0, 5.0], dtype=np.float32),
-                np.array([127.0, 125.0, 5.0], dtype=np.float32),
-                np.array([80.0, 0.0, 5.0], dtype=np.float32),
-                np.array([80.0, -65.0, 5.0], dtype=np.float32),
-                np.array([130.0, -65.0, 5.0], dtype=np.float32),
-                np.array([130.0, 63.0, 5.0], dtype=np.float32),
-                np.array([0.0, 63.0, 5.0], dtype=np.float32),
-                np.array([0.0, -63.0, 5.0], dtype=np.float32),
-                np.array([-128.0, -65.0, 5.0], dtype=np.float32),
-                np.array([-128.0, 63.0, 5.0], dtype=np.float32),
-                np.array([-63.0, -130.0, 5.0], dtype=np.float32),
-                np.array([-63.0, 0.0, 5.0], dtype=np.float32),
-                np.array([-63.0, 128.0, 5.0], dtype=np.float32),
-                np.array([64.0, 128.0, 5.0], dtype=np.float32),
+                np.array([130.0, 0.0, 5.0], dtype=np.float32), # B
+                np.array([127.0, -127.0, 5.0], dtype=np.float32), # C
+                np.array([80.0, -128.0, 5.0], dtype=np.float32), # D
+                np.array([0.0, -128.0, 5.0], dtype=np.float32), # E
+                np.array([-125.0, -130.0, 5.0], dtype=np.float32), # F
+                np.array([-128.0, 0.0, 5.0], dtype=np.float32), # G
+                np.array([-125.0, 127.0, 5.0], dtype=np.float32), # H
+                np.array([0.0, 127.0, 5.0], dtype=np.float32), # I
+                np.array([127.0, 125.0, 5.0], dtype=np.float32), # J
+                np.array([80.0, 0.0, 5.0], dtype=np.float32), # K
+                np.array([80.0, -65.0, 5.0], dtype=np.float32), # L
+                np.array([130.0, -65.0, 5.0], dtype=np.float32), # M
+                np.array([130.0, 63.0, 5.0], dtype=np.float32), # N
+                np.array([0.0, 63.0, 5.0], dtype=np.float32), # O
+                np.array([0.0, -63.0, 5.0], dtype=np.float32), # P
+                np.array([-128.0, -65.0, 5.0], dtype=np.float32), # Q
+                np.array([-128.0, 63.0, 5.0], dtype=np.float32), # R
+                np.array([-63.0, -130.0, 5.0], dtype=np.float32), # S
+                np.array([-63.0, 0.0, 5.0], dtype=np.float32), # T
+                np.array([-63.0, 128.0, 5.0], dtype=np.float32), # U
+                np.array([64.0, 128.0, 5.0], dtype=np.float32), # V
             ]
 
-specific_paths["neighbourhood"] = [ [], [], [] ]
+specific_paths["neighbourhood"] = [
+    [
+        np.array([0.0, 63.0, 5.0], dtype=np.float32),
+        np.array([0.0, 127.0, 5.0], dtype=np.float32),
+        np.array([-63.0, 128.0, 5.0], dtype=np.float32),
+        np.array([-125.0, 127.0, 5.0], dtype=np.float32),
+        np.array([-128.0, 63.0, 5.0], dtype=np.float32),
+        np.array([-128.0, 0.0, 5.0], dtype=np.float32),
+        np.array([-63.0, 0.0, 5.0], dtype=np.float32),
+    ], 
+        
+    [
+        np.array([80.0, 0.0, 5.0], dtype=np.float32),
+        np.array([80.0, -65.0, 5.0], dtype=np.float32),
+        np.array([105.0, -93.0, 12.0], dtype=np.float32),
+        np.array([130.0, -65.0, 5.0], dtype=np.float32),
+        np.array([130.0, 0.0, 5.0], dtype=np.float32),
+        np.array([130.0, 63.0, 5.0], dtype=np.float32),
+        np.array([127.0, 125.0, 5.0], dtype=np.float32),
+        np.array([64.0, 128.0, 5.0], dtype=np.float32),
+        np.array([50.0, 100.0, 15.0], dtype=np.float32),
+        np.array([40.0, 20.0, 10.0], dtype=np.float32),
+    ],
+    
+    [
+        np.array([-63.0, -25.0, 15.0], dtype=np.float32),
+        np.array([-110.0, -20.0, 15.0], dtype=np.float32),
+        np.array([-128.0, -65.0, 5.0], dtype=np.float32),
+        np.array([-125.0, -130.0, 5.0], dtype=np.float32),
+        np.array([0.0, -128.0, 5.0], dtype=np.float32),
+        np.array([80.0, -128.0, 5.0], dtype=np.float32),
+        np.array([127.0, -127.0, 5.0], dtype=np.float32),
+        np.array([97.0, -118.0, 10.0], dtype=np.float32),
+        np.array([20.0, -95.0, 10.0], dtype=np.float32),
+        np.array([0.0, -80.0, 5.0], dtype=np.float32),
+        np.array([0.0, -63.0, 5.0], dtype=np.float32),
+    ] 
+]
 
 waypoints["africa"] = [
                 np.array([0.0, 0.0, 5.0], dtype=np.float32), # starting point

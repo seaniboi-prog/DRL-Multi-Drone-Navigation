@@ -65,10 +65,6 @@ chkpt_path = f"training/{algorithm}/{env_type}/{env_var}/{waypoint_type}/{chkpt_
 model = Algorithm.from_checkpoint(chkpt_path)
 eval_rewards, eval_lengths, success_rate, crashes, timeouts, route_list = evaluate_algorithm(model, env_id, epochs=total_iters, env_config=drone_env_config, render_mode=render_mode)
 
-# model_root = f"models/{algorithm}/{env_type}/{env_var}/{waypoint_str}/model/model.pt"
-# model = torch.load(model_root)
-# eval_rewards, eval_lengths, success_rate, crashes, timeouts, route_list = evaluate_algorithm_pytorch(model_root, env_id, epochs=total_iters, env_config=env_config, render_mode=render_mode)
-
 print(f"Best reward over {total_iters} iterations: {max(eval_rewards)}")
 print(f"Average reward over {total_iters} iterations: {sum(eval_rewards) / total_iters}")
 print(f"Average episode length over {total_iters} iterations: {sum(eval_lengths) / total_iters}")
@@ -77,6 +73,10 @@ print(f"Number of crashes: {crashes}/{total_iters}")
 print(f"Number of timeouts: {timeouts}/{total_iters}")
 
 # Check shortest route
+if len(route_list) == 0:
+    print("No routes found")
+    exit()
+
 route_lengths = []
 for route in route_list:
     route_lengths.append(sum([np.linalg.norm(route[i] - route[i+1]) for i in range(len(route) - 1)]))
@@ -85,6 +85,10 @@ print(f"Shortest route length: {min(route_lengths)}")
 shortest_index = route_lengths.index(min(route_lengths))
 shortest_route = route_list[shortest_index]
 
-route_filename = f"routes/{algorithm}/{waypoint_type}/{env_type}_{env_var}_shortest_route.png"
+route_plot_filename = f"routes/{algorithm}/{waypoint_type}/{env_type}_{env_var}_shortest_route.png"
 
-plot_route(waypoint_variants[waypoint_variant], shortest_route, filename=route_filename)
+plot_route(waypoint_variants[waypoint_variant], shortest_route, filename=route_plot_filename)
+
+route_obj_filename = f"routes/{algorithm}/{waypoint_type}/{env_type}_{env_var}_shortest_route.pkl"
+
+save_obj_file(route_obj_filename, shortest_route)

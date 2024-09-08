@@ -70,9 +70,9 @@ def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int 
         cum_reward, episode_len, status, route = compute_single_episode(env, model)
         rewards_list.append(cum_reward)
         episode_lengths.append(episode_len)
-        route_list.append(route)
         if status == "solved":
             successes += 1
+            route_list.append(route)
         elif status == "timed_out":
             timeouts += 1
         elif status == "crashed":

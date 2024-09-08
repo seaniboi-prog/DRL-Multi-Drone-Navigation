@@ -95,6 +95,7 @@ if __name__ == "__main__":
         mtsp_paths = mtsp_solver.get_paths_list(includeStart=False)
         print(f"Path Score: {mtsp_solver.get_score()}")
     else:
+        print(f"Using specific path: {specific_path}")
         mtsp_paths = get_specific_path(specific_path)
     
     print("Executing the following paths:")

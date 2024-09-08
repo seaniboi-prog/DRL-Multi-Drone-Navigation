@@ -12,7 +12,7 @@ def get_xyz():
         print("Invalid input. Please enter numeric values separated by commas.")
         return get_xyz()
     
-def rearrange_target(client):
+def rearrange_target(client: airsim.VehicleClient):
     fixed = False
     while not fixed:
         x, y, z = get_xyz()
