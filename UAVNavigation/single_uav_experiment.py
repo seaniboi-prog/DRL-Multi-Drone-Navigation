@@ -17,6 +17,21 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 # Must start with origin
 waypoint_variants = dict()
 
+waypoint_variants["single"] = [
+    np.array([-10.0, -50.0, 5.0], dtype=np.float32)
+]
+
+waypoint_variants["multiple"] = [
+    np.array([15.0, 30.0, 5.0], dtype=np.float32),
+    np.array([70.0, 35.0, 5.0], dtype=np.float32),
+    np.array([75.0, 0.0, 5.0], dtype=np.float32),
+    np.array([70.0, -35.0, 5.0], dtype=np.float32),
+    np.array([15.0, -35.0, 5.0], dtype=np.float32),
+]
+
+waypoint_variants["obstacle"] = [
+    np.array([75.0, 0.0, 5.0], dtype=np.float32)
+]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--type", help="type of environment to train on", default="disc", choices=["cont", "disc"])
@@ -51,6 +66,7 @@ env_id = f"drone-env-{env_type}-{env_var}"
 
 print("Using environment: {}".format(env_id))
 
+end_at_start = True if waypoint_variant == "multiple" else False
 
 drone_env_config = {
     "waypoints": waypoint_variants[waypoint_variant][1:],
@@ -58,7 +74,7 @@ drone_env_config = {
     "drone_name": "Drone1",
     "verbose": True,
     "momentum": False,
-    "end_at_start": True
+    "end_at_start": end_at_start
 }
 
 chkpt_path = f"training/{algorithm}/{env_type}/{env_var}/{waypoint_type}/{chkpt_root}"
