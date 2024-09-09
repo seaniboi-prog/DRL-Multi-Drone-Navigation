@@ -191,38 +191,97 @@ class Network:
     def plot_network(self, title: str = "Network") -> None:
         plt.figure(figsize=(8, 8))
         
-        plt.scatter(self.get_start().x, self.get_start().y, c='brown', s=500, zorder=2, marker=MarkerStyle(marker='*'))
+        plt.scatter(self.get_start().x, self.get_start().y, c='brown', s=600, zorder=2, marker=MarkerStyle(marker='*'))
 
         n_x = [node.x for node in self.nodes if not self.is_start(node)]
         n_y = [node.y for node in self.nodes if not self.is_start(node)]
-        plt.scatter(n_x, n_y, c='k', s=400, zorder=2)
+        plt.scatter(n_x, n_y, c='k', s=500, zorder=2)
+
+        l_n = len(self.nodes)
+        
+        x_text_h = { 1: {
+                        20: 3,
+                        50: 8,
+                        100: 16,
+                        200: 45
+                    },
+                     2: {
+                        20: 3,
+                        50: 15,
+                        100: 20,
+                        200: 65
+                     }
+                }
+        
+        y_text_v = { 1: {
+                        20: 4,
+                        50: 12,
+                        100: 16,
+                        200: 45
+                    },
+                     2: {
+                        20: 4,
+                        50: 12,
+                        100: 16,
+                        200: 45
+                     }
+                }
         
         for node in self.nodes:
-            plt.text(node.x - 0.7, node.y - 1, str(node.label), color='w', fontsize=12, zorder=3)
+            l_l = len(str(node.label))
+            plt.text(node.x - x_text_h[l_l][l_n], node.y - y_text_v[l_l][l_n], str(node.label), color='w', fontsize=12, zorder=3)
         
         plt.title(title)
         # Display the plot for a few seconds
         plt.show(block=False)  # Set block=False to allow code execution to continue
 
-        # Pause for a few seconds (e.g., 3 seconds)
         plt.pause(3)
-
-        # Close the plot window
         plt.close()
         
 
     def plot_paths(self, title: str = "Paths", pause: int = 3, filename = None) -> None:
         plt.figure(figsize=(8, 8))
         
-        plt.scatter(self.get_start().x, self.get_start().y, c='red', s=500, zorder=2, marker=MarkerStyle(marker='*'))
+        plt.scatter(self.get_start().x, self.get_start().y, c='red', s=600, zorder=2, marker=MarkerStyle(marker='*'))
 
         n_x = [node.x for node in self.nodes if not self.is_start(node)]
         n_y = [node.y for node in self.nodes if not self.is_start(node)]
-        plt.scatter(n_x, n_y, c='k', s=400, zorder=2)
+        plt.scatter(n_x, n_y, c='k', s=500, zorder=2)
         
-        for i, node in enumerate(self.nodes):
-            plt.text(node.x - 0.7, node.y - 1, str(node.label), color='w', fontsize=12, zorder=3)
-
+        l_n = len(self.nodes)
+        
+        x_text_h = { 1: {
+                        20: 3,
+                        50: 8,
+                        100: 16,
+                        200: 45
+                    },
+                     2: {
+                        20: 3,
+                        50: 15,
+                        100: 20,
+                        200: 65
+                     }
+                }
+        
+        y_text_v = { 1: {
+                        20: 4,
+                        50: 12,
+                        100: 16,
+                        200: 45
+                    },
+                     2: {
+                        20: 4,
+                        50: 12,
+                        100: 16,
+                        200: 45
+                     }
+                }
+        
+        for node in self.nodes:
+            l_l = len(str(node.label))
+            plt.text(node.x - x_text_h[l_l][l_n], node.y - y_text_v[l_l][l_n], str(node.label), color='w', fontsize=12, zorder=3)
+        
         for i, path in enumerate(self.paths):
             x = [node.x for node in path.get_path()]
             y = [node.y for node in path.get_path()]

@@ -28,12 +28,12 @@ if __name__ == "__main__":
 
     city_type = f"random_{num_nodes}"
 
-    n_x = np.random.uniform(low=0, high=(num_nodes*5), size=num_nodes-1)
-    n_y = np.random.uniform(low=0, high=(num_nodes*5), size=num_nodes-1)
+    n_x = np.random.uniform(low=0, high=(num_nodes*20), size=num_nodes-1)
+    n_y = np.random.uniform(low=0, high=(num_nodes*20), size=num_nodes-1)
     n_z = np.random.uniform(low=3, high=20, size=num_nodes-1)
 
     nodes = [np.array([n_x[i], n_y[i], n_z[i]]) for i in range(num_nodes-1)]
-    nodes.insert(0, np.array([50, 50, 6])) # Start node
+    nodes.insert(0, np.array([(num_nodes*10), (num_nodes*10), 6])) # Start node
 
     labels = get_labels(num_nodes)
 
