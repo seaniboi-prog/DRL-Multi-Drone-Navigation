@@ -298,7 +298,7 @@ def plot_route(targets, drone_path, obstacles=[], filename=None):
     plt.scatter(np_targets[:, 0], np_targets[:, 1], c='black', s=60, marker='x', zorder=3, label="Waypoints")
 
     plt.legend()
-    plt.title("Drone Routes")
+    plt.title("Drone Route")
     plt.xlabel("X")
     plt.ylabel("Y")
     if filename is not None:

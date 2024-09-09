@@ -44,7 +44,8 @@ parser.add_argument("-b", "--best", help="evaluate the best model over the itera
 parser.add_argument("-w", "--waypoint_type", type=str, help="the waypoint type trained", default="random_single",
                     choices=["random_single", "random_multiple", "fixed_single", "fixed_multiple"])
 # Change this
-parser.add_argument("-v", "--waypoint_variant", type=str, help="the waypoint type to use for the environment")
+parser.add_argument("-v", "--waypoint_variant", type=str, help="the waypoint type to use for the environment",
+                    choices=["single", "multiple", "obstacle"], default="single")
 
 args = parser.parse_args()
 
