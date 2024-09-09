@@ -99,18 +99,6 @@ class DroneEnv_Base(gym.Env):
             self._prepare_takeoff(reset=options["_reset"])
         else:
             self._prepare_takeoff()
-            
-        if self.drone_name == "Drone1":
-            self.drone.moveToZAsync(-30, 5, vehicle_name=self.drone_name).join()
-        elif self.drone_name == "Drone2":
-            self.drone.moveToZAsync(-35, 5, vehicle_name=self.drone_name).join()
-        else:
-            self.drone.moveToZAsync(-40, 5, vehicle_name=self.drone_name).join()
-        self.drone.simPrintLogMessage(f"Drone {self.drone_name} moved to Z: 35")
-        
-        if self.end_at_start:
-            self.waypoints.pop()
-            self.waypoints.append(self._get_position())
         
         time.sleep(self.SLEEP_TIME)
         curr_pos = self._get_position()

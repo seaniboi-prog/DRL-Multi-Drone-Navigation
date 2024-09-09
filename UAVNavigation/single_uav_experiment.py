@@ -8,6 +8,7 @@ import gym_drone
 
 import os
 from utils import *
+from git_utils import git_push
 import argparse
 
 from ray.rllib.algorithms.algorithm import Algorithm
@@ -109,3 +110,5 @@ plot_route(waypoint_variants[waypoint_variant], shortest_route, filename=route_p
 route_obj_filename = f"routes/{algorithm}/{waypoint_type}/{env_type}_{env_var}_shortest_route.pkl"
 
 save_obj_file(route_obj_filename, shortest_route)
+
+git_push(f"Single UAV Exp: {waypoint_variant}, {algorithm.upper()}, {cap_first(env_type)}", True)
