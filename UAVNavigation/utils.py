@@ -279,7 +279,7 @@ def display_table(df, title):
 def pop_first_element(arr):
     return arr[0], arr[1:]
 
-def plot_route(targets, drone_path, obstacles=[], filename=None):
+def plot_route_exp(targets, drone_paths, obstacles=[], filename=None):
     
     plt.figure(figsize=(8, 8))
     
@@ -288,9 +288,15 @@ def plot_route(targets, drone_path, obstacles=[], filename=None):
         x_min, y_min, _, x_max, y_max, _ = obs
         plt.gca().add_patch(Rectangle((x_min, y_min), x_max - x_min, y_max - y_min, fill=True, color='grey', alpha=0.8, zorder=1))
 
-    for i, path in enumerate(drone_path):
-        route = np.array(path)
-        plt.plot(route[:, 0], route[:, 1], c="green", zorder=2, label=f"Drone {i+1}")
+    disc_path = drone_paths["disc"]
+    if len(disc_path) > 0:
+        disc_route = np.array(disc_path)
+        plt.plot(disc_route[:, 0], disc_route[:, 1], c="green", zorder=2, label="Discete Actions")
+    
+    cont_path = drone_paths["cont"]
+    if len(cont_path) > 0:
+        cont_route = np.array(cont_path)
+        plt.plot(cont_route[:, 0], cont_route[:, 1], c="green", zorder=2, label="Continuous Actions")
 
     np_targets = np.array(targets)
     start, np_targets = pop_first_element(np_targets)
@@ -298,7 +304,7 @@ def plot_route(targets, drone_path, obstacles=[], filename=None):
     plt.scatter(np_targets[:, 0], np_targets[:, 1], c='black', s=60, marker='x', zorder=3, label="Waypoints")
 
     plt.legend()
-    plt.title("Drone Route")
+    plt.title("Drone Routes")
     plt.xlabel("X")
     plt.ylabel("Y")
     if filename is not None:

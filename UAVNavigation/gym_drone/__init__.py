@@ -54,6 +54,12 @@ def get_env_config(*args, **kwargs):
     
     if num_rand_waypts == 0:
         env_config["waypoints"] = get_waypoints(waypoint_type)
+        
+    if "exp_waypts" in kwargs and kwargs["exp_waypts"] is not None:
+        env_config["waypoints"] = kwargs["exp_waypts"]
+        
+    if "end_at_start" in kwargs and kwargs["end_at_start"] is not None:
+        env_config["end_at_start"] = kwargs["end_at_start"]
 
     env_ids = []
 
