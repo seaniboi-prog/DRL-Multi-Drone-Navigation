@@ -21,7 +21,7 @@ waypoint_variants = dict()
 
 waypoint_variants["single"] = [
     np.array([0.0, 0.0, 5.0], dtype=np.float32),
-    np.array([-10.0, -50.0, 5.0], dtype=np.float32)
+    np.array([-10.0, -100.0, 5.0], dtype=np.float32)
 ]
 
 waypoint_variants["multiple"] = [
@@ -111,6 +111,8 @@ for env_type in env_types:
     print(f"Shortest route length: {min(route_lengths)}")
     shortest_index = route_lengths.index(min(route_lengths))
     shortest_route = route_list[shortest_index]
+    
+    shortest_route.append(waypoint_variants[waypoint_variant][-1])
 
     shortest_routes[env_type] = shortest_route
     

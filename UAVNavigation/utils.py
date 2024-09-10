@@ -296,7 +296,7 @@ def plot_route_exp(targets, drone_paths, obstacles=[], filename=None):
     cont_path = drone_paths["cont"]
     if len(cont_path) > 0:
         cont_route = np.array(cont_path)
-        plt.plot(cont_route[:, 0], cont_route[:, 1], c="green", zorder=2, label="Continuous Actions")
+        plt.plot(cont_route[:, 0], cont_route[:, 1], c="blue", zorder=2, label="Continuous Actions")
 
     np_targets = np.array(targets)
     start, np_targets = pop_first_element(np_targets)
