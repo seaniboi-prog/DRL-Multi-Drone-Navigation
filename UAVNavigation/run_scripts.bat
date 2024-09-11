@@ -16,8 +16,8 @@
 @REM echo Single UAV Experiment Single with PPO
 @REM python single_uav_experiment.py -a ppo -i 5 -w random_single -v single --best
 
-echo Single UAV Experiment Multiple with PPO
-python single_uav_experiment.py -a ppo -i 5 -w random_multiple -v multiple --best
+@REM echo Single UAV Experiment Multiple with PPO
+@REM python single_uav_experiment.py -a ppo -i 5 -w random_multiple -v multiple --best
 
 echo Single UAV Experiment Obstacle with PPO
 python single_uav_experiment.py -a ppo -i 5 -w random_multiple -v obstacle --best

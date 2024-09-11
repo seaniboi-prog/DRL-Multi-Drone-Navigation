@@ -35,10 +35,10 @@ waypoint_variants["multiple"] = [
 
 waypoint_variants["obstacle"] = [
     np.array([0.0, 0.0, 5.0], dtype=np.float32),
-    np.array([20.0, 0.0, 5.0], dtype=np.float32),
-    np.array([20.0, 0.0, 18.0], dtype=np.float32),
-    np.array([65.0, -5.0, 5.0], dtype=np.float32),
-    np.array([75.0, 0.0, 5.0], dtype=np.float32)
+    np.array([18.0, 0.0, 5.0], dtype=np.float32),
+    np.array([18.0, 0.0, 18.0], dtype=np.float32),
+    np.array([65.0, -10.0, 18.0], dtype=np.float32),
+    np.array([75.0, -10.0, 5.0], dtype=np.float32)
 ]
 
 parser = argparse.ArgumentParser()

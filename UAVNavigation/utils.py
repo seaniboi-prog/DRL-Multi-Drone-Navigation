@@ -73,6 +73,7 @@ def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int 
         if status == "solved":
             successes += 1
             route_list.append(route)
+            break
         elif status == "timed_out":
             timeouts += 1
         elif status == "crashed":
