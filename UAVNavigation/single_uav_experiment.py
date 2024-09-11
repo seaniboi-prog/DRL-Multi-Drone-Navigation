@@ -112,7 +112,10 @@ for env_type in env_types:
     shortest_index = route_lengths.index(min(route_lengths))
     shortest_route = route_list[shortest_index]
     
-    shortest_route.append(waypoint_variants[waypoint_variant][-1])
+    if waypoint_variant == "multiple":
+        shortest_route.append(waypoint_variants[waypoint_variant][0])
+    else:
+        shortest_route.append(waypoint_variants[waypoint_variant][-1])
 
     shortest_routes[env_type] = shortest_route
     
@@ -121,6 +124,9 @@ for env_type in env_types:
 
 route_plot_filename = f"routes/{algorithm}/{waypoint_variant}/{env_var}_shortest_route.png"
 
-plot_route_exp(waypoint_variants[waypoint_variant], shortest_routes, filename=route_plot_filename)
+if waypoint_variant == "obstacle":
+    plot_route_exp([waypoint_variants[waypoint_variant][0] ,waypoint_variants[waypoint_variant][-1]], shortest_routes, filename=route_plot_filename)
+else:
+    plot_route_exp(waypoint_variants[waypoint_variant], shortest_routes, filename=route_plot_filename)
 
 git_push(f"Single UAV Exp: {waypoint_variant}, {algorithm.upper()}, {cap_first(env_type)}", True)

@@ -317,3 +317,42 @@ def plot_route_exp(targets, drone_paths, obstacles=[], filename=None):
 
     # Close the plot window
     plt.close()
+
+def plot_route_exp_z(targets, drone_paths, obstacles=[], filename=None):
+    
+    plt.figure(figsize=(8, 8))
+    
+    # Plot the obstacles
+    for obs in obstacles:
+        x_min, _, z_min, x_max, _, z_max = obs
+        plt.gca().add_patch(Rectangle((x_min, z_min), x_max - x_min, z_max - z_min, fill=True, color='grey', alpha=0.8, zorder=1))
+
+    disc_path = drone_paths["disc"]
+    if len(disc_path) > 0:
+        disc_route = np.array(disc_path)
+        plt.plot(disc_route[:, 0], disc_route[:, 2], c="green", zorder=2, label="Discete Actions")
+    
+    cont_path = drone_paths["cont"]
+    if len(cont_path) > 0:
+        cont_route = np.array(cont_path)
+        plt.plot(cont_route[:, 0], cont_route[:, 2], c="blue", zorder=2, label="Continuous Actions")
+
+    np_targets = np.array(targets)
+    start, np_targets = pop_first_element(np_targets)
+    plt.scatter(start[0], start[2], c='red', marker='x', s=60, zorder=3, label="Start")
+    plt.scatter(np_targets[:, 0], np_targets[:, 2], c='black', s=60, marker='x', zorder=3, label="Waypoints")
+
+    plt.legend()
+    plt.title("Drone Routes")
+    plt.xlabel("X")
+    plt.ylabel("Z")
+    if filename is not None:
+        if os.path.dirname(filename) != '' and not os.path.exists(os.path.dirname(filename)):
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+        plt.savefig(filename)
+    
+    plt.show(block=False)  # Set block=False to allow code execution to continue
+    plt.pause(5)
+
+    # Close the plot window
+    plt.close()
