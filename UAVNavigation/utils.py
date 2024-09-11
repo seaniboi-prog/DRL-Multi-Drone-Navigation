@@ -83,6 +83,9 @@ def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int 
     
     success_rate = successes / epochs
     
+    if len(route_list) == 0:
+        route_list.append(route)
+    
     return rewards_list, episode_lengths, success_rate, crashes, timeouts, route_list
 
 def get_algo_config(algo_name: str, env_name:str, env_config: Union[dict, None] = None, batch_size: int = 1024, params: dict = {}):
