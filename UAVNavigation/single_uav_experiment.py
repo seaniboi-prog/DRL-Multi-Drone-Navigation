@@ -35,13 +35,16 @@ waypoint_variants["multiple"] = [
 
 waypoint_variants["obstacle"] = [
     np.array([0.0, 0.0, 5.0], dtype=np.float32),
+    np.array([20.0, 0.0, 5.0], dtype=np.float32),
+    np.array([20.0, 0.0, 18.0], dtype=np.float32),
+    np.array([65.0, -5.0, 5.0], dtype=np.float32),
     np.array([75.0, 0.0, 5.0], dtype=np.float32)
 ]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--custom", help="use the custom variant of the environment", action="store_true")
 parser.add_argument("-a", "--algo", type=str, help="the algorithm to use for training", default="ppo",
-                    choices=["ppo", "a2c", "a3c", "dqn", "td3", "ddpg"])
+                    choices=["ppo", "a2c", "a3c", "dqn", "td3", "ddpg", "sac", "marwil"])
 parser.add_argument("-i", "--iter", type=int, help="the number of iterations to evaluate for", default=10)
 parser.add_argument("-r", "--render", type=str, help="the render mode to use for evaluation", default="none")
 parser.add_argument("-b", "--best", help="evaluate the best model over the iterations", action="store_true")
@@ -122,10 +125,17 @@ for env_type in env_types:
     route_obj_filename = f"routes/{algorithm}/{waypoint_variant}/{env_type}_{env_var}_shortest_route.pkl"
     save_obj_file(route_obj_filename, shortest_routes[env_type])
 
-route_plot_filename = f"routes/{algorithm}/{waypoint_variant}/{env_var}_shortest_route.png"
+route_plot_filename = f"routes/{algorithm}/{waypoint_variant}/{env_var}_shortest_route_top.png"
+route_plot_filename_z = f"routes/{algorithm}/{waypoint_variant}/{env_var}_shortest_route_side.png"
 
 if waypoint_variant == "obstacle":
-    plot_route_exp([waypoint_variants[waypoint_variant][0] ,waypoint_variants[waypoint_variant][-1]], shortest_routes, filename=route_plot_filename)
+    obstacles = [
+        np.array([22.0, -22.0, 0.0, 63.0, 20.0, 15.0], dtype=np.float32),
+        # np.array([50.0, 0.0, 5.0, 0.0, 0.0, 5.0], dtype=np.float32),
+    ]
+    plot_route_exp([waypoint_variants[waypoint_variant][0] ,waypoint_variants[waypoint_variant][-1]], shortest_routes, obstacles=obstacles, filename=route_plot_filename)
+    plot_route_exp_z([waypoint_variants[waypoint_variant][0] ,waypoint_variants[waypoint_variant][-1]], shortest_routes, obstacles=obstacles, filename=route_plot_filename_z)
+    
 else:
     plot_route_exp(waypoint_variants[waypoint_variant], shortest_routes, filename=route_plot_filename)
 
