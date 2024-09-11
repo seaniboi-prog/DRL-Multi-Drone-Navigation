@@ -115,10 +115,11 @@ for env_type in env_types:
     shortest_index = route_lengths.index(min(route_lengths))
     shortest_route = route_list[shortest_index]
     
-    if waypoint_variant == "multiple":
-        shortest_route.append(waypoint_variants[waypoint_variant][0])
-    else:
-        shortest_route.append(waypoint_variants[waypoint_variant][-1])
+    if success_rate > 0.0:
+        if waypoint_variant == "multiple":
+            shortest_route.append(waypoint_variants[waypoint_variant][0])
+        else:
+            shortest_route.append(waypoint_variants[waypoint_variant][-1])
 
     shortest_routes[env_type] = shortest_route
     
