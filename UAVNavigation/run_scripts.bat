@@ -22,14 +22,14 @@
 @REM echo Single UAV Experiment Obstacle with PPO
 @REM python single_uav_experiment.py -a ppo -i 5 -w random_multiple -v obstacle --best
 
-echo Single UAV Experiment Single with MARWIL
-python single_uav_experiment.py -a marwil -i 5 -w random_single -v single --best
+@REM echo Single UAV Experiment Single with MARWIL
+@REM python single_uav_experiment.py -a marwil -i 5 -w random_single -v single --best
 
-echo Single UAV Experiment Multiple with MARWIL
-python single_uav_experiment.py -a marwil -i 5 -w random_multiple -v multiple --best
+@REM echo Single UAV Experiment Multiple with MARWIL
+@REM python single_uav_experiment.py -a marwil -i 5 -w random_multiple -v multiple --best
 
-echo Single UAV Experiment Obstacle with MARWIL
-python single_uav_experiment.py -a marwil -i 5 -w random_multiple -v obstacle --best
+@REM echo Single UAV Experiment Obstacle with MARWIL
+@REM python single_uav_experiment.py -a marwil -i 5 -w random_multiple -v obstacle --best
 
 echo Training Disc Random Single with SAC
 @REM python train_drone_algo_rllib.py -t disc -a sac -i 30 -w random_single --tuned --max-steps 300
