@@ -1,7 +1,7 @@
 Slug,Algorithm,Action,Waypoints,Gamma,LR,Reward Mean,Reward Max,Training Time
-ppo_cont_multiple,ppo,cont,multiple,0.70,1e-05,-149.42,555.13,2732.49
 ppo_cont_single,ppo,cont,single,0.70,1e-05,55.97,298.66,2538.82
-marwil_cont_multiple,marwil,cont,multiple,0.99,0.00,-214.34,-200.00,169.20
 marwil_cont_single,marwil,cont,single,0.99,0.00,-214.44,-201.84,207.69
-sac_cont_multiple,sac,cont,multiple,0.90,1e-05,-353.12,-163.10,9389.93
 sac_cont_single,sac,cont,single,0.99,1e-06,-262.00,263.46,11726.14
+ppo_cont_multiple,ppo,cont,multiple,0.70,1e-05,-149.42,555.13,2732.49
+marwil_cont_multiple,marwil,cont,multiple,0.99,0.00,-214.34,-200.00,169.20
+sac_cont_multiple,sac,cont,multiple,0.90,1e-05,-353.12,-163.10,9389.93
