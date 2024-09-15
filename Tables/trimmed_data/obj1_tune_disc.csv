@@ -1,7 +1,7 @@
 Slug,Algorithm,Action,Waypoints,Gamma,LR,Reward Mean,Reward Max,Training Time
-ppo_disc_single,ppo,disc,single,0.70,0.00,123.21,274.77,2439.25
-marwil_disc_single,marwil,disc,single,0.99,0.00,-210.56,-206.02,207.41
-sac_disc_single,sac,disc,single,0.80,0.00,-290.57,252.41,9607.38
-ppo_disc_multiple,ppo,disc,multiple,0.80,0.00,-81.26,467.53,2605.32
-marwil_disc_multiple,marwil,disc,multiple,0.90,0.00,-234.55,-229.53,199.13
-sac_disc_multiple,sac,disc,multiple,0.80,0.00,-414.86,-181.99,9691.57
+ppo_disc_single,PPO,disc,Single,0.70,0.0001,123.21,274.77,2439.25
+marwil_disc_single,MARWIL,disc,Single,0.99,0.001,-210.56,-206.02,207.41
+sac_disc_single,SAC,disc,Single,0.80,0.001,-290.57,252.41,9607.38
+ppo_disc_multiple,PPO,disc,Multiple,0.80,0.0001,-81.26,467.53,2605.32
+marwil_disc_multiple,MARWIL,disc,Multiple,0.90,0.001,-234.55,-229.53,199.13
+sac_disc_multiple,SAC,disc,Multiple,0.80,0.001,-414.86,-181.99,9691.57

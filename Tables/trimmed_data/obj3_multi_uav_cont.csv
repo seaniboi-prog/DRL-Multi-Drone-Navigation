@@ -1,5 +1,5 @@
 Slug,Waypoint Type,No Drones,MTSP Algorithm,RL Algorithm,Action Type,Calc Mean Distance,Calc Total Distance,Real Mean Distance,Real Total Distance,Average Time,Elapsed Time
-blocks_tabu_ppo_cont_airsim_3,Blocks,3,TABU,PPO,Cont,389.38,1168.14,440.09,1320.28,676.13,715.44
-neighbourhood_tabu_ppo_cont_airsim_3,Neighbourhood,3,TABU,PPO,Cont,588.07,1764.22,692.91,2078.74,1229.34,1294.52
-africa_tabu_ppo_cont_airsim_3,Africa,3,TABU,PPO,Cont,1045.04,3135.11,1183.85,3551.56,1846.59,2059.44
-mountains_tabu_ppo_cont_airsim_3,Mountains,3,TABU,PPO,Cont,1460.40,4381.21,1635.07,4905.22,2043.80,2220.45
+blocks_tabu_ppo_cont_airsim_3,Blocks,3,TS,PPO,Cont,389.38,1168.14,440.09,1320.28,676.13,715.44
+neighbourhood_tabu_ppo_cont_airsim_3,Neighbourhood,3,TS,PPO,Cont,588.07,1764.22,692.91,2078.74,1229.34,1294.52
+africa_tabu_ppo_cont_airsim_3,Africa,3,TS,PPO,Cont,1045.04,3135.11,1183.85,3551.56,1846.59,2059.44
+mountains_tabu_ppo_cont_airsim_3,Mountains,3,TS,PPO,Cont,1460.40,4381.21,1635.07,4905.22,2043.80,2220.45

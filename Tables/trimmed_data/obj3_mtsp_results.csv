@@ -1,17 +1,17 @@
 Slug,Waypoint Type,No. Drones,No. Targets,MTSP Algorithm,Min Distance,Mean Distance,Max Distance,Total Distance,Score
-blocks_14_hill_3,Blocks,3,14,HILL,372.91,389.92,417.38,1169.75,1587.12
+blocks_14_hill_3,Blocks,3,14,HC,372.91,389.92,417.38,1169.75,1587.12
 blocks_14_ga_3,Blocks,3,14,GA,286.64,395.05,473.66,1185.15,1658.81
 blocks_14_aco_3,Blocks,3,14,ACO,372.06,389.38,417.60,1168.14,1585.73
-blocks_14_tabu_3,Blocks,3,14,TABU,372.06,389.38,417.60,1168.14,1585.73
-neighbourhood_22_hill_3,Neighbourhood,3,22,HILL,509.15,658.36,834.89,1975.09,2809.98
+blocks_14_tabu_3,Blocks,3,14,TS,372.06,389.38,417.60,1168.14,1585.73
+neighbourhood_22_hill_3,Neighbourhood,3,22,HC,509.15,658.36,834.89,1975.09,2809.98
 neighbourhood_22_ga_3,Neighbourhood,3,22,GA,644.27,774.63,845.31,2323.90,3169.22
 neighbourhood_22_aco_3,Neighbourhood,3,22,ACO,511.10,611.85,727.71,1835.56,2563.27
-neighbourhood_22_tabu_3,Neighbourhood,3,22,TABU,507.09,588.07,665.88,1764.22,2430.11
-africa_30_hill_3,Africa,3,30,HILL,777.51,1130.57,1632.87,3391.70,5024.57
+neighbourhood_22_tabu_3,Neighbourhood,3,22,TS,507.09,588.07,665.88,1764.22,2430.11
+africa_30_hill_3,Africa,3,30,HC,777.51,1130.57,1632.87,3391.70,5024.57
 africa_30_ga_3,Africa,3,30,GA,1091.98,1406.13,1654.52,4218.40,5872.91
 africa_30_aco_3,Africa,3,30,ACO,1050.17,1108.43,1150.02,3325.30,4475.31
-africa_30_tabu_3,Africa,3,30,TABU,888.42,1045.04,1231.06,3135.11,4366.16
-mountains_35_hill_3,Mountains,3,35,HILL,1344.74,1517.88,1644.06,4553.64,6197.69
+africa_30_tabu_3,Africa,3,30,TS,888.42,1045.04,1231.06,3135.11,4366.16
+mountains_35_hill_3,Mountains,3,35,HC,1344.74,1517.88,1644.06,4553.64,6197.69
 mountains_35_ga_3,Mountains,3,35,GA,1827.02,1990.24,2113.79,5970.72,8084.51
 mountains_35_aco_3,Mountains,3,35,ACO,1354.45,1529.28,1834.39,4587.83,6422.23
-mountains_35_tabu_3,Mountains,3,35,TABU,1247.82,1460.40,1598.98,4381.21,5980.19
+mountains_35_tabu_3,Mountains,3,35,TS,1247.82,1460.40,1598.98,4381.21,5980.19
