@@ -9,12 +9,12 @@ import shutil
 import pprint
 
 from pickle_utils import save_obj_file, load_obj_file
-from push_notif import send_notification, send_notif_image
+# from push_notif import send_notification, send_notif_image
 from git_utils import git_push
 from plot_results import plot_episode_reward
 from utils import *
 
-from telegram_utils import wait_for_response
+from telegram_utils import wait_for_response, send_message, send_photo
 CONTINUE_MESSAGE = "Would you like to continue training? (Y/N)"
 CONTINUE_TIMEOUT = 10 # minutes
 CONTINUE_INTERVAL = 20 # seconds
@@ -129,9 +129,9 @@ train_episode_count = 0
 eval_episode_count = 0
 print("\nStarting training...")
 if allow_notif:
-    send_notification("Training Started", "Started Training using {} in {} {} {} waypoints"
-                    .format(algo_name.upper(), cap_first(env_type), env_var, waypoint_cap))
-    # send_message("Started Training using {} in {} {}".format(algo_name.upper(), cap_first(env_type), env_var))
+    # send_notification("Training Started", "Started Training using {} in {} {} {} waypoints"
+    #                 .format(algo_name.upper(), cap_first(env_type), env_var, waypoint_cap))
+    send_message("Started Training using {} in {} {}".format(algo_name.upper(), cap_first(env_type), env_var))
 
 total_iters: int = args.iter
 i = 0
@@ -213,10 +213,10 @@ while i < total_iters:
             notif_msg2 = "Average reward of {:.2f} with a range between {:.2f} and {:.2f}".format(reward_info["avg_reward"], reward_info["min_reward"], reward_info["max_reward"])
             notif_msg3 = "Average episode length of {:.2f} with a range between {} and {}".format(length_info["avg_length"], length_info["min_length"], length_info["max_length"])
 
-            send_notif_image(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}", train_plot)
+            # send_notif_image(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}", train_plot)
             # send_notification(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}")
-            # send_message(notif_title)
-            # send_message(f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}")
+            send_message(notif_title)
+            send_message(f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}")
         
         # Evaluate the algorithm
         print("\nEvaluating Algorithm...")
@@ -236,7 +236,7 @@ while i < total_iters:
             notif_msg2 = "Average episode length of {:.2f} with a range between {} and {}".format(average_list(eval_lengths), min(eval_lengths), max(eval_lengths))
             notif_msg3 = "Success Rate: {:.2%}, Crashes: {}, Timeouts: {}".format(success_rate, crashes, timeouts)
             
-            send_notif_image(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}", eval_plot)
+            # send_notif_image(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}", eval_plot)
             # send_notification(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}")
 
         # Save Rewards
@@ -258,7 +258,7 @@ while i < total_iters:
             confirm = wait_for_response(CONTINUE_MESSAGE, CONTINUE_TIMEOUT, CONTINUE_INTERVAL)
             if confirm:
                 print("Received confirmation, continuing training...")
-                send_notification("Continuing Training", "Received confirmation, continuing training...")
+                # send_notification("Continuing Training", "Received confirmation, continuing training...")
                 total_iters += 1
 
     except KeyboardInterrupt:
@@ -271,9 +271,9 @@ while i < total_iters:
         print(f"Error Message: {err}")
         print("Skipping to next iteration...")
         if allow_notif:
-            send_notification(f"Training Iterantion {(i+1)} Failed",
-                            f"Failed with MsgpackRPC Error: {err}\nSkipping to next iteration...")
-            # send_message(f"Training Iterantion {(i+1)} Failed with MsgpackRPC Error\nSkipping to next iteration...")
+            # send_notification(f"Training Iterantion {(i+1)} Failed",
+            #                 f"Failed with MsgpackRPC Error: {err}\nSkipping to next iteration...")
+            send_message(f"Training Iterantion {(i+1)} Failed with MsgpackRPC Error\nSkipping to next iteration...")
         traceback.print_exc()
         sys.exit(1)
     
@@ -283,9 +283,9 @@ while i < total_iters:
         print(f"Error Message: {err}")
         print("Skipping to next iteration...")
         if allow_notif:
-            send_notification(f"Training Iterantion {(i+1)} Failed",
-                            f"Failed with General Error: {err}\nSkipping to next iteration...")
-            # send_message(f"Training Iterantion {(i+1)} Failed with General Error\nSkipping to next iteration...")
+            # send_notification(f"Training Iterantion {(i+1)} Failed",
+            #                 f"Failed with General Error: {err}\nSkipping to next iteration...")
+            send_message(f"Training Iterantion {(i+1)} Failed with General Error\nSkipping to next iteration...")
         traceback.print_exc()
         sys.exit(1)
 
