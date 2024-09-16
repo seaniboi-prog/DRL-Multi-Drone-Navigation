@@ -12,6 +12,7 @@ import json
 import os
 import sys
 import math
+import time
 
 from rich.console import Console
 from rich.table import Table
@@ -63,16 +64,20 @@ def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int 
     rewards_list: list[float] = []
     episode_lengths: list[int] = []
     route_list = []
+    time_list = []
     successes = 0
     timeouts = 0
     crashes = 0
     for _ in tqdm(range(epochs), desc="Evaluating..."):
+        start_time = time.time()
         cum_reward, episode_len, status, route = compute_single_episode(env, model)
+        elapsed_time = time.time() - start_time
         rewards_list.append(cum_reward)
         episode_lengths.append(episode_len)
         if status == "solved":
             successes += 1
             route_list.append(route)
+            time_list.append(elapsed_time)
         elif status == "timed_out":
             timeouts += 1
         elif status == "crashed":
@@ -85,7 +90,7 @@ def evaluate_algorithm(model: Union[Algorithm,Policy], env_id: str, epochs: int 
     if len(route_list) == 0:
         route_list.append(route)
     
-    return rewards_list, episode_lengths, success_rate, crashes, timeouts, route_list
+    return rewards_list, episode_lengths, success_rate, crashes, timeouts, route_list, time_list
 
 def get_algo_config(algo_name: str, env_name:str, env_config: Union[dict, None] = None, batch_size: int = 1024, params: dict = {}):
     if algo_name == "ppo":
@@ -359,3 +364,39 @@ def plot_route_exp_z(targets, drone_paths, obstacles=[], filename=None):
 
     # Close the plot window
     plt.close()
+
+
+def update_single_uav_table(results_table_path, waypoint_type, action_type, rl_algo, route, dist, time) -> pd.DataFrame:
+    # Check if the file exists and read the CSV, otherwise create an empty DataFrame with specified columns
+    if os.path.exists(results_table_path):
+        results_table = pd.read_csv(results_table_path)
+    else:
+        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "RL Algorithm", "Action Type", "Distance", "Elevation", "Time"])
+
+    z_list = np.array(route)[:, 2]
+
+    max_z = np.max(z_list)
+    min_z = np.min(z_list)
+
+    # Construct the slug and row dictionary
+    slug = f"{waypoint_type}_{action_type}_{rl_algo}"
+    row = {
+        "Slug": slug,
+        "Waypoint Type": waypoint_type.capitalize(),
+        "RL Algorithm": rl_algo.upper(),
+        "Action Type": action_type,
+        "Distance": dist,
+        "Elevation": (z_max - z_min),
+        "Time": time
+    }
+
+    # Check if the slug exists in the 'Slug' column and update or append the row
+    if slug in results_table["Slug"].values:
+        results_table.loc[results_table["Slug"] == slug, :] = pd.DataFrame([row]).values
+    else:
+        results_table = pd.concat([results_table, pd.DataFrame([row])], ignore_index=True)
+
+    # Save the updated DataFrame back to the CSV file
+    results_table.to_csv(results_table_path, index=False)
+
+    return results_table

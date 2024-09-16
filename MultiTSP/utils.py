@@ -422,7 +422,6 @@ def compare_solution_scores(mtsp_solver: AlgoMultiTSP, city_type) -> Union[str,N
             pickle.dump(mtsp_solver, f)
         return plot_path
 
-# TODO: Implement the following functions    
 def update_mtsp_table(results_table_path, city_type, no_drones, mtsp_algo, mtsp_solver: AlgoMultiTSP, time) -> pd.DataFrame:
     # Check if the file exists and read the CSV, otherwise create an empty DataFrame with specified columns
     if os.path.exists(results_table_path):

@@ -97,7 +97,7 @@ for env_type in env_types:
 
     chkpt_path = f"training/{algorithm}/{env_type}/{env_var}/{waypoint_type}/{chkpt_root}"
     model = Algorithm.from_checkpoint(chkpt_path)
-    eval_rewards, eval_lengths, success_rate, crashes, timeouts, route_list = evaluate_algorithm(model, env_id, epochs=total_iters, env_config=drone_env_config, render_mode=render_mode)
+    eval_rewards, eval_lengths, success_rate, crashes, timeouts, route_list, time_list = evaluate_algorithm(model, env_id, epochs=total_iters, env_config=drone_env_config, render_mode=render_mode)
 
     print(f"Best reward over {total_iters} iterations: {max(eval_rewards)}")
     print(f"Average reward over {total_iters} iterations: {sum(eval_rewards) / total_iters}")
@@ -117,7 +117,9 @@ for env_type in env_types:
 
     print(f"Shortest route length: {min(route_lengths)}")
     shortest_index = route_lengths.index(min(route_lengths))
+    shortest_length = route_lengths[shortest_index]
     shortest_route = route_list[shortest_index]
+    shortest_route_time = time_list[shortest_index]
     
     if success_rate > 0.0:
         if waypoint_variant == "multiple":
@@ -129,6 +131,9 @@ for env_type in env_types:
     
     route_obj_filename = f"routes/{algorithm}/{waypoint_variant}/{env_type}_{env_var}_shortest_route.pkl"
     save_obj_file(route_obj_filename, shortest_routes[env_type])
+
+    results_table_path = os.path.join(os.getcwd(), "single_uav_results_table.csv")
+    update_single_uav_table(results_table_path, waypoint_variant, env_type, algorithm, shortest_route, shortest_length, shortest_route_time)
 
 route_plot_filename = f"routes/{algorithm}/{waypoint_variant}/{env_var}_shortest_route_top.png"
 route_plot_filename_z = f"routes/{algorithm}/{waypoint_variant}/{env_var}_shortest_route_side.png"
