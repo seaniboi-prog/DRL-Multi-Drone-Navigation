@@ -50,9 +50,9 @@ parser.add_argument("-r", "--render", type=str, help="the render mode to use for
 parser.add_argument("-b", "--best", help="evaluate the best model over the iterations", action="store_true")
 parser.add_argument("-w", "--waypoint_type", type=str, help="the waypoint type trained", default="random_single",
                     choices=["random_single", "random_multiple", "fixed_single", "fixed_multiple"])
-# Change this
 parser.add_argument("-v", "--waypoint_variant", type=str, help="the waypoint type to use for the environment",
                     choices=["single", "multiple", "obstacle"], default="single")
+parser.add_argument("-m", "--max-steps", type=int, help="the maximum number of steps to run the environment for", default=0)
 
 args = parser.parse_args()
 
@@ -65,10 +65,14 @@ if render_mode == "none":
 chkpt_root = "best_root" if args.best else "save_root"
 waypoint_type = args.waypoint_type
 waypoint_variant = args.waypoint_variant
+if args.max_steps == 0:
+    max_steps = None
+else:
+    max_steps = args.max_steps
 
 end_at_start = True if waypoint_variant == "multiple" else False
 
-env_config, env_ids = gym_drone.get_env_config(verbose=True, exp_waypts=waypoint_variants[waypoint_variant], end_at_start=end_at_start)
+env_config, env_ids = gym_drone.get_env_config(verbose=True, exp_waypts=waypoint_variants[waypoint_variant], end_at_start=end_at_start, max_steps=max_steps)
 
 env_types = ["disc", "cont"]
 
@@ -84,7 +88,7 @@ for env_type in env_types:
 
     drone_env_config = {
         "waypoints": waypoint_variants[waypoint_variant][1:],
-        "max_steps": None,
+        "max_steps": max_steps,
         "drone_name": "Drone1",
         "verbose": True,
         "momentum": False,
