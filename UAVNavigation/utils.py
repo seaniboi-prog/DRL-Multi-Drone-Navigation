@@ -366,12 +366,12 @@ def plot_route_exp_z(targets, drone_paths, obstacles=[], filename=None):
     plt.close()
 
 
-def update_single_uav_table(results_table_path, waypoint_type, action_type, rl_algo, route, dist, time) -> pd.DataFrame:
+def update_single_uav_table(results_table_path, waypoint_type, action_type, rl_algo, route, dist, time, success_rate) -> pd.DataFrame:
     # Check if the file exists and read the CSV, otherwise create an empty DataFrame with specified columns
     if os.path.exists(results_table_path):
         results_table = pd.read_csv(results_table_path)
     else:
-        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "RL Algorithm", "Action Type", "Distance", "Elevation", "Time"])
+        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "RL Algorithm", "Action Type", "Success Rate", "Distance", "Elevation", "Time"])
 
     z_list = np.array(route)[:, 2]
 
@@ -385,6 +385,7 @@ def update_single_uav_table(results_table_path, waypoint_type, action_type, rl_a
         "Waypoint Type": waypoint_type.capitalize(),
         "RL Algorithm": rl_algo.upper(),
         "Action Type": action_type,
+        "Success Rate": success_rate,
         "Distance": dist,
         "Elevation": (z_max - z_min),
         "Time": time

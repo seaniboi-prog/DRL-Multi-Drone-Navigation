@@ -133,7 +133,7 @@ for env_type in env_types:
     save_obj_file(route_obj_filename, shortest_routes[env_type])
 
     results_table_path = os.path.join(os.getcwd(), "single_uav_results_table.csv")
-    update_single_uav_table(results_table_path, waypoint_variant, env_type, algorithm, shortest_route, shortest_length, shortest_route_time)
+    update_single_uav_table(results_table_path, waypoint_variant, env_type, algorithm, shortest_route, shortest_length, shortest_route_time, success_rate)
 
 route_plot_filename = f"routes/{algorithm}/{waypoint_variant}/{env_var}_shortest_route_top.png"
 route_plot_filename_z = f"routes/{algorithm}/{waypoint_variant}/{env_var}_shortest_route_side.png"
