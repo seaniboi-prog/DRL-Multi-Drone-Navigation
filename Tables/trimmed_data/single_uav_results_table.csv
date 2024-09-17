@@ -1,0 +1,7 @@
+Slug,Waypoint Type,RL Algorithm,Action Type,Success Rate,2D Distance,Distance,Elevation,Time
+single_disc_ppo,Single,PPO,disc,1.00,117.09,119.18,6.41,113.97
+single_cont_ppo,Single,PPO,cont,1.00,105.14,121.59,11.35,114.27
+multiple_disc_ppo,Multiple,PPO,disc,0.80,271.59,284.63,9.03,280.17
+multiple_cont_ppo,Multiple,PPO,cont,0.80,270.38,301.16,8.85,276.28
+obstacle_disc_ppo,Obstacle,PPO,disc,1.00,81.58,102.94,16.35,110.43
+obstacle_cont_ppo,Obstacle,PPO,cont,1.00,85.31,108.49,20.93,97.41
