@@ -149,4 +149,4 @@ if waypoint_variant == "obstacle":
 else:
     plot_route_exp(waypoint_variants[waypoint_variant], shortest_routes, filename=route_plot_filename)
 
-git_push(f"Single UAV Exp: {waypoint_variant}, {algorithm.upper()}, {cap_first(env_type)}", True)
+# git_push(f"Single UAV Exp: {waypoint_variant}, {algorithm.upper()}, {cap_first(env_type)}", True)

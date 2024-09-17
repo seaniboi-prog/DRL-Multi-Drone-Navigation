@@ -31,6 +31,8 @@ from pickle_utils import save_obj_file, load_obj_file
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
+import pandas as pd
+
 NUM_PC_CPU = 4
 NUM_PC_GPU = 1
 NUM_LP_CPU = 8
@@ -387,7 +389,7 @@ def update_single_uav_table(results_table_path, waypoint_type, action_type, rl_a
         "Action Type": action_type,
         "Success Rate": success_rate,
         "Distance": dist,
-        "Elevation": (z_max - z_min),
+        "Elevation": (max_z - min_z),
         "Time": time
     }
 
