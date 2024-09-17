@@ -373,10 +373,12 @@ def update_single_uav_table(results_table_path, waypoint_type, action_type, rl_a
     if os.path.exists(results_table_path):
         results_table = pd.read_csv(results_table_path)
     else:
-        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "RL Algorithm", "Action Type", "Success Rate", "Distance", "Elevation", "Time"])
+        results_table = pd.DataFrame(columns=["Slug", "Waypoint Type", "RL Algorithm", "Action Type", "Success Rate", "2D Distance", "Distance", "Elevation", "Time"])
+
+    
+    xy_plane_distance = sum([np.linalg.norm(route[i][:2] - route[i+1][:2]) for i in range(len(route) - 1)])
 
     z_list = np.array(route)[:, 2]
-
     max_z = np.max(z_list)
     min_z = np.min(z_list)
 
@@ -388,6 +390,7 @@ def update_single_uav_table(results_table_path, waypoint_type, action_type, rl_a
         "RL Algorithm": rl_algo.upper(),
         "Action Type": action_type,
         "Success Rate": success_rate,
+        "2D Distance": xy_plane_distance,
         "Distance": dist,
         "Elevation": (max_z - min_z),
         "Time": time

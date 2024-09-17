@@ -14,13 +14,13 @@
 
 
 echo Single UAV Experiment Single with PPO
-python single_uav_experiment.py -a ppo -i 10 -w random_single -v single --best
+python single_uav_experiment.py -a ppo -i 10 -w random_single -v single --best -p
 
 echo Single UAV Experiment Multiple with PPO
-python single_uav_experiment.py -a ppo -i 10 -w random_multiple -v multiple --best
+python single_uav_experiment.py -a ppo -i 10 -w random_multiple -v multiple --best -p
 
 echo Single UAV Experiment Obstacle with PPO
-python single_uav_experiment.py -a ppo -i 10 -w random_multiple -v obstacle --best
+python single_uav_experiment.py -a ppo -i 10 -w random_multiple -v obstacle --best -p
 
 @REM echo Single UAV Experiment Single with MARWIL
 @REM python single_uav_experiment.py -a marwil -i 5 -w random_single -v single --best
