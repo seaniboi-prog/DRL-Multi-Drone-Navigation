@@ -218,23 +218,23 @@ while i < total_iters:
             send_message(notif_title)
             send_message(f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}")
         
-        # Evaluate the algorithm
-        print("\nEvaluating Algorithm...")
-        eval_rewards, eval_lengths, success_rate, crashes, timeouts, route_list, time_list = evaluate_algorithm(algo, select_env, epochs=5, env_config=env_config, render_mode=render_mode)
+        # # Evaluate the algorithm
+        # print("\nEvaluating Algorithm...")
+        # eval_rewards, eval_lengths, success_rate, crashes, timeouts, route_list, time_list = evaluate_algorithm(algo, select_env, epochs=5, env_config=env_config, render_mode=render_mode)
         
-        eval_episode_count += len(eval_rewards)
+        # eval_episode_count += len(eval_rewards)
         
-        all_episode_rewards.extend_eval_reward(eval_rewards, average_list(eval_rewards), eval_episode_count)
+        # all_episode_rewards.extend_eval_reward(eval_rewards, average_list(eval_rewards), eval_episode_count)
         
-        # Plot Evaluation Rewards
-        eval_plot = plot_episode_reward(all_episode_rewards, algo_name, env_var, env_type, "eval", waypoint_str, display=False)
+        # # Plot Evaluation Rewards
+        # eval_plot = plot_episode_reward(all_episode_rewards, algo_name, env_var, env_type, "eval", waypoint_str, display=False)
         
-        # Send Evaluation Notification
-        if allow_notif:
-            notif_title = "Evaluation Iteration {} Finished with {} episodes".format(result["training_iteration"], len(eval_rewards))
-            notif_msg1 = "Average reward of {:.2f} with a range between {:.2f} and {:.2f}".format(average_list(eval_rewards), min(eval_rewards), max(eval_rewards))
-            notif_msg2 = "Average episode length of {:.2f} with a range between {} and {}".format(average_list(eval_lengths), min(eval_lengths), max(eval_lengths))
-            notif_msg3 = "Success Rate: {:.2%}, Crashes: {}, Timeouts: {}".format(success_rate, crashes, timeouts)
+        # # Send Evaluation Notification
+        # if allow_notif:
+        #     notif_title = "Evaluation Iteration {} Finished with {} episodes".format(result["training_iteration"], len(eval_rewards))
+        #     notif_msg1 = "Average reward of {:.2f} with a range between {:.2f} and {:.2f}".format(average_list(eval_rewards), min(eval_rewards), max(eval_rewards))
+        #     notif_msg2 = "Average episode length of {:.2f} with a range between {} and {}".format(average_list(eval_lengths), min(eval_lengths), max(eval_lengths))
+        #     notif_msg3 = "Success Rate: {:.2%}, Crashes: {}, Timeouts: {}".format(success_rate, crashes, timeouts)
             
             # send_notif_image(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}", eval_plot)
             # send_notification(notif_title, f"{notif_msg1}\n{notif_msg2}\n{notif_msg3}")
@@ -242,11 +242,11 @@ while i < total_iters:
         # Save Rewards
         all_episode_rewards.save_rewards(reward_root)
 
-        if allow_notif:
-            # Push the results to the git repository
-            git_push("Training Iteration {} Finished using {} in {} {} with {} waypoints"
-                    .format(result["training_iteration"], algo_name.upper(), cap_first(env_type), cap_first(env_var), waypoint_cap),
-                    pull=True)
+        # if allow_notif:
+        #     # Push the results to the git repository
+        #     git_push("Training Iteration {} Finished using {} in {} {} with {} waypoints"
+        #             .format(result["training_iteration"], algo_name.upper(), cap_first(env_type), cap_first(env_var), waypoint_cap),
+        #             pull=True)
 
         # Print Result
         # print(pretty_print(result))
