@@ -63,6 +63,10 @@ waypoints["neighbourhood"] = [
                 np.array([64.0, 128.0, 5.0], dtype=np.float32), # V
             ]
 
+obstacles["neighbourhood"] = [
+    
+]
+
 specific_paths["neighbourhood"] = [
     [
         np.array([0.0, 63.0, 35.0], dtype=np.float32),
