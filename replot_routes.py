@@ -6,11 +6,11 @@ from MultiTSP import *
 
 import os
 
-waypoint_type = "blocks"
+waypoint_type = "neighbourhood"
 no_drones = 3
-mtsp_algo = "hill"
+mtsp_algo = "tabu"
 rl_algo = "ppo"
-action_type = "disc"
+action_type = "cont"
 env_variant = "airsim"
 
 results_root_path = os.path.join(os.getcwd(), "results", mtsp_algo, f"{no_drones}_drones", rl_algo, action_type, env_variant)
