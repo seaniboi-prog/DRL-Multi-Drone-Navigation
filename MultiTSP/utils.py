@@ -392,6 +392,10 @@ class AlgoMultiTSP(ABC):
     def get_score(self) -> float:
         return self.network.get_score()
     
+    # TODO: Calculate Distance Squared
+    def get_dist_square(self) -> float:
+        pass
+    
     def get_paths(self) -> 'list[Path]':
         return self.network.get_paths()
     
