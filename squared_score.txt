@@ -1,0 +1,385 @@
+Square Scores:
+Type: africa, Drones: 3, Algo: ACO
+Total Distance: 3325.2952613830566
+Squared: 3691264.870544888
+Root: 1921.266475672984
+
+
+Type: africa, Drones: 3, Algo: GA
+Total Distance: 4218.397083282471
+Squared: 6096334.716493225
+Root: 2469.075680592481
+
+
+Type: africa, Drones: 3, Algo: HILL
+Total Distance: 3391.702610015869
+Squared: 4233774.374744941
+Root: 2057.613757425076
+
+
+Type: africa, Drones: 3, Algo: TABU
+Total Distance: 3135.108989715576
+Squared: 3336299.3782984684
+Root: 1826.5539626023833
+
+
+Type: blocks, Drones: 3, Algo: ACO
+Total Distance: 1168.1368026733398
+Squared: 456062.7077283346
+Root: 675.3241501148427
+
+
+Type: blocks, Drones: 3, Algo: GA
+Total Distance: 1185.1520347595215
+Squared: 487016.1886613815
+Root: 697.8654516892074
+
+
+Type: blocks, Drones: 3, Algo: HILL
+Total Distance: 1169.7456169128418
+Squared: 457254.3132355808
+Root: 676.2058216516483
+
+
+Type: blocks, Drones: 3, Algo: TABU
+Total Distance: 1168.1368026733398
+Squared: 456062.7077283346
+Root: 675.3241501148427
+
+
+Type: mountains, Drones: 3, Algo: ACO
+Total Distance: 4587.833625793457
+Squared: 7156705.708763285
+Root: 2675.2019940115333
+
+
+Type: mountains, Drones: 3, Algo: GA
+Total Distance: 5970.719032287598
+Squared: 11926640.065984238
+Root: 3453.4967881821226
+
+
+Type: mountains, Drones: 3, Algo: HILL
+Total Distance: 4553.639099121094
+Squared: 6959979.343614813
+Root: 2638.1772767603798
+
+
+Type: mountains, Drones: 3, Algo: TABU
+Total Distance: 4381.2099533081055
+Squared: 6468206.13717141
+Root: 2543.266823825493
+
+
+Type: neighbourhood, Drones: 3, Algo: ACO
+Total Distance: 1835.559700012207
+Squared: 1146894.9113047775
+Root: 1070.9317958230474
+
+
+Type: neighbourhood, Drones: 3, Algo: GA
+Total Distance: 2323.904281616211
+Squared: 1825729.2929988275
+Root: 1351.1955050986617
+
+
+Type: neighbourhood, Drones: 3, Algo: HILL
+Total Distance: 1975.0929489135742
+Squared: 1354503.0090073305
+Root: 1163.8311771933809
+
+
+Type: neighbourhood, Drones: 3, Algo: TABU
+Total Distance: 1764.2230949401855
+Squared: 1050117.9703956381
+Root: 1024.7526386380462
+
+
+Type: random_100, Drones: 2, Algo: ACO
+Total Distance: 22612.47163538677
+Squared: 256945474.87788886
+Root: 16029.518859837586
+
+
+Type: random_100, Drones: 2, Algo: GA
+Total Distance: 73230.32667951574
+Squared: 2681756483.2021174
+Root: 51785.67835996857
+
+
+Type: random_100, Drones: 2, Algo: HILL
+Total Distance: 30591.35984682681
+Squared: 471339480.72819084
+Root: 21710.354228528628
+
+
+Type: random_100, Drones: 2, Algo: TABU
+Total Distance: 26336.847878727545
+Squared: 346855956.4290211
+Root: 18624.069276853035
+
+
+Type: random_100, Drones: 3, Algo: ACO
+Total Distance: 24385.319467498433
+Squared: 205817630.66325867
+Root: 14346.345550810445
+
+
+Type: random_100, Drones: 3, Algo: GA
+Total Distance: 67232.17673181639
+Squared: 1539316645.3464332
+Root: 39234.12603010845
+
+
+Type: random_100, Drones: 3, Algo: HILL
+Total Distance: 34661.32958549922
+Squared: 401740659.95250225
+Root: 20043.46925939974
+
+
+Type: random_100, Drones: 3, Algo: TABU
+Total Distance: 39402.568608324276
+Squared: 518417206.8104921
+Root: 22768.777016135322
+
+
+Type: random_100, Drones: 5, Algo: ACO
+Total Distance: 23750.0970541891
+Squared: 126830822.9482763
+Root: 11261.919150316979
+
+
+Type: random_100, Drones: 5, Algo: GA
+Total Distance: 64241.70934004475
+Squared: 835771807.2046623
+Root: 28909.718213857817
+
+
+Type: random_100, Drones: 5, Algo: HILL
+Total Distance: 32553.592158817384
+Squared: 228348529.18088546
+Root: 15111.205417864105
+
+
+Type: random_100, Drones: 5, Algo: TABU
+Total Distance: 53319.91093144189
+Squared: 572706961.2762804
+Root: 23931.296690239757
+
+
+Type: random_20, Drones: 2, Algo: ACO
+Total Distance: 1916.1213499852304
+Squared: 1837052.638663046
+Root: 1355.3791494128297
+
+
+Type: random_20, Drones: 2, Algo: GA
+Total Distance: 2469.213745640823
+Squared: 3054240.6900024633
+Root: 1747.63860394604
+
+
+Type: random_20, Drones: 2, Algo: HILL
+Total Distance: 2333.7786024984093
+Squared: 2741015.4029949824
+Root: 1655.6012210055242
+
+
+Type: random_20, Drones: 2, Algo: TABU
+Total Distance: 1868.0508349008749
+Squared: 1745317.568324098
+Root: 1321.1046772773525
+
+
+Type: random_20, Drones: 3, Algo: ACO
+Total Distance: 2144.663748930302
+Squared: 1630100.2335784682
+Root: 1276.7537873758074
+
+
+Type: random_20, Drones: 3, Algo: GA
+Total Distance: 2646.4491414705317
+Squared: 2344491.5473133475
+Root: 1531.1732584241888
+
+
+Type: random_20, Drones: 3, Algo: HILL
+Total Distance: 2206.554878078895
+Squared: 1864907.1672379437
+Root: 1365.6160394627561
+
+
+Type: random_20, Drones: 3, Algo: TABU
+Total Distance: 2093.7616361775695
+Squared: 1462725.319657842
+Root: 1209.431816870154
+
+
+Type: random_20, Drones: 5, Algo: ACO
+Total Distance: 2405.446912279202
+Squared: 1205942.7872413825
+Root: 1098.1542638634076
+
+
+Type: random_20, Drones: 5, Algo: GA
+Total Distance: 2421.37521917663
+Squared: 1194909.9188714882
+Root: 1093.1193525281162
+
+
+Type: random_20, Drones: 5, Algo: HILL
+Total Distance: 2282.631639054747
+Squared: 1414327.5447677863
+Root: 1189.2550377306738
+
+
+Type: random_20, Drones: 5, Algo: TABU
+Total Distance: 2312.6238880359156
+Squared: 1076037.2928302446
+Root: 1037.322174076234
+
+
+Type: random_200, Drones: 2, Algo: ACO
+Total Distance: 68925.03130611655
+Squared: 2428357786.7736444
+Root: 49278.37037457351
+
+
+Type: random_200, Drones: 2, Algo: GA
+Total Distance: 319569.679273307
+Squared: 51064925572.39369
+Root: 225975.49772573507
+
+
+Type: random_200, Drones: 2, Algo: HILL
+Total Distance: 139851.1388500476
+Squared: 9828777277.645723
+Root: 99140.19002223933
+
+
+Type: random_200, Drones: 2, Algo: TABU
+Total Distance: 114612.85743860406
+Squared: 6573011768.92902
+Root: 81074.11281616976
+
+
+Type: random_200, Drones: 3, Algo: ACO
+Total Distance: 68366.46464862044
+Squared: 1611688239.7760012
+Root: 40145.83714130272
+
+
+Type: random_200, Drones: 3, Algo: GA
+Total Distance: 314524.2500761066
+Squared: 33027163473.793003
+Root: 181733.77086769813
+
+
+Type: random_200, Drones: 3, Algo: HILL
+Total Distance: 136964.51978948095
+Squared: 6293584533.861253
+Root: 79332.11540014077
+
+
+Type: random_200, Drones: 3, Algo: TABU
+Total Distance: 170207.5406646079
+Squared: 9673694206.769104
+Root: 98354.93992052003
+
+
+Type: random_200, Drones: 5, Algo: ACO
+Total Distance: 55429.8012464365
+Squared: 619586885.5209792
+Root: 24891.502275294257
+
+
+Type: random_200, Drones: 5, Algo: GA
+Total Distance: 303905.6888829956
+Squared: 19360618709.31633
+Root: 139142.44035992876
+
+
+Type: random_200, Drones: 5, Algo: HILL
+Total Distance: 142577.65822493128
+Squared: 4089744632.5998726
+Root: 63951.11126946797
+
+
+Type: random_200, Drones: 5, Algo: TABU
+Total Distance: 239763.0595568776
+Squared: 11503660857.044004
+Root: 107255.12042342783
+
+
+Type: random_50, Drones: 2, Algo: ACO
+Total Distance: 7278.156437780342
+Squared: 26728494.4790786
+Root: 5169.96078119347
+
+
+Type: random_50, Drones: 2, Algo: GA
+Total Distance: 14859.225098336861
+Squared: 110481951.83036561
+Root: 10511.039521872497
+
+
+Type: random_50, Drones: 2, Algo: HILL
+Total Distance: 9363.590410666511
+Squared: 44687168.679323584
+Root: 6684.846197133003
+
+
+Type: random_50, Drones: 2, Algo: TABU
+Total Distance: 7063.861062312404
+Squared: 24970303.28785359
+Root: 4997.02944636647
+
+
+Type: random_50, Drones: 3, Algo: ACO
+Total Distance: 7920.970431487356
+Squared: 22422912.67858225
+Root: 4735.283801271287
+
+
+Type: random_50, Drones: 3, Algo: GA
+Total Distance: 15866.475329072982
+Squared: 84599465.36711743
+Root: 9197.796767004445
+
+
+Type: random_50, Drones: 3, Algo: HILL
+Total Distance: 8994.202800332834
+Squared: 27549252.548693433
+Root: 5248.73818633521
+
+
+Type: random_50, Drones: 3, Algo: TABU
+Total Distance: 8595.751524728717
+Squared: 24636171.964045618
+Root: 4963.483853509108
+
+
+Type: random_50, Drones: 5, Algo: ACO
+Total Distance: 8764.605109022936
+Squared: 15873168.056203935
+Root: 3984.114463240726
+
+
+Type: random_50, Drones: 5, Algo: GA
+Total Distance: 15186.717491777152
+Squared: 48228554.335858226
+Root: 6944.678130472155
+
+
+Type: random_50, Drones: 5, Algo: HILL
+Total Distance: 9059.882550731872
+Squared: 19541780.19779452
+Root: 4420.608577763306
+
+
+Type: random_50, Drones: 5, Algo: TABU
+Total Distance: 13064.37890415825
+Squared: 34282142.0203947
+Root: 5855.095389521395
+
+

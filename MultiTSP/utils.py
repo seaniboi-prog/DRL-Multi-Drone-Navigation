@@ -1,6 +1,7 @@
 import os
 import pickle
 import string
+import math
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -160,6 +161,9 @@ class Network:
     
     def get_score(self) -> float:
         return self.get_total_dist() + self.get_minmax_dist()
+    
+    def get_score_square(self) -> float:
+        return sum([path.get_distance()**2 for path in self.paths])
 
     def get_total_time(self, speed: float) -> float:
         drone_dists = [path.get_distance() for path in self.paths]
@@ -392,9 +396,11 @@ class AlgoMultiTSP(ABC):
     def get_score(self) -> float:
         return self.network.get_score()
     
-    # TODO: Calculate Distance Squared
-    def get_dist_square(self) -> float:
-        pass
+    def get_score_square(self) -> float:
+        return self.network.get_score_square()
+
+    def get_score_sqrt(self) -> float:
+        return math.sqrt(self.network.get_score_square())
     
     def get_paths(self) -> 'list[Path]':
         return self.network.get_paths()
