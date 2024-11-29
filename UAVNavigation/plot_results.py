@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Union
 
+# TODO: Font size
 def plot_episode_reward(rewards: Rewards, algo_name: str, env_name: str, env_type: str, reward_type: str, waypoint_type: str, display: bool, x_range: Union[list, None] = None, save_dir: str = 'plots'):
     save_file = f'{save_dir}/{reward_type}/reward_{reward_type}_plot_{env_type}_{env_name}_{algo_name}_{waypoint_type}.png'
     os.makedirs(os.path.dirname(save_file), exist_ok=True)
@@ -46,12 +47,12 @@ def plot_episode_reward(rewards: Rewards, algo_name: str, env_name: str, env_typ
     plt.plot(avg_idxs, avg_rewards, color='orange', linewidth=5, zorder=2)
     
     # Set labels with increased fontsize
-    plt.xlabel('Episode', fontsize=20)
-    plt.ylabel('Reward', fontsize=20)
+    plt.xlabel('Episode', fontsize=24)
+    plt.ylabel('Reward', fontsize=24)
     
     # Set the title with increased fontsize
     waypoint_string = " ".join([cap_first(word) for word in waypoint_type.split("_")])
-    plt.title(f'{cap_first(reward_type)} Rewards: {algo_name.upper()} in {cap_first(env_type)} {cap_first(env_name)} {waypoint_string}', fontsize=24)
+    plt.title(f'{cap_first(reward_type)} Rewards: {algo_name.upper()} in {cap_first(env_type)} {cap_first(env_name)} {waypoint_string}', fontsize=28)
     
     # Adjust tick parameters for both axes
     plt.tick_params(axis='both', which='major', labelsize=18)
@@ -68,7 +69,7 @@ def plot_episode_reward(rewards: Rewards, algo_name: str, env_name: str, env_typ
 
 
 if __name__ == '__main__':
-    waypoint_str = "random_multiple"
+    waypoint_str = "random_single"
     reward_type = "train"
     env_var = "airsim"
     

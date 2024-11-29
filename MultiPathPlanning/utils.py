@@ -34,6 +34,7 @@ def thread_test_func(title, fruit, dur):
 def pop_first_element(arr):
     return arr[0], arr[1:]
 
+# TODO: Font size
 def plot_all_routes(targets, drone_paths, obstacles=[], filename=None):
     
     plt.figure(figsize=(8, 8))
@@ -52,10 +53,10 @@ def plot_all_routes(targets, drone_paths, obstacles=[], filename=None):
     plt.scatter(start[0], start[1], c='red', marker='x', s=60, zorder=3, label="Start")
     plt.scatter(np_targets[:, 0], np_targets[:, 1], c='black', s=60, marker='x', zorder=3, label="Waypoints")
 
-    plt.legend()
-    plt.title("Drone Routes")
-    plt.xlabel("X")
-    plt.ylabel("Y")
+    plt.legend(loc="best", fontsize=12)
+    plt.title("Drone Routes", fontsize=28)
+    plt.xlabel("X", fontsize=24)
+    plt.ylabel("Y", fontsize=24)
     if filename is not None:
         if os.path.dirname(filename) != '' and not os.path.exists(os.path.dirname(filename)):
             os.makedirs(os.path.dirname(filename), exist_ok=True)

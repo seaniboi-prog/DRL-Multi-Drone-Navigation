@@ -6,7 +6,7 @@ from MultiTSP import *
 
 import os
 
-waypoint_type = "neighbourhood"
+waypoint_type = "mountains"
 no_drones = 3
 mtsp_algo = "tabu"
 rl_algo = "ppo"

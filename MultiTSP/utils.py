@@ -242,7 +242,7 @@ class Network:
         plt.pause(3)
         plt.close()
         
-
+    # TODO: Font size
     def plot_paths(self, title: str = "Paths", pause: int = 3, filename = None) -> None:
         plt.figure(figsize=(8, 8))
         
@@ -285,6 +285,7 @@ class Network:
         for node in self.nodes:
             l_l = len(str(node.label))
             plt.text(node.x - x_text_h[l_l][l_n], node.y - y_text_v[l_l][l_n], str(node.label), color='w', fontsize=12, zorder=3)
+            # plt.text(node.x - 3, node.y - 4, str(node.label), color='w', fontsize=12, zorder=3)
         
         for i, path in enumerate(self.paths):
             x = [node.x for node in path.get_path()]
@@ -293,8 +294,8 @@ class Network:
             y.append(self.get_start().y)
             plt.plot(x, y, COLOURS[i], zorder=1, label=f"Drone {i+1}")
         
-        plt.legend(loc='best')
-        plt.title(title)
+        plt.legend(loc='best', fontsize=15)
+        plt.title(title, fontsize=28)
         
         if filename is not None:
             if os.path.dirname(filename) != '' and not os.path.exists(os.path.dirname(filename)):
