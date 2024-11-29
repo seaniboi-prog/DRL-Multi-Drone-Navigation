@@ -1,7 +1,6 @@
 from pushbullet import Pushbullet
 
 # Your Pushbullet API key
-api_key = 'o.AjUrlI3NturvADLTdRtBL9rcS0NJ2Rdb'
 
 pb = Pushbullet(api_key)
 
